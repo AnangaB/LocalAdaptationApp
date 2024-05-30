@@ -1,6 +1,6 @@
 import SearchBar from "./components/search bar/SearchBar";
 import DataTableDisplayContainer from "./components/dataTableDisplay/DataTableDisplayContainer";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { SearchParamProps } from "./types/SearchParamProps";

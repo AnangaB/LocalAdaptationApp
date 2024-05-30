@@ -93,9 +93,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
             <select
               className="m-1"
               id={`${key}Input`}
-              onChange={(event) =>
-                handleFormChange(key as keyof SearchParamProps, event)
-              }
+              // onChange={(event) =>
+              // handleFormChange(key as keyof SearchParamProps, event)
+              //}
             >
               {value.map((v, index) => (
                 <option key={index} value={v}>
