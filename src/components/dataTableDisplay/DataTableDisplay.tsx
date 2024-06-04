@@ -22,7 +22,7 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
     const loadWorkbook = async () => {
       try {
         // Fetch the Excel file
-        const response = await fetch("/data.xlsx");
+        const response = await fetch("/LocalAdaptationApp/data.xlsx");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
