@@ -1,13 +1,19 @@
 import { SearchParamProps } from "../../types/SearchParamProps";
+import AdvancedSearchBar from "./AdvancedSearchBar.tsx";
+import SimpleSearchBar from "./SimpleSearchBar.tsx";
 
 interface SearchBarProps {
   selectedSearchParams: SearchParamProps;
   setSelectedSearchParams: (value: SearchParamProps) => void;
+  advancedSearchButtonOnClick: (isAdvancedMode: boolean) => void;
+  isAdvancedSearchMode: boolean;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   selectedSearchParams,
   setSelectedSearchParams,
+  advancedSearchButtonOnClick,
+  isAdvancedSearchMode,
 }) => {
   const handleFormChange = (
     index: keyof SearchParamProps,
@@ -25,7 +31,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       paperName: event.target.value,
     });
   }; */
-
+  /**
   const searchTitles: Record<keyof SearchParamProps, any> = {
     "Paper Name": "string",
     Authors: "string",
@@ -84,9 +90,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
     IBS: "string",
   };
 
-  return (
-    <div className="d-flex align-content-stretch flex-wrap">
-      {Object.entries(searchTitles).map(([key, value]) =>
+
+   *   {Object.entries(searchTitles).map(([key, value]) =>
         Array.isArray(value) ? (
           <div key={`${key}InputDiv`} className="m-1 p-2">
             <label htmlFor={`${key}Input`}>{`${key}: `}</label>
@@ -118,6 +123,42 @@ const SearchBar: React.FC<SearchBarProps> = ({
             ></input>
           </div>
         )
+      )}
+   * 
+   */
+  return (
+    <div className="bg-info container-fluid">
+      <p className="h1">Local Adaptation Search</p>
+
+      {!isAdvancedSearchMode ? (
+        <div className="row">
+          <div className="col-sm-10">
+            <SimpleSearchBar handleFormChange={handleFormChange} />
+          </div>
+          <div className="col-sm-2">
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={() => advancedSearchButtonOnClick(isAdvancedSearchMode)}
+            >
+              Advanced
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="container-fluid">
+            <AdvancedSearchBar handleFormChange={handleFormChange} />
+
+            <button
+              type="button"
+              className="m-1 btn btn-danger"
+              onClick={() => advancedSearchButtonOnClick(isAdvancedSearchMode)}
+            >
+              Hide Advanced
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

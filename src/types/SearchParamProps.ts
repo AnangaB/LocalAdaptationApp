@@ -1,4 +1,5 @@
 export interface SearchParamProps{
+    "Index":string;
     "Paper Name":string;
     Authors: string;
     Year: string;

@@ -1,7 +1,6 @@
 import { SearchParamProps } from "../../types/SearchParamProps";
 import ExcelJS from "exceljs";
 import { useEffect, useState } from "react";
-
 //
 import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
@@ -23,6 +22,8 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
       try {
         // Fetch the Excel file
         const response = await fetch("/LocalAdaptationApp/data.xlsx");
+        //const response = await fetch("LocalAdaptationApp/public/data.xlsx");
+
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -45,31 +46,39 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
 
     loadWorkbook();
   }, []);
-
+  //stores the entire exported data table as a list, with each row being an record element in list
   const [originalDataTableDisplayJSON, setOriginalDataTableDisplayJSON] =
     useState<Record<string, any>[] | null>(null);
+
+  // stores only the row element from originalDataTableDisplayJSON that is to be displayed
   const [dataTableDisplayJSON, setDataTableDisplayJSON] = useState<
-    Record<string, any>[] | null
-  >(null);
-  const [dataTableHeaders, setDataTableHeaders] = useState<
-    { field: string }[] | null
-  >(null);
+    Record<string, string>[]
+  >([]);
+  //store headers for data table
+  const [dataTableHeaders, setDataTableHeaders] = useState<{ field: string }[]>(
+    []
+  );
 
   useEffect(() => {
     if (originalDataTableWorksheet) {
       let rows: Record<string, any>[] = [];
       let header: string[] = [];
+      let index: number = 0;
       originalDataTableWorksheet.eachRow((row, rowNumber) => {
         if (rowNumber == 1) {
           header = row.values as string[];
           //fix how there is no title for first column
-          header.shift();
+          //header.shift();
+          header[0] = "Index";
+
           const newColDefs = header.map((field) => ({ field }));
           setDataTableHeaders(newColDefs);
         } else {
           let newEntry: Record<string, any> = {};
-          for (let i = 0; i < header.length; i++) {
-            newEntry[header[i]] = row.getCell(i + 1).value;
+          newEntry["Index"] = index;
+          index++;
+          for (let i = 1; i < header.length; i++) {
+            newEntry[header[i]] = row.getCell(i).value;
           }
           rows.push(newEntry);
         }
@@ -105,14 +114,15 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
     });
   };
 
+  /**
   // some formatting for AgGridReact component below
   const defaultColDef = {
     flex: 1,
     minWidth: 110,
     resizable: true,
     autoHeight: true,
-  };
-  return (
+  };**/
+  /** return (
     <div>
       <h2>{dataTableDisplayJSON?.length} entries found</h2>
       {dataTableDisplayJSON && dataTableHeaders && (
@@ -127,6 +137,30 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
           />
         </div>
       )}
+    </div>
+  );**/
+
+  return (
+    <div className="Container">
+      <div className="row">
+        <div className="col-sm">
+          <p>Paper Name</p>
+        </div>
+        <div className="col-sm">
+          <p>Paper Title</p>
+        </div>
+      </div>
+      {dataTableDisplayJSON &&
+        dataTableDisplayJSON.map((row: Record<string, string>) => (
+          <div className="row" key={row["Paper Name"] + " " + row["Index"]}>
+            <div className="col-sm">
+              <p>{row["Paper Name"]}</p>
+            </div>
+            <div className="col-sm">
+              <a href="">{row["Title"]}</a>
+            </div>
+          </div>
+        ))}
     </div>
   );
 };
