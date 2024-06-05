@@ -2,9 +2,9 @@ import { SearchParamProps } from "../../types/SearchParamProps";
 import ExcelJS from "exceljs";
 import { useEffect, useState } from "react";
 //
-import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
-import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
-import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
+//import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
+//import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
+//import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
 interface DataTableDisplayProps {
   SearchParams: SearchParamProps;
@@ -55,9 +55,9 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
     Record<string, string>[]
   >([]);
   //store headers for data table
-  const [dataTableHeaders, setDataTableHeaders] = useState<{ field: string }[]>(
-    []
-  );
+  //const [dataTableHeaders, setDataTableHeaders] = useState<{ field: string }[]>(
+  //[]
+  //);
 
   useEffect(() => {
     if (originalDataTableWorksheet) {
@@ -71,8 +71,8 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
           //header.shift();
           header[0] = "Index";
 
-          const newColDefs = header.map((field) => ({ field }));
-          setDataTableHeaders(newColDefs);
+          //const newColDefs = header.map((field) => ({ field }));
+          //setDataTableHeaders(newColDefs);
         } else {
           let newEntry: Record<string, any> = {};
           newEntry["Index"] = index;
