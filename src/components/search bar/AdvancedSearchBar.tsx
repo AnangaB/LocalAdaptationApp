@@ -189,9 +189,9 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
           return (
             <div
               key={`${key}InputDiv`}
-              className="m-1 p-2 col-sm-4 col-md-3 col-lg-2"
+              className="m-2 p-2 col-sm-4 col-md-3 col-lg-2"
             >
-              <label htmlFor={`${key}Input`}>{`${key}: `}</label>
+              <label className="h5" htmlFor={`${key}Input`}>{`${key}: `}</label>
 
               <input
                 className="m-1"

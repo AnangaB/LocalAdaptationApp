@@ -46,7 +46,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="container-fluid m-0">
       <SearchBar
         selectedSearchParams={selectedSearchParams}
         setSelectedSearchParams={setSelectedSearchParams}

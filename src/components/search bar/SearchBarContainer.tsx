@@ -133,7 +133,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
    * 
    */
   return (
-    <div className="bg-info container-fluid">
+    <div className="bg-info p-3 m-0 container-fluid">
       <p className="h1">Local Adaptation Search</p>
 
       {!isAdvancedSearchMode ? (
@@ -153,7 +153,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         </div>
       ) : (
         <>
-          <div className="container-fluid">
+          <div className="container">
             <AdvancedSearchBar handleFormChange={handleFormChange} />
 
             <button

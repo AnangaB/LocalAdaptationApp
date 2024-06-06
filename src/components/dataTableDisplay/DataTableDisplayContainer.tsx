@@ -9,7 +9,7 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
   SearchParams,
 }) => {
   return (
-    <div>
+    <div className="m-0 container-fluid">
       <DataTableDisplay SearchParams={SearchParams} />
     </div>
   );

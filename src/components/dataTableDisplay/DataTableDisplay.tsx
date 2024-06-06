@@ -153,25 +153,25 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
 
   return (
     <div className="Container-fluid">
-      <p>
+      <p className="h6">
         {dataTableDisplayJSON.length > 0 ? dataTableDisplayJSON.length : 0}{" "}
         entries found
       </p>
       <div className="row">
-        <div className="col-sm">
+        <div className="h3 col-sm-6 col-md-4 col-lg-2">
           <p>Paper Name</p>
         </div>
-        <div className="col-sm">
+        <div className="h3 col-sm-6 col-md-8 col-lg-10">
           <p>Paper Title</p>
         </div>
       </div>
       {dataTableDisplayJSON &&
         dataTableDisplayJSON.map((row: Record<string, string>) => (
           <div className="row" key={row["Paper Name"] + " " + row["Index"]}>
-            <div className="col-sm">
+            <div className="col-sm-5 col-md-4 col-lg-2">
               <p>{row["Paper Name"]}</p>
             </div>
-            <div className="col-sm">
+            <div className="col-sm-7 col-md-8 col-lg-10">
               <a href="">{row["Title"]}</a>
             </div>
           </div>
