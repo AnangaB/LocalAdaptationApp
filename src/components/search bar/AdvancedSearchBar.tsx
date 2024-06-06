@@ -189,7 +189,7 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
           return (
             <div
               key={`${key}InputDiv`}
-              className="m-2 p-2 col-sm-4 col-md-3 col-lg-2"
+              className="p-2 col-md-4 col-lg-3 align-self-center"
             >
               <label className="h5" htmlFor={`${key}Input`}>{`${key}: `}</label>
 
@@ -214,7 +214,10 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
           );
         } else if (value == SearchType.Checkbox) {
           return (
-            <div key={`${key}InputDiv`} className="m-1 p-2 col-12">
+            <div
+              key={`${key}InputDiv`}
+              className="p-2 col-12 col-lg-3 align-self-center"
+            >
               <div className="row">
                 <p className="h3">{key}:</p>
               </div>
@@ -222,7 +225,7 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
                 {searchCheckBoxOptions[key] &&
                   searchCheckBoxOptions[key].map((option) => (
                     <div
-                      className="form-check col-sm-4 col-md-3 col-lg-2"
+                      className="form-check col-6"
                       key={`${key}-${option}Checkbox`}
                     >
                       <input
