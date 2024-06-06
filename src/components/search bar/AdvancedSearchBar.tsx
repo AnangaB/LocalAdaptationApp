@@ -1,10 +1,8 @@
+import { useState } from "react";
 import { SearchParamProps } from "../../types/SearchParamProps";
 
 interface AdvancedSearchBarProps {
-  handleFormChange: (
-    index: keyof SearchParamProps,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
+  handleFormChange: (index: keyof SearchParamProps, event: RegExp) => void;
 }
 
 const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
@@ -31,7 +29,7 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
     Journal: SearchType.TextSearch,
     Title: SearchType.TextSearch,
     Abstract: SearchType.TextSearch,
-    "Open Access": SearchType.TextSearch,
+    "Open Access": SearchType.DisplayNone,
     "Reviewer 1": SearchType.DisplayNone,
     "Reviewer 2": SearchType.DisplayNone,
     Scope: SearchType.Checkbox,
@@ -130,6 +128,59 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
     ],
     IBS: ["IBS", "Analytical Model", "Both", "Unknown"],
   };
+  //store state for checkbox
+  const [checkboxSelections, setCheckboxSelections] = useState<
+    Record<string, Record<string, boolean>>
+  >(
+    Object.keys(searchCheckBoxOptions).reduce((acc, key) => {
+      acc[key] = searchCheckBoxOptions[key].reduce((innerAcc, option) => {
+        innerAcc[option] = false;
+        return innerAcc;
+      }, {} as Record<string, boolean>);
+      return acc;
+    }, {} as Record<string, Record<string, boolean>>)
+  );
+
+  const handleCheckboxOnClick: (key: string, option: string) => void = (
+    key,
+    option
+  ) => {
+    const newCheckBoxSelections: Record<string, Record<string, boolean>> = {
+      ...checkboxSelections,
+      [key]: {
+        ...checkboxSelections[key],
+        [option]: !checkboxSelections[key][option],
+      },
+    };
+
+    console.log("prior checkboxSelections: ", checkboxSelections);
+    console.log("new checkboxSelections: ", newCheckBoxSelections);
+
+    setCheckboxSelections(newCheckBoxSelections);
+    const regexString = Object.keys(newCheckBoxSelections[key])
+      .filter((val) => newCheckBoxSelections[key][val])
+      .map((t) =>
+        t.replace(
+          /[-[\]{}()*+?.,\\^$|]/g, // Escape regex special characters
+          "\\$&"
+        )
+      )
+      .join("|");
+    let newRegex: RegExp = new RegExp(regexString, "ig");
+    if (
+      !regexString ||
+      Object.values(newCheckBoxSelections[key]).every(
+        (value: boolean) => value === false
+      )
+    ) {
+      newRegex = /.*/;
+    }
+
+    console.log("string of new regex: ", regexString);
+    console.log("the actual new regex: ", newRegex);
+
+    handleFormChange(key as keyof SearchParamProps, newRegex);
+  };
 
   return (
     <div className="row">
@@ -147,7 +198,15 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
                 id={`${key}Input`}
                 type="text"
                 onChange={(event) =>
-                  handleFormChange(key as keyof SearchParamProps, event)
+                  handleFormChange(
+                    key as keyof SearchParamProps,
+                    new RegExp(
+                      event.target.value.replace(
+                        /[-[\]{}()*+?.,\\^$|]/g, // Escape regex special characters
+                        "\\$&"
+                      )
+                    )
+                  )
                 }
                 placeholder={`${key} Input`}
               ></input>
@@ -162,15 +221,19 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
               <div className="row">
                 {searchCheckBoxOptions[key] &&
                   searchCheckBoxOptions[key].map((option) => (
-                    <div className="form-check col-sm-4 col-md-3 col-lg-2">
+                    <div
+                      className="form-check col-sm-4 col-md-3 col-lg-2"
+                      key={`${key}-${option}Checkbox`}
+                    >
                       <input
                         className="form-check-input"
                         type="checkbox"
                         value=""
                         id={`$(key)_$(option)_checkbox`}
+                        onClick={() => handleCheckboxOnClick(key, option)}
                       />
                       <label
-                        className="form-check-label"
+                        className="form-check-label h6"
                         htmlFor={`$(key)_$(option)_checkbox`}
                       >
                         {option}

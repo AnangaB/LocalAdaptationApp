@@ -107,10 +107,21 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
   //check if a row, satisfies the input of SearchParams
   const checkIfRowIsValid = (row: Record<string, any>) => {
     return Object.keys(SearchParams).every((key) => {
-      const searchValue =
-        SearchParams[key as keyof SearchParamProps]?.toLowerCase() || "";
+      const searchValue = SearchParams[key as keyof SearchParamProps];
       const rowValue = row[key]?.toString().toLowerCase() || "";
-      return rowValue.includes(searchValue);
+
+      /* if (key == "Scope" && rowValue && rowValue.length > 0) {
+        console.log(
+          "testing row value of ",
+          rowValue,
+          " and the search value: ",
+          searchValue,
+          " and the match is ",
+          searchValue.test(rowValue)
+        );
+      }*/
+
+      return searchValue.test(rowValue);
     });
   };
 
@@ -141,7 +152,11 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
   );**/
 
   return (
-    <div className="Container">
+    <div className="Container-fluid">
+      <p>
+        {dataTableDisplayJSON.length > 0 ? dataTableDisplayJSON.length : 0}{" "}
+        entries found
+      </p>
       <div className="row">
         <div className="col-sm">
           <p>Paper Name</p>

@@ -1,10 +1,7 @@
 import { SearchParamProps } from "../../types/SearchParamProps";
 
 interface SimpleSearchBarProps {
-  handleFormChange: (
-    index: keyof SearchParamProps,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
+  handleFormChange: (index: keyof SearchParamProps, event: RegExp) => void;
 }
 
 const SearchBar: React.FC<SimpleSearchBarProps> = ({ handleFormChange }) => {
@@ -16,7 +13,16 @@ const SearchBar: React.FC<SimpleSearchBarProps> = ({ handleFormChange }) => {
         id={`paperNameInput`}
         type="text"
         onChange={(event) =>
-          handleFormChange("Paper Name" as keyof SearchParamProps, event)
+          handleFormChange(
+            "Paper Name" as keyof SearchParamProps,
+            new RegExp(
+              event.target.value.replace(
+                /[-[\]{}()*+?.,\\^$|]/g, // Escape regex special characters
+                "\\$&"
+              ),
+              "ig"
+            )
+          )
         }
         placeholder="Paper Name Input"
       ></input>

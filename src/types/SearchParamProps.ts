@@ -1,4 +1,31 @@
-export interface SearchParamProps{
+export interface SearchParamProps {
+    "Index": RegExp;
+    "Paper Name": RegExp;
+    Authors: RegExp;
+    Year: RegExp;
+    Journal: RegExp;
+    Title: RegExp;
+    Abstract: RegExp;
+    "Open Access": RegExp;
+    "Reviewer 1": RegExp;
+    "Reviewer 2": RegExp;
+    Scope: RegExp;
+    "Eco-Evo Focus": RegExp;
+    Metric: RegExp;
+    "Life history": RegExp;
+    "Ecological Loci/Traits": RegExp;
+    "Additional Loci/Traits": RegExp;
+    "Mating system": RegExp;
+    Ploidy: RegExp;
+    Selection: RegExp;
+    "Spatial Structure": RegExp;
+    "Population Size": RegExp;
+    "Ecological Model": RegExp;
+    "Recurrent Mutation": RegExp;
+    IBS: RegExp;
+}
+
+/*export interface SearchParamProps{
     "Index":string;
     "Paper Name":string;
     Authors: string;
@@ -24,3 +51,4 @@ export interface SearchParamProps{
     "Recurrent Mutation": string;
     IBS: string;
 }
+*/

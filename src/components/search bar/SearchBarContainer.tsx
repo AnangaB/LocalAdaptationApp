@@ -15,12 +15,18 @@ const SearchBar: React.FC<SearchBarProps> = ({
   advancedSearchButtonOnClick,
   isAdvancedSearchMode,
 }) => {
-  const handleFormChange = (
-    index: keyof SearchParamProps,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newData = { ...selectedSearchParams, [index]: event.target.value };
+  //function to call whenever, user makes changes to search menu
+  const handleFormChange = (index: keyof SearchParamProps, value: RegExp) => {
+    if (String(value) === String("/(?:)/")) {
+      value = /.*/;
+      console.log("foind ? thing");
+    }
+    const newData = {
+      ...selectedSearchParams,
+      [index]: value,
+    };
     setSelectedSearchParams(newData);
+    console.log(newData);
   };
 
   /* 
