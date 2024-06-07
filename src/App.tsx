@@ -6,6 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { SearchParamProps } from "./types/SearchParamProps";
 
 function App() {
+
+  //stores regex for each search bar menu
   const [selectedSearchParams, setSelectedSearchParams] =
     useState<SearchParamProps>({
       Index: /.*/,
@@ -34,9 +36,10 @@ function App() {
       IBS: /.*/,
     });
 
+    //state for when to show all advanced search menu
   const [isAdvancedSearchMode, setIsAdvancedSearchMode] =
     useState<boolean>(false);
-
+//toggles advanced search modes between true and false
   const advancedSearchButtonOnClick = (isAdvancedMode: boolean) => {
     if (isAdvancedMode) {
       setIsAdvancedSearchMode(false);
@@ -44,6 +47,8 @@ function App() {
       setIsAdvancedSearchMode(true);
     }
   };
+
+  
 
   return (
     <div className="container-fluid m-0">

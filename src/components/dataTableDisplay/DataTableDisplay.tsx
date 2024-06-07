@@ -1,18 +1,18 @@
 import { SearchParamProps } from "../../types/SearchParamProps";
-import ExcelJS from "exceljs";
-import { useEffect, useState } from "react";
+
 //
 //import { AgGridReact } from "ag-grid-react"; // React Data Grid Component
 //import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 //import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
 interface DataTableDisplayProps {
-  SearchParams: SearchParamProps;
+  dataDisplayList: Record<string, string>[];
 }
 
 const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
-  SearchParams,
+  dataDisplayList,
 }) => {
+  /* 
   //state to store worksheet containing the entire local adaptation data set
   const [originalDataTableWorksheet, setoriginalDataTableWorksheet] =
     useState<ExcelJS.Worksheet | null>(null);
@@ -109,21 +109,9 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
     return Object.keys(SearchParams).every((key) => {
       const searchValue = SearchParams[key as keyof SearchParamProps];
       const rowValue = row[key]?.toString().toLowerCase() || "";
-
-      /* if (key == "Scope" && rowValue && rowValue.length > 0) {
-        console.log(
-          "testing row value of ",
-          rowValue,
-          " and the search value: ",
-          searchValue,
-          " and the match is ",
-          searchValue.test(rowValue)
-        );
-      }*/
-
       return searchValue.test(rowValue);
     });
-  };
+  }; */
 
   /**
   // some formatting for AgGridReact component below
@@ -154,8 +142,7 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
   return (
     <div className="Container-fluid">
       <p className="h6">
-        {dataTableDisplayJSON.length > 0 ? dataTableDisplayJSON.length : 0}{" "}
-        entries found
+        {dataDisplayList.length > 0 ? dataDisplayList.length : 0} entries found
       </p>
       <div className="row">
         <div className="h3 col-sm-6 col-md-4 col-lg-2">
@@ -165,8 +152,8 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
           <p>Paper Title</p>
         </div>
       </div>
-      {dataTableDisplayJSON &&
-        dataTableDisplayJSON.map((row: Record<string, string>) => (
+      {dataDisplayList &&
+        dataDisplayList.map((row: Record<string, string>) => (
           <div className="row" key={row["Paper Name"] + " " + row["Index"]}>
             <div className="col-sm-5 col-md-4 col-lg-2">
               <p>{row["Paper Name"]}</p>
