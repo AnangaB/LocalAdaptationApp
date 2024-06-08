@@ -2,21 +2,25 @@ import { useState, useEffect } from "react";
 import { SearchParamProps } from "../../types/SearchParamProps";
 import DataTableDisplay from "./DataTableDisplay";
 import ExcelJS from "exceljs";
+import IndividualPage from "./IndividualPage";
 
 interface DataTableDisplayContainerProps {
   SearchParams: SearchParamProps;
+}
+//describes whether or not to display an individual page,, and which individual page to display
+interface IndividualPageDisplayMode {
+  display: boolean;
+  currentRow: Record<string, string>;
 }
 
 const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
   SearchParams,
 }) => {
-  // const [isIndividualPageDisplayMode, setIsIndividualPageDisplayMode] =
-  //  useState<boolean>(false);
-
   //state to store worksheet containing the entire local adaptation data set
   const [originalDataTableWorksheet, setoriginalDataTableWorksheet] =
     useState<ExcelJS.Worksheet | null>(null);
 
+  //parse the data excel sheet
   useEffect(() => {
     const loadWorkbook = async () => {
       try {
@@ -46,9 +50,10 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
 
     loadWorkbook();
   }, []);
+
   //stores the entire exported data table as a list, with each row being an record element in list
   const [originalDataTableDisplayJSON, setOriginalDataTableDisplayJSON] =
-    useState<Record<string, any>[] | null>(null);
+    useState<Record<string, any>[]>([]);
 
   // stores only the row element from originalDataTableDisplayJSON that is to be displayed
   const [dataTableDisplayJSON, setDataTableDisplayJSON] = useState<
@@ -106,17 +111,58 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
 
   //check if a row, satisfies the input of SearchParams
   const checkIfRowIsValid = (row: Record<string, any>) => {
-    return Object.keys(SearchParams).every((key) => {
-      const searchValue = SearchParams[key as keyof SearchParamProps];
-      const rowValue = row[key]?.toString().toLowerCase() || "";
-      return searchValue.test(rowValue);
+    if (!individualPageDisplayMode["display"]) {
+      return Object.keys(SearchParams).every((key) => {
+        const searchValue = SearchParams[key as keyof SearchParamProps];
+        const rowValue = row[key]?.toString().toLowerCase() || "";
+        if (key == "Scope") {
+          if (row["Paper Name"] == "Blanquart et al. 2012") {
+            console.log("the row we are comparing is ", row);
+          }
+        }
+        return searchValue.test(rowValue);
+      });
+    }
+  };
+
+  //
+  const [individualPageDisplayMode, setIndividualPageDisplayMode] =
+    useState<IndividualPageDisplayMode>({
+      display: false,
+      currentRow: {},
     });
+
+  const pageTitleOnclick = (row: Record<string, string>) => {
+    if (row) {
+      setIndividualPageDisplayMode({
+        display: true,
+        currentRow: row,
+      });
+    }
   };
 
   return (
     <div className="m-0 container-fluid">
-      <DataTableDisplay dataDisplayList={dataTableDisplayJSON} />
+      {individualPageDisplayMode["display"] == true ? (
+        <>
+          <IndividualPage
+            row={individualPageDisplayMode["currentRow"]}
+            backButtonOnClick={() => {
+              setIndividualPageDisplayMode({
+                display: false,
+                currentRow: {},
+              });
+            }}
+          />
+        </>
+      ) : (
+        <DataTableDisplay
+          dataDisplayList={dataTableDisplayJSON}
+          pageTitleOnclick={pageTitleOnclick}
+        />
+      )}
     </div>
   );
 };
+
 export default DataTableDisplayContainer;

@@ -153,8 +153,8 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
       },
     };
 
-    console.log("prior checkboxSelections: ", checkboxSelections);
-    console.log("new checkboxSelections: ", newCheckBoxSelections);
+    //console.log("prior checkboxSelections: ", checkboxSelections);
+    //console.log("new checkboxSelections: ", newCheckBoxSelections);
 
     setCheckboxSelections(newCheckBoxSelections);
     const regexString = Object.keys(newCheckBoxSelections[key])
@@ -176,9 +176,9 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
       newRegex = /.*/;
     }
 
-    console.log("string of new regex: ", regexString);
-    console.log("the actual new regex: ", newRegex);
-
+    //console.log("string of new regex: ", regexString);
+    //console.log("the actual new regex: ", newRegex);
+    
     handleFormChange(key as keyof SearchParamProps, newRegex);
   };
 
