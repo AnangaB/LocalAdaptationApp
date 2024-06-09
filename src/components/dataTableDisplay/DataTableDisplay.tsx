@@ -140,18 +140,18 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
   );**/
 
   return (
-    <div className="Container-fluid">
+    <div className="Container-fluid py-3 border-bottom border-dark">
       <p className="h6">
         {dataDisplayList.length > 0 ? dataDisplayList.length : 0} entries found
       </p>
       <div className="row">
-        <div className="h3 col-4">
+        <div className="h5 col-4">
           <p>Paper Name</p>
         </div>
-        <div className="h3 col-4">
+        <div className="h5 col-4">
           <p>Paper Title</p>
         </div>
-        <div className="h3 col-4">
+        <div className="h5 col-4">
           <p>Scope</p>
         </div>
       </div>

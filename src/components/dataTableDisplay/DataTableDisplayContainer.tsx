@@ -3,7 +3,7 @@ import { SearchParamProps } from "../../types/SearchParamProps";
 import DataTableDisplay from "./DataTableDisplay";
 import ExcelJS from "exceljs";
 import IndividualPage from "./IndividualPage";
-
+import WeakMatchesDisplay from "./WeakMatchesDisplay";
 interface DataTableDisplayContainerProps {
   SearchParams: SearchParamProps;
 }
@@ -52,11 +52,10 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
   }, []);
 
   //stores the entire exported data table as a list, with each row being an record element in list
-  const [originalDataTableDisplayJSON, setOriginalDataTableDisplayJSON] =
-    useState<Record<string, any>[]>([]);
+  const [allRowsList, setAllRowsList] = useState<Record<string, any>[]>([]);
 
-  // stores only the row element from originalDataTableDisplayJSON that is to be displayed
-  const [dataTableDisplayJSON, setDataTableDisplayJSON] = useState<
+  // stores only the row element from allRowsList that is to be displayed
+  const [fullyMatchingRowsList, setFullyMatchingRowsList] = useState<
     Record<string, string>[]
   >([]);
   //store headers for data table
@@ -69,6 +68,7 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
       let rows: Record<string, any>[] = [];
       let header: string[] = [];
       let index: number = 0;
+
       originalDataTableWorksheet.eachRow((row, rowNumber) => {
         if (rowNumber == 1) {
           header = row.values as string[];
@@ -88,44 +88,61 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
           rows.push(newEntry);
         }
       });
-      setOriginalDataTableDisplayJSON(rows);
-      setDataTableDisplayJSON(rows);
+      setAllRowsList(rows);
+      setFullyMatchingRowsList(rows);
     }
   }, [originalDataTableWorksheet]);
 
-  //update dataTableDisplayJSON with the search param values
+  const [rowSimilarityScores, setRowSimilarityScore] = useState<
+    Record<number, number>
+  >({});
+
+  //update fullyMatchingRowsList with the search param values
   useEffect(() => {
-    if (
-      originalDataTableDisplayJSON != null &&
-      originalDataTableDisplayJSON.length > 0
-    ) {
+    if (allRowsList != null && allRowsList.length > 0) {
+      let similarScoresRecord: Record<number, number> = {};
       let rows: Record<string, any>[] = [];
-      for (let i = 0; i < originalDataTableDisplayJSON.length; i++) {
-        if (checkIfRowIsValid(originalDataTableDisplayJSON[i])) {
-          rows.push(originalDataTableDisplayJSON[i]);
+      for (let i = 0; i < allRowsList.length; i++) {
+        let { isMatch, similarScore } = checkIfRowIsValid(allRowsList[i]);
+
+        similarScoresRecord[i] = similarScore;
+
+        if (isMatch) {
+          rows.push(allRowsList[i]);
         }
       }
-      setDataTableDisplayJSON(rows);
+
+      setRowSimilarityScore(similarScoresRecord);
+      setFullyMatchingRowsList(rows);
     }
   }, [SearchParams]);
 
-  //check if a row, satisfies the input of SearchParams
-  const checkIfRowIsValid = (row: Record<string, any>) => {
+  //check if a row satisfies the input of SearchParams fully, and also returns a score of how many true matches it contained
+  const checkIfRowIsValid: (row: Record<string, any>) => {
+    isMatch: boolean;
+    similarScore: number;
+  } = (row: Record<string, any>) => {
+    let similarScore = 0;
+
+    let isFullyMatching: boolean = true;
     if (!individualPageDisplayMode["display"]) {
-      return Object.keys(SearchParams).every((key) => {
+      for (const key of Object.keys(SearchParams)) {
         const searchValue = SearchParams[key as keyof SearchParamProps];
         const rowValue = row[key]?.toString().toLowerCase() || "";
-        if (key == "Scope") {
-          if (row["Paper Name"] == "Blanquart et al. 2012") {
-            console.log("the row we are comparing is ", row);
-          }
+
+        let isMatch = searchValue.test(rowValue);
+        if (isMatch) {
+          similarScore += 1;
+          //"Index","Paper Name","Authors","Year","Journal","Title","Abstract","Open Access", "Reviewer 1","Reviewer 2"
+        } else {
+          isFullyMatching = false;
         }
-        return searchValue.test(rowValue);
-      });
+      }
     }
+    return { isMatch: isFullyMatching, similarScore: similarScore };
   };
 
-  //
+  //state to describe whether to display details about an individual paper and which paper (currentRow con)
   const [individualPageDisplayMode, setIndividualPageDisplayMode] =
     useState<IndividualPageDisplayMode>({
       display: false,
@@ -156,10 +173,21 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
           />
         </>
       ) : (
-        <DataTableDisplay
-          dataDisplayList={dataTableDisplayJSON}
-          pageTitleOnclick={pageTitleOnclick}
-        />
+        <div className="pt-4">
+          <p className="h3 text-center">
+            Papers fully matching all search parameters:
+          </p>
+
+          <DataTableDisplay
+            dataDisplayList={fullyMatchingRowsList}
+            pageTitleOnclick={pageTitleOnclick}
+          />
+          <WeakMatchesDisplay
+            allRowsList={allRowsList}
+            similaritiesScores={rowSimilarityScores}
+            pageTitleOnclick={pageTitleOnclick}
+          />
+        </div>
       )}
     </div>
   );

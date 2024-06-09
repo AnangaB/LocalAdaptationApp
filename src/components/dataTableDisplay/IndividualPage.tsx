@@ -31,7 +31,10 @@ const IndividualPage: React.FC<IndividualPageProps> = ({
             <div className="col-sm-12 col-md-9 border border-dark">
               <div className="row">
                 {["Paper Name", "Authors", "Year", "Journal"].map((item) => (
-                  <div className="col-sm-6 col-md-4 col-lg-3">
+                  <div
+                    className="col-sm-6 col-md-4 col-lg-3"
+                    key={`${item}-individual-page`}
+                  >
                     <p>
                       <span className="h6">{item}:</span> {row[item]}
                     </p>
@@ -59,7 +62,7 @@ const IndividualPage: React.FC<IndividualPageProps> = ({
                 "Recurrent Mutation",
                 "IBS",
               ].map((item) => (
-                <div className="row">
+                <div className="row" key={`${item}-individual-page`}>
                   <p>
                     <span className="h6">{item}:</span> {row[item]}
                   </p>
