@@ -19,14 +19,12 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const handleFormChange = (index: keyof SearchParamProps, value: RegExp) => {
     if (String(value) === String("/(?:)/")) {
       value = /.*/;
-      console.log("foind ? thing");
     }
     const newData = {
       ...selectedSearchParams,
       [index]: value,
     };
     setSelectedSearchParams(newData);
-    console.log(newData);
   };
 
   /* 

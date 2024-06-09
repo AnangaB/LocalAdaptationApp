@@ -62,9 +62,7 @@ const WeakMatchesDisplay: React.FC<WeakMatchesDisplayProps> = ({
           <p className="h3 text-center">Weak Matches</p>
           {weakMatchesDisplayList.map((list, index) => (
             <div key={`weakMatch${index}`}>
-              <p className="h4">
-                Off by {index + 1} model-specific search parameter:
-              </p>
+              <p className="h4">Off by {index + 1} search parameter:</p>
 
               <DataTableDisplay
                 dataDisplayList={list}
