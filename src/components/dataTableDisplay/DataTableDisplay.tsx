@@ -167,7 +167,7 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
               </p>
             </div>
             <div className="col-4">
-              <a href="">{row["Scope"]}</a>
+              <p>{row["Scope"]}</p>
             </div>
           </div>
         ))}
