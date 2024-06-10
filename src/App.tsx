@@ -1,12 +1,12 @@
-import SearchBar from "./components/search bar/SearchBarContainer";
+import SimpleSearchBar from "./components/search bar/SimpleSearchBar";
 import DataTableDisplayContainer from "./components/dataTableDisplay/DataTableDisplayContainer";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { SearchParamProps } from "./types/SearchParamProps";
+import AdvancedSearchBar from "./components/search bar/AdvancedSearchBar";
 
 function App() {
-
   //stores regex for each search bar menu
   const [selectedSearchParams, setSelectedSearchParams] =
     useState<SearchParamProps>({
@@ -36,10 +36,10 @@ function App() {
       IBS: /.*/,
     });
 
-    //state for when to show all advanced search menu
+  //state for when to show all advanced search menu
   const [isAdvancedSearchMode, setIsAdvancedSearchMode] =
     useState<boolean>(false);
-//toggles advanced search modes between true and false
+  //toggles advanced search modes between true and false
   const advancedSearchButtonOnClick = (isAdvancedMode: boolean) => {
     if (isAdvancedMode) {
       setIsAdvancedSearchMode(false);
@@ -48,17 +48,41 @@ function App() {
     }
   };
 
-  
+  //function to call whenever, user makes changes to search menu
+  const handleFormChange = (index: keyof SearchParamProps, value: RegExp) => {
+    if (String(value) === String("/(?:)/")) {
+      value = /.*/;
+    }
+    const newData = {
+      ...selectedSearchParams,
+      [index]: value,
+    };
+    setSelectedSearchParams(newData);
+  };
 
   return (
-    <div className="container-fluid m-0">
-      <SearchBar
-        selectedSearchParams={selectedSearchParams}
-        setSelectedSearchParams={setSelectedSearchParams}
+    <div className="container-fluid bg-info">
+      <SimpleSearchBar
         advancedSearchButtonOnClick={advancedSearchButtonOnClick}
         isAdvancedSearchMode={isAdvancedSearchMode}
+        handleFormChange={handleFormChange}
       />
-      <DataTableDisplayContainer SearchParams={selectedSearchParams} />
+      <div className="row" style={{ paddingTop: "180px" }}>
+        <div
+          className={
+            isAdvancedSearchMode ? "col-12 col-md-4 col-lg-3" : "d-none"
+          }
+        >
+          <AdvancedSearchBar handleFormChange={handleFormChange} />
+        </div>
+        <div
+          className={
+            isAdvancedSearchMode ? "col-12 col-md-8 col-lg-9" : "col-12"
+          }
+        >
+          <DataTableDisplayContainer SearchParams={selectedSearchParams} />
+        </div>
+      </div>
     </div>
   );
 }

@@ -159,7 +159,7 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
   };
 
   return (
-    <div className="m-0 container-fluid">
+    <div className="m-0 container-fluid bg-light">
       {individualPageDisplayMode["display"] == true ? (
         <>
           <IndividualPage

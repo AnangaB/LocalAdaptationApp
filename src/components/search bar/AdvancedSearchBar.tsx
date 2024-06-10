@@ -8,22 +8,18 @@ interface AdvancedSearchBarProps {
 const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
   handleFormChange,
 }) => {
-  /* 
-  const updateCurrentSearchParams: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void = (event) => {
-    setSelectedSearchParams({
-      paperName: event.target.value,
-    });
-  };*/
+  //each search parameter as collected from the excel sheet,
+  //either takes in user text input or is a checkbox or should not be displayed
+
   enum SearchType {
     DisplayNone,
     Checkbox,
     TextSearch,
   }
+
   const searchTitles: Record<keyof SearchParamProps, SearchType> = {
     Index: SearchType.DisplayNone,
-    "Paper Name": SearchType.TextSearch,
+    "Paper Name": SearchType.DisplayNone,
     Authors: SearchType.TextSearch,
     Year: SearchType.TextSearch,
     Journal: SearchType.TextSearch,
@@ -48,6 +44,7 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
     IBS: SearchType.Checkbox,
   };
 
+  //for checkbox search types, record their options
   const searchCheckBoxOptions: Record<string, string[]> = {
     Scope: [
       "Single Model",
@@ -128,6 +125,7 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
     ],
     IBS: ["IBS", "Analytical Model", "Both", "Unknown"],
   };
+
   //store state for checkbox
   const [checkboxSelections, setCheckboxSelections] = useState<
     Record<string, Record<string, boolean>>
@@ -153,9 +151,6 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
       },
     };
 
-    //console.log("prior checkboxSelections: ", checkboxSelections);
-    //console.log("new checkboxSelections: ", newCheckBoxSelections);
-
     setCheckboxSelections(newCheckBoxSelections);
     const regexString = Object.keys(newCheckBoxSelections[key])
       .filter((val) => newCheckBoxSelections[key][val])
@@ -176,12 +171,72 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
       newRegex = /.*/;
     }
 
-    //console.log("string of new regex: ", regexString);
-    //console.log("the actual new regex: ", newRegex);
-    
     handleFormChange(key as keyof SearchParamProps, newRegex);
   };
 
+  return (
+    <div className="row p-2">
+      {Object.entries(searchTitles).map(([key, value]) => {
+        if (value == SearchType.TextSearch) {
+          return (
+            <div key={`${key}InputDiv`} className="p-2 col-12 align-self-top">
+              <label className="h5" htmlFor={`${key}Input`}>{`${key}: `}</label>
+
+              <input
+                className="m-1 form-control"
+                id={`${key}Input`}
+                type="text"
+                onChange={(event) =>
+                  handleFormChange(
+                    key as keyof SearchParamProps,
+                    new RegExp(
+                      event.target.value.replace(
+                        /[-[\]{}()*+?.,\\^$|]/g, // Escape regex special characters
+                        "\\$&"
+                      )
+                    )
+                  )
+                }
+                placeholder={`${key} Input`}
+              ></input>
+            </div>
+          );
+        } else if (value == SearchType.Checkbox) {
+          return (
+            <div key={`${key}InputDiv`} className="p-2 col-12 align-self-top">
+              <div className="row">
+                <p className="h3">{key}:</p>
+              </div>
+              <div className="row">
+                {searchCheckBoxOptions[key] &&
+                  searchCheckBoxOptions[key].map((option) => (
+                    <div
+                      className="form-check"
+                      key={`${key}-${option}Checkbox`}
+                    >
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id={`$(key)_$(option)_checkbox`}
+                        onClick={() => handleCheckboxOnClick(key, option)}
+                      />
+                      <label
+                        className="form-check-label h6"
+                        htmlFor={`$(key)_$(option)_checkbox`}
+                      >
+                        {option}
+                      </label>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          );
+        }
+      })}
+    </div>
+  );
+  /*
   return (
     <div className="row">
       {Object.entries(searchTitles).map(([key, value]) => {
@@ -216,7 +271,7 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
           return (
             <div
               key={`${key}InputDiv`}
-              className="p-2 col-12 col-lg-3 align-self-center"
+              className="p-2 col-12 col-lg-3 align-self-top"
             >
               <div className="row">
                 <p className="h3">{key}:</p>
@@ -249,22 +304,6 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
         }
       })}
     </div>
-  );
-
-  /**
-  return (
-    <div key="paperNameSearchDiv" className="m-1 p-2">
-      <label htmlFor={`paperName`}>{`Paper Name: `}</label>
-      <input
-        className="m-1"
-        id={`paperNameInput`}
-        type="text"
-        onChange={(event) =>
-          handleFormChange("Paper Name" as keyof SearchParamProps, event)
-        }
-        placeholder="Paper Name Input"
-      ></input>
-    </div>
-  );**/
+  );*/
 };
 export default AdvancedSearchBar;
