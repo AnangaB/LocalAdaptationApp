@@ -211,7 +211,7 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
         if (value == SearchType.TextSearch) {
           return (
             <div key={`${key}InputDiv`} className="p-2 col-12 align-self-top">
-              <label className="h5" htmlFor={`${key}Input`}>{`${key}: `}</label>
+              <label htmlFor={`${key}Input`}>{`${key}: `}</label>
 
               <input
                 className="m-1 form-control"
