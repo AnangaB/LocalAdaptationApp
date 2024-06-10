@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { SearchParamProps } from "../../types/SearchParamProps";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import CheckBoxGroup from "./CheckBoxGroup";
 
 interface AdvancedSearchBarProps {
   handleFormChange: (index: keyof SearchParamProps, event: RegExp) => void;
@@ -150,7 +152,6 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
         [option]: !checkboxSelections[key][option],
       },
     };
-
     setCheckboxSelections(newCheckBoxSelections);
     const regexString = Object.keys(newCheckBoxSelections[key])
       .filter((val) => newCheckBoxSelections[key][val])
@@ -170,12 +171,42 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
     ) {
       newRegex = /.*/;
     }
+    console.log(
+      "handleCheckboxOnClick invoked with key: ",
+      key,
+      " and newregex: ",
+      newRegex
+    );
 
     handleFormChange(key as keyof SearchParamProps, newRegex);
   };
 
+  //function to reset checkboxes
+  const resetCheckBoxSelections: (checkBoxGroupName: string) => void = (
+    checkBoxGroupName
+  ) => {
+    console.log("reset called on key: ", checkBoxGroupName);
+
+    const currentSelections = checkboxSelections[checkBoxGroupName];
+
+    const newSelections = Object.keys(currentSelections).reduce(
+      (acc, option) => {
+        acc[option] = false;
+        return acc;
+      },
+      {} as Record<string, boolean>
+    );
+    console.log("print newSelections: ", newSelections);
+
+    setCheckboxSelections((prevSelections) => ({
+      ...prevSelections,
+      [checkBoxGroupName]: newSelections,
+    }));
+    handleFormChange(checkBoxGroupName as keyof SearchParamProps, /.*/);
+  };
+
   return (
-    <div className="row p-2">
+    <div className="bg-light row p-2">
       {Object.entries(searchTitles).map(([key, value]) => {
         if (value == SearchType.TextSearch) {
           return (
@@ -203,107 +234,17 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
           );
         } else if (value == SearchType.Checkbox) {
           return (
-            <div key={`${key}InputDiv`} className="p-2 col-12 align-self-top">
-              <div className="row">
-                <p className="h3">{key}:</p>
-              </div>
-              <div className="row">
-                {searchCheckBoxOptions[key] &&
-                  searchCheckBoxOptions[key].map((option) => (
-                    <div
-                      className="form-check"
-                      key={`${key}-${option}Checkbox`}
-                    >
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id={`$(key)_$(option)_checkbox`}
-                        onClick={() => handleCheckboxOnClick(key, option)}
-                      />
-                      <label
-                        className="form-check-label h6"
-                        htmlFor={`$(key)_$(option)_checkbox`}
-                      >
-                        {option}
-                      </label>
-                    </div>
-                  ))}
-              </div>
-            </div>
+            <CheckBoxGroup
+              key={`${key}InputDiv`}
+              groupName={key}
+              CheckBoxOptions={searchCheckBoxOptions[key]}
+              handleCheckboxOnClick={handleCheckboxOnClick}
+              resetCheckBoxSelections={resetCheckBoxSelections}
+            />
           );
         }
       })}
     </div>
   );
-  /*
-  return (
-    <div className="row">
-      {Object.entries(searchTitles).map(([key, value]) => {
-        if (value == SearchType.TextSearch) {
-          return (
-            <div
-              key={`${key}InputDiv`}
-              className="p-2 col-md-4 col-lg-3 align-self-center"
-            >
-              <label className="h5" htmlFor={`${key}Input`}>{`${key}: `}</label>
-
-              <input
-                className="m-1"
-                id={`${key}Input`}
-                type="text"
-                onChange={(event) =>
-                  handleFormChange(
-                    key as keyof SearchParamProps,
-                    new RegExp(
-                      event.target.value.replace(
-                        /[-[\]{}()*+?.,\\^$|]/g, // Escape regex special characters
-                        "\\$&"
-                      )
-                    )
-                  )
-                }
-                placeholder={`${key} Input`}
-              ></input>
-            </div>
-          );
-        } else if (value == SearchType.Checkbox) {
-          return (
-            <div
-              key={`${key}InputDiv`}
-              className="p-2 col-12 col-lg-3 align-self-top"
-            >
-              <div className="row">
-                <p className="h3">{key}:</p>
-              </div>
-              <div className="row">
-                {searchCheckBoxOptions[key] &&
-                  searchCheckBoxOptions[key].map((option) => (
-                    <div
-                      className="form-check col-6"
-                      key={`${key}-${option}Checkbox`}
-                    >
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id={`$(key)_$(option)_checkbox`}
-                        onClick={() => handleCheckboxOnClick(key, option)}
-                      />
-                      <label
-                        className="form-check-label h6"
-                        htmlFor={`$(key)_$(option)_checkbox`}
-                      >
-                        {option}
-                      </label>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          );
-        }
-      })}
-    </div>
-  );*/
 };
 export default AdvancedSearchBar;

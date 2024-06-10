@@ -117,6 +117,41 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
    * 
    */
   return (
+    <nav className="navbar navbar-dark bg-dark fixed-top">
+      <div className="container-fluid">
+        <span className="navbar-brand h1">Local Adaptation Search</span>
+        <div>
+          <input
+            className="form-control"
+            id={`paperNameInput`}
+            type="text"
+            onChange={(event) =>
+              handleFormChange(
+                "Paper Name" as keyof SearchParamProps,
+                new RegExp(
+                  event.target.value.replace(
+                    /[-[\]{}()*+?.,\\^$|]/g, // Escape regex special characters
+                    "\\$&"
+                  ),
+                  "ig"
+                )
+              )
+            }
+            placeholder="Enter Citation Key"
+          ></input>
+        </div>
+
+        <button
+          type="button"
+          className="btn btn-danger"
+          onClick={() => advancedSearchButtonOnClick(isAdvancedSearchMode)}
+        >
+          {isAdvancedSearchMode ? "Hide Advanced" : "Advanced"}
+        </button>
+      </div>
+    </nav>
+  );
+  /*return (
     <div className="bg-info fixed-top">
       <p className="h1">Local Adaptation Search</p>
 
@@ -144,7 +179,7 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
               }
               placeholder="Paper Name Input"
             ></input>
-          </div>{" "}
+          </div>
         </div>
         <div className="col-sm-2 p-1 m-3">
           <button
@@ -157,7 +192,7 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
         </div>
       </div>
     </div>
-  );
+  );*/
 };
 export default SimpleSearchBar;
 /*

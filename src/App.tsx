@@ -2,7 +2,6 @@ import SimpleSearchBar from "./components/search bar/SimpleSearchBar";
 import DataTableDisplayContainer from "./components/dataTableDisplay/DataTableDisplayContainer";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 import { SearchParamProps } from "./types/SearchParamProps";
 import AdvancedSearchBar from "./components/search bar/AdvancedSearchBar";
 
@@ -61,29 +60,31 @@ function App() {
   };
 
   return (
-    <div className="container-fluid bg-info">
+    <>
       <SimpleSearchBar
         advancedSearchButtonOnClick={advancedSearchButtonOnClick}
         isAdvancedSearchMode={isAdvancedSearchMode}
         handleFormChange={handleFormChange}
       />
-      <div className="row" style={{ paddingTop: "180px" }}>
-        <div
-          className={
-            isAdvancedSearchMode ? "col-12 col-md-4 col-lg-3" : "d-none"
-          }
-        >
-          <AdvancedSearchBar handleFormChange={handleFormChange} />
-        </div>
-        <div
-          className={
-            isAdvancedSearchMode ? "col-12 col-md-8 col-lg-9" : "col-12"
-          }
-        >
-          <DataTableDisplayContainer SearchParams={selectedSearchParams} />
+      <div className="container-fluid bg-info">
+        <div className="row" style={{ paddingTop: "100px" }}>
+          <div
+            className={
+              isAdvancedSearchMode ? "col-12 col-md-4 col-lg-3" : "d-none"
+            }
+          >
+            <AdvancedSearchBar handleFormChange={handleFormChange} />
+          </div>
+          <div
+            className={
+              isAdvancedSearchMode ? "col-12 col-md-8 col-lg-9" : "col-12"
+            }
+          >
+            <DataTableDisplayContainer SearchParams={selectedSearchParams} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
