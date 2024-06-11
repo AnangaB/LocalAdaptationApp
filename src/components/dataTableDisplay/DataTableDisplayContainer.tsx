@@ -127,13 +127,14 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
     let isFullyMatching: boolean = true;
     if (!individualPageDisplayMode["display"]) {
       for (const key of Object.keys(SearchParams)) {
-        const searchValue = SearchParams[key as keyof SearchParamProps];
-        const rowValue = row[key]?.toString().toLowerCase() || "";
+        const searchValue: RegExp =
+          SearchParams[key as keyof SearchParamProps] || /.*/gi;
+        const rowValue = row[key]?.toString().trim().toLowerCase() || "";
+        const matches = rowValue.match(searchValue);
+        const isMatch = matches !== null;
 
-        let isMatch = searchValue.test(rowValue);
         if (isMatch) {
           similarScore += 1;
-          //"Index","Paper Name","Authors","Year","Journal","Title","Abstract","Open Access", "Reviewer 1","Reviewer 2"
         } else {
           isFullyMatching = false;
         }

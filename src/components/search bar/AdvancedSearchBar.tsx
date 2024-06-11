@@ -171,12 +171,12 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
     ) {
       newRegex = /.*/;
     }
-    console.log(
+    /*console.log(
       "handleCheckboxOnClick invoked with key: ",
       key,
       " and newregex: ",
       newRegex
-    );
+    );*/
 
     handleFormChange(key as keyof SearchParamProps, newRegex);
   };
@@ -185,7 +185,7 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
   const resetCheckBoxSelections: (checkBoxGroupName: string) => void = (
     checkBoxGroupName
   ) => {
-    console.log("reset called on key: ", checkBoxGroupName);
+    //console.log("reset called on key: ", checkBoxGroupName);
 
     const currentSelections = checkboxSelections[checkBoxGroupName];
 
@@ -196,7 +196,7 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
       },
       {} as Record<string, boolean>
     );
-    console.log("print newSelections: ", newSelections);
+    //console.log("print newSelections: ", newSelections);
 
     setCheckboxSelections((prevSelections) => ({
       ...prevSelections,

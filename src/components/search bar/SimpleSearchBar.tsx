@@ -30,7 +30,7 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
                     /[-[\]{}()*+?.,\\^$|]/g, // Escape regex special characters
                     "\\$&"
                   ),
-                  "ig"
+                  "gi"
                 )
               )
             }
