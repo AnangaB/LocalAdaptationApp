@@ -4,7 +4,6 @@ import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { SearchParamProps } from "./types/SearchParamProps";
 import AdvancedSearchBar from "./components/search bar/AdvancedSearchBar";
-
 function App() {
   //stores regex for each search bar menu
   const [selectedSearchParams, setSelectedSearchParams] =
@@ -67,6 +66,7 @@ function App() {
         isAdvancedSearchMode={isAdvancedSearchMode}
         handleFormChange={handleFormChange}
       />
+
       <div className="container-fluid bg-info">
         <div className="row" style={{ paddingTop: "100px" }}>
           <div
@@ -76,6 +76,7 @@ function App() {
           >
             <AdvancedSearchBar handleFormChange={handleFormChange} />
           </div>
+
           <div
             className={
               isAdvancedSearchMode ? "col-12 col-md-8 col-lg-9" : "col-12"
