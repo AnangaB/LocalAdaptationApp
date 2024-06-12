@@ -21,10 +21,11 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
 
   const searchTitles: Record<keyof SearchParamProps, SearchType> = {
     Index: SearchType.DisplayNone,
-    "Paper Name": SearchType.DisplayNone,
+    "Citation Key": SearchType.DisplayNone,
     Authors: SearchType.TextSearch,
     Year: SearchType.TextSearch,
     Journal: SearchType.TextSearch,
+    "Journal ISO Abbreviation": SearchType.TextSearch,
     Title: SearchType.TextSearch,
     Abstract: SearchType.TextSearch,
     "Open Access": SearchType.DisplayNone,
@@ -224,7 +225,8 @@ const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({
                       event.target.value.replace(
                         /[-[\]{}()*+?.,\\^$|]/g, // Escape regex special characters
                         "\\$&"
-                      )
+                      ),
+                      "gi"
                     )
                   )
                 }

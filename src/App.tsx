@@ -10,10 +10,11 @@ function App() {
   const [selectedSearchParams, setSelectedSearchParams] =
     useState<SearchParamProps>({
       Index: /.*/,
-      "Paper Name": /.*/,
+      "Citation Key": /.*/,
       Authors: /.*/,
       Year: /.*/,
       Journal: /.*/,
+      "Journal ISO Abbreviation": /.*/,
       Title: /.*/,
       Abstract: /.*/,
       "Open Access": /.*/,

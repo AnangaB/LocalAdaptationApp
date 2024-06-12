@@ -145,29 +145,29 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
         {dataDisplayList.length > 0 ? dataDisplayList.length : 0} entries found
       </p>
       <div className="row">
-        <div className="h5 col-4">
-          <p>Paper Name</p>
+        <div className="h5 col-3">
+          <p>Citation Key</p>
         </div>
-        <div className="h5 col-4">
+        <div className="h5 col-6">
           <p>Paper Title</p>
         </div>
-        <div className="h5 col-4">
-          <p>Scope</p>
+        <div className="h5 col-3">
+          <p>Authors</p>
         </div>
       </div>
       {dataDisplayList &&
         dataDisplayList.map((row: Record<string, string>) => (
-          <div className="row" key={row["Paper Name"] + " " + row["Index"]}>
-            <div className="col-4">
-              <p>{row["Paper Name"]}</p>
+          <div className="row" key={row["Citation Key"] + " " + row["Index"]}>
+            <div className="col-3">
+              <p>{row["Citation Key"]}</p>
             </div>
-            <div className="col-4">
+            <div className="col-6">
               <p className="btn btn-link" onClick={() => pageTitleOnclick(row)}>
                 {row["Title"]}
               </p>
             </div>
-            <div className="col-4">
-              <p>{row["Scope"]}</p>
+            <div className="col-3">
+              <p>{row["Authors"]}</p>
             </div>
           </div>
         ))}

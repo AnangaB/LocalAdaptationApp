@@ -1,7 +1,8 @@
 export interface SearchParamProps {
     "Index": RegExp;
-    "Paper Name": RegExp;
+    "Citation Key": RegExp;
     Authors: RegExp;
+    "Journal ISO Abbreviation":RegExp;
     Year: RegExp;
     Journal: RegExp;
     Title: RegExp;

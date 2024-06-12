@@ -24,10 +24,10 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
             type="text"
             onChange={(event) =>
               handleFormChange(
-                "Paper Name" as keyof SearchParamProps,
+                "Citation Key" as keyof SearchParamProps,
                 new RegExp(
                   event.target.value.replace(
-                    /[-[\]{}()*+?.,\\^$|]/g, // Escape regex special characters
+                    /[-[\]{}()*+?.,\\^$|]/gi, // Escape regex special characters
                     "\\$&"
                   ),
                   "gi"
