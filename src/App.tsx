@@ -33,6 +33,9 @@ function App() {
       "Ecological Model": /.*/,
       "Recurrent Mutation": /.*/,
       IBS: /.*/,
+      DOI: /.*/,
+      ISSN: /.*/,
+      url: /.*/,
     });
 
   //state for when to show all advanced search menu

@@ -61,6 +61,9 @@ const IndividualPage: React.FC<IndividualPageProps> = ({
                 "Ecological Model",
                 "Recurrent Mutation",
                 "IBS",
+                "DOI",
+                "ISSN",
+                "url",
               ].map((item) => (
                 <div className="row" key={`${item}-individual-page`}>
                   <p>

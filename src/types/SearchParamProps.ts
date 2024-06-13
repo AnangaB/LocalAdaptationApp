@@ -24,6 +24,9 @@ export interface SearchParamProps {
     "Ecological Model": RegExp;
     "Recurrent Mutation": RegExp;
     IBS: RegExp;
+    "DOI":RegExp;
+    "ISSN":RegExp;
+    "url":RegExp;
 }
 
 /*export interface SearchParamProps{
