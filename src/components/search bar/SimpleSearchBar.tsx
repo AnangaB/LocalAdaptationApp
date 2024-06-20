@@ -4,6 +4,7 @@ import { SearchParamProps } from "../../types/SearchParamProps";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Popover } from "bootstrap";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 interface SearchBarProps {
   advancedSearchButtonOnClick: (isAdvancedMode: boolean) => void;
@@ -27,10 +28,24 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
   }, []);
 
   return (
-    <nav className="navbar navbar-dark bg-dark fixed-top">
-      <div className="container-fluid">
-        <span className="navbar-brand h1">Local Adaptation Search</span>
-        <div className="d-flex">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div className="navbar-nav">
+        <span className="navbar-brand px-1">
+          <Link
+            to="/LocalAdaptationApp"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            Local Adaptation Search
+          </Link>
+        </span>
+        <Link
+          to={`/graphs`}
+          className="text-light nav-item nav-link"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          Graphs
+        </Link>
+        <form className="form-inline d-flex">
           <input
             className="form-control"
             id={`paperNameInput`}
@@ -49,7 +64,6 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
             }
             placeholder="Enter Citation Key"
           ></input>
-
           <button
             type="button"
             className="btn btn-primary p-0 border-0 bg-transparent p-1"
@@ -63,11 +77,10 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
           >
             <i className="bi bi-info-circle-fill"></i>
           </button>
-        </div>
-
+        </form>
         <button
           type="button"
-          className="btn btn-danger"
+          className="btn btn-sm btn-danger"
           onClick={() => advancedSearchButtonOnClick(isAdvancedSearchMode)}
         >
           {isAdvancedSearchMode ? "Hide Advanced" : "Advanced"}

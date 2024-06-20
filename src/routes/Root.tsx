@@ -1,10 +1,11 @@
-import SimpleSearchBar from "./components/search bar/SimpleSearchBar";
-import DataTableDisplayContainer from "./components/dataTableDisplay/DataTableDisplayContainer";
+import SimpleSearchBar from "./../components/search bar/SimpleSearchBar";
+import DataTableDisplayContainer from "./../components/dataTableDisplay/DataTableDisplayContainer";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { SearchParamProps } from "./types/SearchParamProps";
-import AdvancedSearchBar from "./components/search bar/AdvancedSearchBar";
-function App() {
+import { SearchParamProps } from "./../types/SearchParamProps";
+import AdvancedSearchBar from "./../components/search bar/AdvancedSearchBar";
+
+function Root() {
   //stores regex for each search bar menu
   const [selectedSearchParams, setSelectedSearchParams] =
     useState<SearchParamProps>({
@@ -93,4 +94,4 @@ function App() {
   );
 }
 
-export default App;
+export default Root;
