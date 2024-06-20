@@ -4,6 +4,8 @@ import DataTableDisplay from "./DataTableDisplay";
 import ExcelJS from "exceljs";
 import IndividualPage from "./IndividualPage";
 import WeakMatchesDisplay from "./WeakMatchesDisplay";
+import { filterAllRows } from "../../logic/FilerDataSet";
+
 interface DataTableDisplayContainerProps {
   SearchParams: SearchParamProps;
 }
@@ -58,10 +60,6 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
   const [fullyMatchingRowsList, setFullyMatchingRowsList] = useState<
     Record<string, string>[]
   >([]);
-  //store headers for data table
-  //const [dataTableHeaders, setDataTableHeaders] = useState<{ field: string }[]>(
-  //[]
-  //);
 
   useEffect(() => {
     if (originalDataTableWorksheet) {
@@ -99,49 +97,13 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
 
   //update fullyMatchingRowsList with the search param values
   useEffect(() => {
-    if (allRowsList != null && allRowsList.length > 0) {
-      let similarScoresRecord: Record<number, number> = {};
-      let rows: Record<string, any>[] = [];
-      for (let i = 0; i < allRowsList.length; i++) {
-        let { isMatch, similarScore } = checkIfRowIsValid(allRowsList[i]);
-
-        similarScoresRecord[i] = similarScore;
-
-        if (isMatch) {
-          rows.push(allRowsList[i]);
-        }
-      }
-
-      setRowSimilarityScore(similarScoresRecord);
-      setFullyMatchingRowsList(rows);
-    }
+    filterAllRows(
+      allRowsList,
+      SearchParams,
+      setRowSimilarityScore,
+      setFullyMatchingRowsList
+    );
   }, [SearchParams]);
-
-  //check if a row satisfies the input of SearchParams fully, and also returns a score of how many true matches it contained
-  const checkIfRowIsValid: (row: Record<string, any>) => {
-    isMatch: boolean;
-    similarScore: number;
-  } = (row: Record<string, any>) => {
-    let similarScore = 0;
-
-    let isFullyMatching: boolean = true;
-    if (!individualPageDisplayMode["display"]) {
-      for (const key of Object.keys(SearchParams)) {
-        const searchValue: RegExp =
-          SearchParams[key as keyof SearchParamProps] || /.*/gi;
-        const rowValue = row[key]?.toString().trim().toLowerCase() || "";
-        const matches = rowValue.match(searchValue);
-        const isMatch = matches !== null;
-
-        if (isMatch) {
-          similarScore += 1;
-        } else {
-          isFullyMatching = false;
-        }
-      }
-    }
-    return { isMatch: isFullyMatching, similarScore: similarScore };
-  };
 
   //state to describe whether to display details about an individual paper and which paper (currentRow con)
   const [individualPageDisplayMode, setIndividualPageDisplayMode] =

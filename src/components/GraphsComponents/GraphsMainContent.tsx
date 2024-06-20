@@ -1,25 +1,10 @@
 import { useEffect, useState } from "react";
-import GraphSideBar from "./GraphSideBar";
 import ExcelJS from "exceljs";
-import PieChartDisplay from "./PieChartDisplay";
+import GraphTypeSelectionBar from "./GrpahTypeSelectionBar";
+import PieChartContainer from "./Pie Chart Components/PieChartContainer";
+import HistogramContainer from "./Histogram Components/HistogramContainer";
 
 const GraphsMainContent: React.FC<{}> = () => {
-  const keysList = [
-    "Eco-Evo Focus",
-    "Life history",
-    "Ecological Loci/Traits",
-    "Additional Loci/Traits",
-    "Mating system",
-    "Ploidy",
-    "Selection",
-    "Spatial Structure",
-    "Population Size",
-    "Ecological Model",
-    "Recurrent Mutation",
-    "IBS",
-  ];
-  type KeysListType = (typeof keysList)[number];
-
   //const [allRows, setAllRows] = useState<Record<string, any>[]>([]);
 
   //state to store worksheet containing the entire local adaptation data set
@@ -89,31 +74,27 @@ const GraphsMainContent: React.FC<{}> = () => {
     }
   }, [originalDataTableWorksheet]);
 
-  const [currentPieChart, setCurrentPieChart] =
-    useState<KeysListType>("Eco-Evo Focus");
+  enum PieChartDisplayType {
+    PieChart,
+    Histogram,
+  }
+  const [currentChartType, setCurrentChartType] = useState<PieChartDisplayType>(
+    PieChartDisplayType.Histogram
+  );
 
-  const sideBarButtonOnClick = (name: string) => {
-    setCurrentPieChart(name);
-  };
   return (
     <div className="container-fluid" style={{ paddingTop: "100px" }}>
-      <div className="row">
-        <div className="col-6 col-md-4 col-lg-2">
-          <GraphSideBar
-            keys={keysList}
-            sideBarButtonOnClick={sideBarButtonOnClick}
-            activeButtonName={currentPieChart}
-          />
-        </div>
-
-        <div className="col-6 col-md-8 col-lg-10">
-          <p className="h3">{currentPieChart}</p>
-          <PieChartDisplay
-            displayingName={currentPieChart}
-            allRows={allRowsList}
-          />
-        </div>
-      </div>
+      <p className="h5">Click the type of plot:</p>
+      <GraphTypeSelectionBar
+        buttonOnClick={(type: PieChartDisplayType) => setCurrentChartType(type)}
+        currentGraphType={currentChartType}
+      />
+      {currentChartType == PieChartDisplayType.PieChart && (
+        <PieChartContainer allRowsList={allRowsList} />
+      )}
+      {currentChartType == PieChartDisplayType.Histogram && (
+        <HistogramContainer allRowsList={allRowsList} />
+      )}
     </div>
   );
 };

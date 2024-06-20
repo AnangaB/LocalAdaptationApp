@@ -7,10 +7,11 @@ type PieChartDisplayProps = {
   displayingName: string;
 };
 
-const PieChartDisplay: React.FC<PieChartDisplayProps> = ({
+const PieChart: React.FC<PieChartDisplayProps> = ({
   allRows,
   displayingName,
 }) => {
+
   // Extract unique labels from the allRows data based on displayingName
   const labels = Array.from(new Set(allRows.map((row) => row[displayingName])));
 
@@ -43,7 +44,6 @@ const PieChartDisplay: React.FC<PieChartDisplayProps> = ({
     "#ffffff",
     "#000000",
   ];
-
   return (
     <div>
       <Pie
@@ -66,4 +66,4 @@ const PieChartDisplay: React.FC<PieChartDisplayProps> = ({
   );
 };
 
-export default PieChartDisplay;
+export default PieChart;

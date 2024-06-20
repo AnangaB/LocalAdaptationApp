@@ -1,12 +1,12 @@
 import * as React from "react";
 
-type GraphSideBarProps = {
+type PieChartSideBarProps = {
   keys: string[];
   sideBarButtonOnClick: (text: string) => void;
   activeButtonName: string;
 };
 
-const GraphSideBar: React.FC<GraphSideBarProps> = ({
+const PieChartSideBar: React.FC<PieChartSideBarProps> = ({
   keys,
   sideBarButtonOnClick,
   activeButtonName,
@@ -31,4 +31,4 @@ const GraphSideBar: React.FC<GraphSideBarProps> = ({
   );
 };
 
-export default GraphSideBar;
+export default PieChartSideBar;
