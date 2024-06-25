@@ -9,7 +9,7 @@ const GraphNavbar: React.FC<{}> = () => {
           to="/LocalAdaptationApp"
           style={{ textDecoration: "none", color: "inherit" }}
         >
-          Local Adaptation Search
+          Local Adaptation Model Search
         </Link>
         <Link
           className="nav-item nav-link text-light"

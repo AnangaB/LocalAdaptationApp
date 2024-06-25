@@ -18,13 +18,11 @@ const Histogram: React.FC<HistogramProps> = ({ allRows }) => {
 
   useEffect(() => {
     const allRowsCopy = [...allRows];
-    console.log(allRowsCopy);
     const newYearData = allRowsCopy.reduce((acc, row) => {
       const year = row["Year"];
       if (year) {
         acc[year] = (acc[year] || 0) + 1;
       }
-      console.log;
       return acc;
     }, {} as Record<string, number>);
     setYearData(newYearData);

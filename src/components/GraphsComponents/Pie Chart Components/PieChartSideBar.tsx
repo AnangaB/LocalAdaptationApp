@@ -13,7 +13,6 @@ const PieChartSideBar: React.FC<PieChartSideBarProps> = ({
 }) => {
   return (
     <nav className="nav flex-column">
-      <p className="h5">Select to generate the corresponding pie chart:</p>
       {keys.map((key) => (
         <button
           key={key}

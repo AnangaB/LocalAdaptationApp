@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ExcelJS from "exceljs";
-import GraphTypeSelectionBar from "./GrpahTypeSelectionBar";
+import GraphTypeSelectionBar from "./GraphTypeSelectionBar";
 import PieChartContainer from "./Pie Chart Components/PieChartContainer";
 import HistogramContainer from "./Histogram Components/HistogramContainer";
 
@@ -84,7 +84,6 @@ const GraphsMainContent: React.FC<{}> = () => {
 
   return (
     <div className="container-fluid" style={{ paddingTop: "100px" }}>
-      <p className="h5">Click the type of plot:</p>
       <GraphTypeSelectionBar
         buttonOnClick={(type: PieChartDisplayType) => setCurrentChartType(type)}
         currentGraphType={currentChartType}

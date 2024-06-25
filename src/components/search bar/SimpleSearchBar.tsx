@@ -35,7 +35,7 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
             to="/LocalAdaptationApp"
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            Local Adaptation Search
+            Local Adaptation Model Search
           </Link>
         </span>
         <Link

@@ -51,7 +51,6 @@ const HistogramContainer: React.FC<HistogramContainerProps> = ({
       ...selectedSearchParams,
       [index]: value,
     };
-    console.log(newData);
     setSelectedSearchParams(newData);
   };
 
@@ -65,6 +64,10 @@ const HistogramContainer: React.FC<HistogramContainerProps> = ({
     Record<string, string>[]
   >([]);
 
+  useEffect(() => {
+    const allRowsCopy = [...allRowsList];
+    setFullyMatchingRowsList(allRowsCopy);
+  }, [allRowsList]);
   //update fullyMatchingRowsList with the search param values
 
   useEffect(() => {

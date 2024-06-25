@@ -2,10 +2,20 @@ import { SearchParamProps } from "../types/SearchParamProps";
 
 //for a given row and given regex constraints selectedSearchParams, outputs a similairy score and whether the row fully matches the constraints in selectedSearchParams
 
+
+
 const getRowValidityAndScore = (
     row: Record<string, any>,
     selectedSearchParams: SearchParamProps
   ) => {
+    const weakSearchKeys = ["Scope", "Eco-Evo Focus","Life history",
+      "Ecological Loci/Traits",
+      "Mating system",
+      "Ploidy",
+      "Selection",
+      "Spatial Structure",
+      "Population Size","Ecological Model",
+      "Recurrent Mutation"]
     if (row) {
       let similarScore = 0;
       let isFullyMatching: boolean = true;
@@ -18,7 +28,9 @@ const getRowValidityAndScore = (
         const isMatch = matches !== null;
   
         if (isMatch) {
-          similarScore += 1;
+          if(weakSearchKeys.includes(key)){
+            similarScore += 1;
+          }
         } else {
           isFullyMatching = false;
         }
