@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./routes/Root";
 import Graphs from "./routes/Graphs";
+import NotFound from "./routes/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -10,8 +11,12 @@ const router = createBrowserRouter([
     element: <Root />,
   },
   {
-    path: "/graphs",
+    path: "/LocalAdaptationApp/graphs",
     element: <Graphs />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 

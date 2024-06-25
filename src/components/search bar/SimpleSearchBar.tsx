@@ -39,7 +39,7 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
           </Link>
         </span>
         <Link
-          to={`/graphs`}
+          to={`/LocalAdaptationApp/graphs`}
           className="text-light nav-item nav-link"
           style={{ textDecoration: "none", color: "inherit" }}
         >

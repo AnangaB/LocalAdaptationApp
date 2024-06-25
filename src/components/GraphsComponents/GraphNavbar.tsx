@@ -13,7 +13,7 @@ const GraphNavbar: React.FC<{}> = () => {
         </Link>
         <Link
           className="nav-item nav-link text-light"
-          to={`/graphs`}
+          to={`/LocalAdaptationApp/graphs`}
           style={{ textDecoration: "none", color: "inherit" }}
         >
           Graphs
