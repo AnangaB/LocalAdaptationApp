@@ -8,7 +8,7 @@ const getRowValidityAndScore = (
     row: Record<string, any>,
     selectedSearchParams: SearchParamProps
   ) => {
-    const weakSearchKeys = ["Scope", "Eco-Evo Focus","Life history",
+    const weakSearchKeys = ["Eco-Evo Focus","Life history",
       "Ecological Loci/Traits",
       "Mating system",
       "Ploidy",
