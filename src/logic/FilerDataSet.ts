@@ -42,7 +42,7 @@ const getRowValidityAndScore = (
   
 
   export const filterAllRows = (allRowsList:Record<string,string>[], SearchParams: SearchParamProps,
-    setRowSimilarityScore: (scores: Record<number, number>) => void, setFullyMatchingRowsList: (rows: Record<string, any>[]) => void
+    setRowSimilarityScore: null | ((scores: Record<number, number>) => void), setFullyMatchingRowsList: null | ((rows: Record<string, any>[]) => void)
 
   ) => {
 
@@ -61,9 +61,12 @@ const getRowValidityAndScore = (
             rows.push(allRowsList[i]);
           }
         }
-  
-        setRowSimilarityScore(similarScoresRecord);
-        setFullyMatchingRowsList(rows);
+        if(setRowSimilarityScore){
+          setRowSimilarityScore(similarScoresRecord);
+        }
+        if(setFullyMatchingRowsList){
+          setFullyMatchingRowsList(rows);
+        }
       }
 
   }

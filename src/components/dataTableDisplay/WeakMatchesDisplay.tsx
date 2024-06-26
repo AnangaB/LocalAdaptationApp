@@ -59,7 +59,6 @@ const WeakMatchesDisplay: React.FC<WeakMatchesDisplayProps> = ({
     <div>
       {shouldDisplayWeakMatches && (
         <div className="py-5">
-          <p className="h3 text-center">Weak Matches</p>
           {weakMatchesDisplayList.map((list, index) => (
             <div key={`weakMatch${index}`}>
               <p className="h4">Off by {index + 1} search parameter:</p>
@@ -76,15 +75,3 @@ const WeakMatchesDisplay: React.FC<WeakMatchesDisplayProps> = ({
   );
 };
 export default WeakMatchesDisplay;
-/**
- *  {weakMatchesDisplayList.map((list) => (
-            <div>
-              <p className="h1">Weak Match</p>
-
-              <DataTableDisplay
-                dataDisplayList={list}
-                pageTitleOnclick={pageTitleOnclick}
-              />
-            </div>
-          ))}
- */
