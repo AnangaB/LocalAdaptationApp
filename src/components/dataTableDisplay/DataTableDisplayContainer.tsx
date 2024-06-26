@@ -140,7 +140,11 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div className="m-0 pt-5 container-fluid bg-light" ref={containerRef}>
+    <div
+      className="m-0 container-fluid bg-light"
+      ref={containerRef}
+      style={{ scrollMarginTop: "200px" }}
+    >
       {individualPageDisplayMode["display"] == true ? (
         <>
           <IndividualPage

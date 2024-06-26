@@ -4,7 +4,7 @@ import { SearchParamProps } from "../../types/SearchParamProps";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Popover } from "bootstrap";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface SearchBarProps {
   advancedSearchButtonOnClick: (isAdvancedMode: boolean) => void;
@@ -26,13 +26,18 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
       new Popover(popoverTriggerEl);
     });
   }, []);
+  const navigate = useNavigate();
 
+  const refreshPage = () => {
+    navigate(0);
+  };
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div className="navbar-nav">
         <span className="navbar-brand px-1">
           <Link
             to="/LocalAdaptationApp"
+            onClick={refreshPage}
             style={{ textDecoration: "none", color: "inherit" }}
           >
             Local Adaptation Model Search
