@@ -3,6 +3,7 @@ import ExcelJS from "exceljs";
 import GraphTypeSelectionBar from "./GraphTypeSelectionBar";
 import PieChartContainer from "./Pie Chart Components/PieChartContainer";
 import HistogramContainer from "./Histogram Components/HistogramContainer";
+import TreeContainer from "./Tree Components/TreeContainer";
 
 const GraphsMainContent: React.FC<{}> = () => {
   //const [allRows, setAllRows] = useState<Record<string, any>[]>([]);
@@ -77,7 +78,9 @@ const GraphsMainContent: React.FC<{}> = () => {
   enum PieChartDisplayType {
     PieChart,
     Histogram,
+    Tree,
   }
+
   const [currentChartType, setCurrentChartType] = useState<PieChartDisplayType>(
     PieChartDisplayType.Histogram
   );
@@ -93,6 +96,9 @@ const GraphsMainContent: React.FC<{}> = () => {
       )}
       {currentChartType == PieChartDisplayType.Histogram && (
         <HistogramContainer allRowsList={allRowsList} />
+      )}
+      {currentChartType == PieChartDisplayType.Tree && (
+        <TreeContainer allRowsList={allRowsList} />
       )}
     </div>
   );

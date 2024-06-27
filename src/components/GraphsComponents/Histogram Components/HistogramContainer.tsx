@@ -58,7 +58,7 @@ const HistogramContainer: React.FC<HistogramContainerProps> = ({
   const [rowSimilarityScores, setRowSimilarityScore] = useState<
     Record<number, number>
   >({});
-  console.log(rowSimilarityScores);
+
   // stores only the row element from allRowsList that is to be displayed
   const [fullyMatchingRowsList, setFullyMatchingRowsList] = useState<
     Record<string, string>[]

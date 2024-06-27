@@ -1,6 +1,7 @@
 enum PieChartDisplayType {
   PieChart,
   Histogram,
+  Tree,
 }
 
 type GraphTypeSelectionBarProps = {
@@ -37,6 +38,18 @@ const GraphTypeSelectionBar: React.FC<GraphTypeSelectionBarProps> = ({
           onClick={() => buttonOnClick(PieChartDisplayType.Histogram)}
         >
           Histogram
+        </button>
+      </li>
+      <li className="nav-item">
+        <button
+          className={
+            currentGraphType == PieChartDisplayType.Tree
+              ? "nav-link active"
+              : "nav-link"
+          }
+          onClick={() => buttonOnClick(PieChartDisplayType.Tree)}
+        >
+          Tree
         </button>
       </li>
     </ul>
