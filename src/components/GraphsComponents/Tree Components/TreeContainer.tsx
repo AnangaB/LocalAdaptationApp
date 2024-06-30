@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { makeTree } from "../../../logic/ConstructRelationTree";
 import { filterAllRows } from "../../../logic/FilerDataSet";
 import { covertRowItemsToRegex } from "../../../logic/ConvertRowItemsToRegex";
-import Tree, { RawNodeDatum } from "react-d3-tree";
-import RadialTree from "./RadialTree";
+import { RawNodeDatum } from "react-d3-tree";
+import TreeDisplay from "./TreeDisplay";
 
 type TreeContainerProps = {
   allRowsList: Record<string, any>[];
@@ -11,8 +11,6 @@ type TreeContainerProps = {
 const TreeContainer: React.FC<TreeContainerProps> = ({
   allRowsList,
 }: TreeContainerProps) => {
-
-  
   const row = allRowsList[0];
 
   //state that will contain how similar
@@ -36,8 +34,8 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
   }, [individualPageSimilarityScores]);
 
   return (
-    <div style={{ width: "1500px", height: "1500px" }}>
-      {treeData && <RadialTree data={treeData} />}
+    <div style={{ width: "100%", height: "100vh" }}>
+      {treeData != null && <TreeDisplay data={treeData} />}
     </div>
   );
 };

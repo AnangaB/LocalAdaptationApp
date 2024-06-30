@@ -23,18 +23,30 @@ class Node {
     parent: Node | null;
     similarValues:WeakKeysRecordType;
 
-    constructor(rowIndex:Number|null, WeakKeysRecord:WeakKeysRecordType, parent: Node | null = null) {
+    constructor(rowIndex: number | null, WeakKeysRecord: WeakKeysRecordType, parent: Node | null = null) {
         this.children = [];
-        if(rowIndex){
-            this.paperIds = new Set([rowIndex]);
-        }
-        else{          
-            this.paperIds = new Set();
-        }
+        this.paperIds = rowIndex !== null ? new Set([rowIndex]) : new Set();
         this.parent = parent;
         this.similarValues = WeakKeysRecord;
     }
 
+    isEmpty(): boolean {
+        return !this.paperIds || this.paperIds.size === 0;
+    }
+
+    isLeaf(): boolean {
+        return !this.children === null || this.children.length === 0;
+    }
+
+    deleteNode(): void {
+        if (this.parent) {
+            const removingIndex = this.parent.children.findIndex(child => child === this);
+            if (removingIndex !== -1) {
+                this.parent.children.splice(removingIndex, 1);
+                
+            }
+        }
+    }
     addChild(childNode: Node|null): void {
         if(childNode){
             childNode.parent = this;
@@ -60,11 +72,11 @@ const treeToString = (node: Node, level = 0) => {
     return result;
 };
 
-const getTreeGraphData = (node: Node): Record<string, any> => {
-    let result:RawNodeDatum = {name:`[${Array.from(node.paperIds).join(', ')}]`};
+const getTreeGraphData = (node: Node,): Record<string, any> => {
+    let result:RawNodeDatum = {name:`${Array.from(node.paperIds).map((index) => allRows[Number(index)]["Citation Key"]).join(', ')}`};
     
     result.attributes ={
-        "Similar Keys": `[${Object.keys(node.similarValues).join(', ')}]`,
+        "Papers": `[${Object.keys(node.similarValues).join(', ')}]`,
       };
     
     if (node.children.length > 0) {
@@ -75,10 +87,13 @@ const getTreeGraphData = (node: Node): Record<string, any> => {
 };
 
 
+let remainingRows:Record<string,string>[];
+let allRows:Record<string,string>[];
 export const makeTree = (row:Record<string,string>, allRowsList:Record<string,string>[], scores: Record<number, number>) => {
     if(scores && row && allRowsList && allRowsList.length > 0 && Object.keys(scores).length > 0){
+        allRows = allRowsList;
         let similarWeakKeys: WeakKeysRecordType = {};
-
+        remainingRows = allRowsList;
         // Map through keys in row and filter to only include keys from WeakKeysType
         Object.keys(row).forEach((key) => {
             if (weakKeysList.includes(key)) {
@@ -112,19 +127,20 @@ export const makeTree = (row:Record<string,string>, allRowsList:Record<string,st
                 });
                 //console.log("maxScore",maxScore)
                 //console.log("lengthh",Object.keys(similarWeakKeys).length)
-                let childnode = getChildNode(allRowsList,scores,childSimilarWeakKeys,maxScore-1)
+                let childnode = getChildNode(scores,childSimilarWeakKeys,maxScore-1)
                 root.addChild(childnode)
             }
         }
         //console.log("done computing the tree")
+        removeEmptyRoots(root)
         return getTreeGraphData(root) as RawNodeDatum;
     }
   return null;
 }
 
 
-const getChildNode= (allRowsList:Record<string,string>[], scores: Record<number, number>,similarWeakKeys:WeakKeysRecordType, scoreLevel:number) => {
-    if(scoreLevel <= 6 || !similarWeakKeys || Object.keys(similarWeakKeys).length <= 0 || !allRowsList){
+const getChildNode= (scores: Record<number, number>,similarWeakKeys:WeakKeysRecordType, scoreLevel:number) => {
+    if(scoreLevel <= 6 || !remainingRows || remainingRows.length < 1){
         return null;
     }
 
@@ -134,7 +150,7 @@ const getChildNode= (allRowsList:Record<string,string>[], scores: Record<number,
 
     //get all other similar papers
 
-    let sameScoreIndices = allRowsList
+    let sameScoreIndices = remainingRows
     .filter((row) => {
         const rowIndex = Number(row["Index"]);
         const score = Number(scores[rowIndex]);
@@ -165,7 +181,7 @@ const getChildNode= (allRowsList:Record<string,string>[], scores: Record<number,
 
     node.setPaperIds(sameScoreIndices);
 
-    allRowsList = allRowsList.filter((row) => !sameScoreIndices.includes(
+    remainingRows = remainingRows.filter((row) => !sameScoreIndices.includes(
         Number(row["Index"])
     ));
 
@@ -178,7 +194,7 @@ const getChildNode= (allRowsList:Record<string,string>[], scores: Record<number,
                     childSimilarWeakKeys[key] = similarWeakKeys[key];
                 }
             });
-            let childnode = getChildNode(allRowsList,scores,childSimilarWeakKeys,scoreLevel-1)
+            let childnode = getChildNode(scores,childSimilarWeakKeys,scoreLevel-1)
             node.addChild(childnode)
         }
     }
@@ -186,31 +202,40 @@ const getChildNode= (allRowsList:Record<string,string>[], scores: Record<number,
     return node;
 
 }
-/*
-const getValue = (row:Record<string,string>) => {
-    const nodeValue: Partial<NodeValue> = {};
 
-    const keys: WeakSearchKeys[] = [
-        "Eco-Evo Focus",
-        "Life history",
-        "Ecological Loci/Traits",
-        "Mating system",
-        "Ploidy",
-        "Selection",
-        "Spatial Structure",
-        "Population Size",
-        "Ecological Model",
-        "Recurrent Mutation"
-    ];
-
-    keys.forEach(key => {
-        if (key in row) {
-            nodeValue[key] = row[key];
-        }
-        else{
-            nodeValue[key] = "";
-        }
+const gatherNodesToDelete = (root: Node, nodesToDelete: Node[]) => {
+    root.children.forEach(child => {
+        gatherNodesToDelete(child, nodesToDelete);
     });
 
-    return nodeValue as NodeValue;
-}*/
+    if (root.isEmpty() && root.isLeaf()) {
+        nodesToDelete.push(root);
+    }
+};
+
+const removeEmptyRoots = (root: Node) => {
+    if (!root) {
+        return;
+    }
+
+    let nodesToDelete: Node[] = [];
+    let nodesDeleted: boolean;
+
+    do {
+        nodesDeleted = false;
+        nodesToDelete = [];
+        gatherNodesToDelete(root, nodesToDelete);
+
+        if (nodesToDelete.length > 0) {
+            nodesToDelete.forEach(node => {
+                node.deleteNode();
+            });
+            nodesDeleted = true;
+        }
+    } while (nodesDeleted);
+
+    // After deleting nodes, check root node
+    if (root.isEmpty() && root.isLeaf()) {
+        root.deleteNode();
+    }
+};
