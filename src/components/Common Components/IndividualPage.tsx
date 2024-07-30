@@ -1,11 +1,11 @@
 interface IndividualPageProps {
   row: Record<string, string>;
-  backButtonOnClick: () => void;
+  backButtonOnClick?: (() => void) | null;
 }
 
 const IndividualPage: React.FC<IndividualPageProps> = ({
   row,
-  backButtonOnClick,
+  backButtonOnClick = null,
 }) => {
   return (
     <div>
@@ -15,11 +15,13 @@ const IndividualPage: React.FC<IndividualPageProps> = ({
             <div className="col-sm-9 col-md-10 col-12">
               <div className="h4">{row["Title"]}</div>
             </div>
-            <div className="col-sm-3 col-md-2 col-12">
-              <p className="btn btn-primary" onClick={backButtonOnClick}>
-                Go Back
-              </p>
-            </div>
+            {backButtonOnClick != null && (
+              <div className="col-sm-3 col-md-2 col-12">
+                <p className="btn btn-primary" onClick={backButtonOnClick}>
+                  Go Back
+                </p>
+              </div>
+            )}
           </div>
 
           <div className="row">

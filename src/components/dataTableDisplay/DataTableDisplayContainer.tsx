@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { SearchParamProps } from "../../types/SearchParamProps";
 import DataTableDisplay from "./DataTableDisplay";
 import ExcelJS from "exceljs";
-import IndividualPage from "./IndividualPage";
+import IndividualPage from "../Common Components/IndividualPage";
 import WeakMatchesDisplay from "./WeakMatchesDisplay";
 import { filterAllRows } from "../../logic/FilerDataSet";
 import { covertRowItemsToRegex } from "../../logic/ConvertRowItemsToRegex";
@@ -71,6 +71,7 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
       originalDataTableWorksheet.eachRow((row, rowNumber) => {
         if (rowNumber == 1) {
           header = row.values as string[];
+          header = header.map((h) => h.trim());
           //fix how there is no title for first column
           //header.shift();
           header[0] = "Index";

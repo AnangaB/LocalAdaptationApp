@@ -31,16 +31,18 @@ export const covertRowItemsToRegex = (row:Record<string,string>) => {
         ISSN: /.*/,
         url: /.*/,
       };
-    
-      console.log("keys of ouput: ", Object.keys(output))
-      console.log("keys of row: ", Object.keys(row))
 
     if (row) {
         Object.keys(row).forEach((k) => {
             if (k in output) {
-                let value = row[k];
+                let value = String(row[k])
+                .replace("))", ")")
+                .replace("(", "\(")
+                .replace(")", "\)");
+                console.log(value)
                 if (String(value) && String(value).length > 0) {
                     output[k as keyof SearchParamProps] = new RegExp(value, "ig");
+                    console.log(new RegExp(value, "ig"), value,String(row[k]))
                 }
             }
         

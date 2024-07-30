@@ -10,16 +10,19 @@ const getRowValidityAndScore = (
     row: Record<string, any>,
     selectedSearchParams: SearchParamProps
   ) => {
-    const weakSearchKeys = ["Eco-Evo Focus",
-      "Life history",
-      "Ecological Loci/Traits",
-      "Mating system",
-      "Ploidy",
-      "Selection",
-      "Spatial Structure",
-      "Population Size",
-      "Ecological Model",
-      "Recurrent Mutation"]
+
+      const weakSearchKeys = [
+        "Eco-Evo Focus",
+        "Life history",
+        "Ecological Loci/Traits",
+        "Mating system",
+        "Ploidy",
+        "Selection",
+        "Spatial Structure",
+        "Population Size",
+        "Ecological Model",
+        "Recurrent Mutation"
+      ];
     if (row) {
       let similarScore = 0;
       let isFullyMatching: boolean = true;
@@ -27,10 +30,14 @@ const getRowValidityAndScore = (
       for (const key of Object.keys(selectedSearchParams)) {
         const searchValue: RegExp =
           selectedSearchParams[key as keyof SearchParamProps] || /.*/gi;
-        const rowValue = row[key]?.toString().trim().toLowerCase() || "";
+        if(!selectedSearchParams[key as keyof SearchParamProps] ){
+          console.log("invalid regex: ", selectedSearchParams[key as keyof SearchParamProps])
+        }
+        const rowValue = row[key]?.toString().trim() || "";
         const matches = rowValue.match(searchValue);
         const isMatch = matches !== null;
-  
+
+        
         if (isMatch) {
           if(weakSearchKeys.includes(key)){
             similarScore += 1;

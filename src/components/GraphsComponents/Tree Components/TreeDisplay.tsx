@@ -45,12 +45,11 @@ const TreeDisplay: React.FC<TreeDisplayProps> = ({ data }) => {
     );
   };
   return (
-    <div className="container-fluid h-100">
+    <div className="container-fluid h-100 border border-dark">
       <Tree
         data={data}
-        pathFunc={"elbow"}
         renderCustomNodeElement={renderRectSvgNode}
-        nodeSize={{ x: 300, y: 200 }}
+        nodeSize={{ x: 260, y: 50 }}
       />
     </div>
   );

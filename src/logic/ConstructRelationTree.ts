@@ -29,7 +29,7 @@ class Node {
         this.parent = parent;
         this.similarValues = WeakKeysRecord;
     }
-
+    
     isEmpty(): boolean {
         return !this.paperIds || this.paperIds.size === 0;
     }
@@ -37,7 +37,13 @@ class Node {
     isLeaf(): boolean {
         return !this.children === null || this.children.length === 0;
     }
-
+    getDifferingValueFromParent() {
+        if (this.parent && this.similarValues && this.parent.similarValues) {
+            let differingVal = Object.keys(this.parent.similarValues).filter((val: any) => !Object.keys(this.similarValues).includes(val))[0];
+            return differingVal;
+        }
+        return null;
+    }
     deleteNode(): void {
         if (this.parent) {
             const removingIndex = this.parent.children.findIndex(child => child === this);
@@ -73,7 +79,11 @@ const treeToString = (node: Node, level = 0) => {
 };
 
 const getTreeGraphData = (node: Node,): Record<string, any> => {
-    let result:RawNodeDatum = {name:`${Array.from(node.paperIds).map((index) => allRows[Number(index)]["Citation Key"]).join(', ')}`};
+    let differingPart = "";
+    if(node.getDifferingValueFromParent() != null){
+        differingPart = "Differing: " + node.getDifferingValueFromParent() + ", ";
+    }
+    let result:RawNodeDatum = {name:`${differingPart}${Array.from(node.paperIds).map((index) => allRows[Number(index)]["Citation Key"]).join(', ')}`};
     
     result.attributes ={
         "Papers": `[${Object.keys(node.similarValues).join(', ')}]`,
@@ -89,9 +99,25 @@ const getTreeGraphData = (node: Node,): Record<string, any> => {
 
 let remainingRows:Record<string,string>[];
 let allRows:Record<string,string>[];
-export const makeTree = (row:Record<string,string>, allRowsList:Record<string,string>[], scores: Record<number, number>) => {
-    if(scores && row && allRowsList && allRowsList.length > 0 && Object.keys(scores).length > 0){
+let maxScore:number = 0;
+let minScore:number = 0;
+let scores: Record<number, number>;
+/**
+ * Function to construct a tree showing the row and its connection to other rows
+ * @param row 
+ * @param allRowsList 
+ * @param scoresRecord 
+ * @returns 
+ */
+export const makeTree = (row:Record<string,string>, allRowsList:Record<string,string>[], scoresRecord: Record<number, number>) => {
+    if(scoresRecord && row && allRowsList && allRowsList.length > 0 && Object.keys(scoresRecord).length > 0){
+        //set the global vars, used in getChildNode function below
         allRows = allRowsList;
+        scores = scoresRecord;
+
+        console.log("makeTree params : ",row,allRowsList,scoresRecord)
+
+        //will store teh 
         let similarWeakKeys: WeakKeysRecordType = {};
         remainingRows = allRowsList;
         // Map through keys in row and filter to only include keys from WeakKeysType
@@ -100,13 +126,17 @@ export const makeTree = (row:Record<string,string>, allRowsList:Record<string,st
                 similarWeakKeys[key] = row[key];
             }
         });
+        console.log("makeTree: similarWeakKeys: ",similarWeakKeys)
 
         let root = new Node(Number(row["Index"]), similarWeakKeys);
     
         //get all other similar papers
-        let maxScore = Math.max(...Object.values(scores));
+        maxScore = Math.max(...Object.values(scores));
+        minScore = Math.max(1,maxScore-3)
+        console.log("makeTree: maxScore: ",maxScore," minScore: ",minScore)
+
         let sameScoreIndices: number[] = Object.keys(scores)
-        .filter((k) => scores[Number(k)] === maxScore)
+        .filter((k) => scores[Number(k)] == maxScore)
         .map((v) => Number(v));
     
         root.setPaperIds(sameScoreIndices);
@@ -119,6 +149,7 @@ export const makeTree = (row:Record<string,string>, allRowsList:Record<string,st
         if(similarWeakKeys && Object.keys(similarWeakKeys).length > 0){
              let combinations = Combination.of(Object.keys(similarWeakKeys), Object.keys(similarWeakKeys).length - 1);
             for(let c of combinations){
+                //console.log("makeTree: looking for children with combination: ",c)
                 let childSimilarWeakKeys:WeakKeysRecordType = {};
                 c.forEach((key: string | number) => {
                     if (weakKeysList.includes(String(key))) {
@@ -127,20 +158,22 @@ export const makeTree = (row:Record<string,string>, allRowsList:Record<string,st
                 });
                 //console.log("maxScore",maxScore)
                 //console.log("lengthh",Object.keys(similarWeakKeys).length)
-                let childnode = getChildNode(scores,childSimilarWeakKeys,maxScore-1)
+                let childnode = getChildNode(childSimilarWeakKeys,maxScore-1)
                 root.addChild(childnode)
             }
         }
-        //console.log("done computing the tree")
+        //console.log("done computing the tree)
         removeEmptyRoots(root)
+        console.log(getTreeGraphData(root))
+        console.log("make tree: remaining allRows ", allRows)
         return getTreeGraphData(root) as RawNodeDatum;
     }
   return null;
 }
 
 
-const getChildNode= (scores: Record<number, number>,similarWeakKeys:WeakKeysRecordType, scoreLevel:number) => {
-    if(scoreLevel <= 6 || !remainingRows || remainingRows.length < 1){
+const getChildNode= (similarWeakKeys:WeakKeysRecordType, scoreLevel:number) => {
+    if(scoreLevel < minScore || !remainingRows || remainingRows.length < 1){
         return null;
     }
 
@@ -155,8 +188,6 @@ const getChildNode= (scores: Record<number, number>,similarWeakKeys:WeakKeysReco
         const rowIndex = Number(row["Index"]);
         const score = Number(scores[rowIndex]);
         const isMatchingScore = score === scoreLevel;
-        
-        //console.log(`Row Index: ${rowIndex}, Score: ${score}, Is Matching Score: ${isMatchingScore}`);
         return isMatchingScore;
     })
     .filter((row) => {
@@ -175,10 +206,6 @@ const getChildNode= (scores: Record<number, number>,similarWeakKeys:WeakKeysReco
     })
     .map((row) => Number(row["Index"]));
 
-    //console.log(`Same Score Indices: ${sameScoreIndices}`);
-
-    
-
     node.setPaperIds(sameScoreIndices);
 
     remainingRows = remainingRows.filter((row) => !sameScoreIndices.includes(
@@ -194,7 +221,7 @@ const getChildNode= (scores: Record<number, number>,similarWeakKeys:WeakKeysReco
                     childSimilarWeakKeys[key] = similarWeakKeys[key];
                 }
             });
-            let childnode = getChildNode(scores,childSimilarWeakKeys,scoreLevel-1)
+            let childnode = getChildNode(childSimilarWeakKeys,scoreLevel-1)
             node.addChild(childnode)
         }
     }

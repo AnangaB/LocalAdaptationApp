@@ -55,6 +55,7 @@ const GraphsMainContent: React.FC<{}> = () => {
       originalDataTableWorksheet.eachRow((row, rowNumber) => {
         if (rowNumber == 1) {
           header = row.values as string[];
+          header = header.map((h) => h.trim());
           //fix how there is no title for first column
           //header.shift();
           header[0] = "Index";

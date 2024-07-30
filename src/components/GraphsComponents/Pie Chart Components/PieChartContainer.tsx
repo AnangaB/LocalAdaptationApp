@@ -1,5 +1,5 @@
 import { useState } from "react";
-import GraphSideBar from "./PieChartSideBar";
+import KeysSideBar from "../../Common Components/KeysSideBar";
 import PieChart from "./PieChart";
 
 type PieChartContainerProps = {
@@ -32,7 +32,7 @@ const PieChartContainer: React.FC<PieChartContainerProps> = ({
   return (
     <div className="row">
       <div className="col-12 col-md-4 col-lg-2">
-        <GraphSideBar
+        <KeysSideBar
           keys={keysList}
           sideBarButtonOnClick={sideBarButtonOnClick}
           activeButtonName={currentPieChart}
