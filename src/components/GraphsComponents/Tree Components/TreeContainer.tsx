@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { makeTree } from "../../../logic/ConstructRelationTree";
-import { filterAllRows } from "../../../logic/FilerDataSet";
-import { covertRowItemsToRegex } from "../../../logic/ConvertRowItemsToRegex";
+import { makeTree } from "../../../logic/Graphs/Tree/ConstructRelationTree";
 import { RawNodeDatum } from "react-d3-tree";
 import TreeDisplay from "./TreeDisplay";
 import KeysSideBar from "../../Common Components/KeysSideBar";
@@ -16,7 +14,7 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
   const [currentTree, setCurrentTree] = useState<string>("");
   const [row, setRow] = useState<Record<string, string> | null>(null);
   const [treeData, setTreeData] = useState<RawNodeDatum | null>(null);
-
+  /** 
   const sideBarButtonOnClick = (name: string) => {
     setCurrentTree(name);
     if (allRowsList) {
@@ -80,6 +78,8 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
       </div>
     </div>
   );
+  **/
+  return <>hello</>;
 };
 
 export default TreeContainer;

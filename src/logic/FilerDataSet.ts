@@ -1,14 +1,11 @@
-import { SearchParamProps } from "../types/SearchParamProps";
-
-
 
 
 //for a given row and given regex constraints selectedSearchParams, outputs a similairy score and whether the row fully matches the constraints in selectedSearchParams
 
-
+/** 
 const getRowValidityAndScore = (
     row: Record<string, any>,
-    selectedSearchParams: SearchParamProps
+    selectedSearchParams: DataSetFilters
   ) => {
 
       const weakSearchKeys = [
@@ -29,9 +26,9 @@ const getRowValidityAndScore = (
 
       for (const key of Object.keys(selectedSearchParams)) {
         const searchValue: RegExp =
-          selectedSearchParams[key as keyof SearchParamProps] || /.*/gi;
-        if(!selectedSearchParams[key as keyof SearchParamProps] ){
-          console.log("invalid regex: ", selectedSearchParams[key as keyof SearchParamProps])
+          selectedSearchParams[key as keyof DataSetFilters] || /.* /gi;
+        if(!selectedSearchParams[key as keyof DataSetFilters] ){
+          console.log("invalid regex: ", selectedSearchParams[key as keyof DataSetFilters])
         }
         const rowValue = row[key]?.toString().trim() || "";
         const matches = rowValue.match(searchValue);
@@ -50,9 +47,9 @@ const getRowValidityAndScore = (
     }
     return { isMatch: false, similarScore: 0 };
   };
-  
-
-  export const filterAllRows = (allRowsList:Record<string,string>[], SearchParams: SearchParamProps,
+  **/
+/** 
+  export const filterAllRows = (allRowsList:Record<string,string>[], SearchParams: DataSetFilters,
     setRowSimilarityScore: null | ((scores: Record<number, number>) => void), setFullyMatchingRowsList: null | ((rows: Record<string, any>[]) => void)
 
   ) => {
@@ -80,4 +77,4 @@ const getRowValidityAndScore = (
         }
       }
 
-  }
+  }**/

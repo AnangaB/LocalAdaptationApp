@@ -1,43 +1,20 @@
-import SimpleSearchBar from "./../components/search bar/SimpleSearchBar";
-import DataTableDisplayContainer from "./../components/dataTableDisplay/DataTableDisplayContainer";
+import SimpleSearchBar from "../components/Home Page Components/search bar/SimpleSearchBar";
+import DataTableDisplayContainer from "../components/Home Page Components/dataTableDisplay/DataTableDisplayContainer";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { SearchParamProps } from "./../types/SearchParamProps";
-import AdvancedSearchBar from "./../components/search bar/AdvancedSearchBar";
-
+import AdvancedSearchBar from "../components/Home Page Components/search bar/AdvancedSearchBar";
+import {
+  DataSetFilters,
+  getEmptyDataFilter,
+} from "../types/Datasets/DatasetTypes";
+/**
+ *
+ * @returns Main Display container for the home page. Displays the top search bar, data table display items, and advacnced side bar that can be toggled on and off.
+ */
 function Root() {
   //stores regex for each search bar menu
   const [selectedSearchParams, setSelectedSearchParams] =
-    useState<SearchParamProps>({
-      Index: /.*/,
-      "Citation Key": /.*/,
-      Authors: /.*/,
-      Year: /.*/,
-      Journal: /.*/,
-      "Journal ISO Abbreviation": /.*/,
-      Title: /.*/,
-      Abstract: /.*/,
-      "Open Access": /.*/,
-      "Reviewer 1": /.*/,
-      "Reviewer 2": /.*/,
-      Scope: /.*/,
-      "Eco-Evo Focus": /.*/,
-      Metric: /.*/,
-      "Life history": /.*/,
-      "Ecological Loci/Traits": /.*/,
-      "Additional Loci/Traits": /.*/,
-      "Mating system": /.*/,
-      Ploidy: /.*/,
-      Selection: /.*/,
-      "Spatial Structure": /.*/,
-      "Population Size": /.*/,
-      "Ecological Model": /.*/,
-      "Recurrent Mutation": /.*/,
-      IBS: /.*/,
-      DOI: /.*/,
-      ISSN: /.*/,
-      url: /.*/,
-    });
+    useState<DataSetFilters>(getEmptyDataFilter());
 
   //state for when to show all advanced search menu
   const [isAdvancedSearchMode, setIsAdvancedSearchMode] =
@@ -52,7 +29,7 @@ function Root() {
   };
 
   //function to call whenever, user makes changes to search menu
-  const handleFormChange = (index: keyof SearchParamProps, value: RegExp) => {
+  const handleFormChange = (index: keyof DataSetFilters, value: RegExp) => {
     if (String(value) === String("/(?:)/")) {
       value = /.*/;
     }
@@ -60,6 +37,7 @@ function Root() {
       ...selectedSearchParams,
       [index]: value,
     };
+    console.log(newData);
     setSelectedSearchParams(newData);
   };
 

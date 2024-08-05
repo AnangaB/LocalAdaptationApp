@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import AdvancedSearchBarDisplay from "../../Common Components/AdvancedSearchBarDisplay";
 import Histogram from "./Histogram";
-import { SearchParamProps } from "../../../types/SearchParamProps";
 import { filterAllRows } from "../../../logic/FilerDataSet";
+import { DataSetFilters } from "../../../types/Datasets/DatasetTypes";
 
 type HistogramContainerProps = {
   allRowsList: Record<string, any>[];
@@ -11,7 +11,7 @@ const HistogramContainer: React.FC<HistogramContainerProps> = ({
   allRowsList,
 }: HistogramContainerProps) => {
   const [selectedSearchParams, setSelectedSearchParams] =
-    useState<SearchParamProps>({
+    useState<DataSetFilters>({
       Index: /.*/,
       "Citation Key": /.*/,
       Authors: /.*/,
@@ -43,7 +43,7 @@ const HistogramContainer: React.FC<HistogramContainerProps> = ({
     });
 
   //function to call whenever, user makes changes to search menu
-  const handleFormChange = (index: keyof SearchParamProps, value: RegExp) => {
+  const handleFormChange = (index: keyof DataSetFilters, value: RegExp) => {
     if (String(value) === String("/(?:)/gi")) {
       value = /.*/;
     }

@@ -3,12 +3,7 @@ import GraphNavbar from "../components/GraphsComponents/GraphNavbar";
 import GraphsMainContent from "../components/GraphsComponents/GraphsMainContent";
 
 function Graphs() {
-  return (
-    <>
-      <GraphNavbar />
-      <GraphsMainContent />
-    </>
-  );
+  return <>hello</>;
 }
 
 export default Graphs;

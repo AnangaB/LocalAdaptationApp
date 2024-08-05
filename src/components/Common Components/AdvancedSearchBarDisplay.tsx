@@ -1,10 +1,15 @@
 import { useState } from "react";
-import { SearchParamProps } from "../../types/SearchParamProps";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import CheckBoxGroup from "./CheckBoxGroup";
+import { DataSetFilters } from "../../types/Datasets/DatasetTypes";
+import {
+  searchCheckBoxOptions,
+  searchTitles,
+  SearchType,
+} from "../../types/Advanced Search Bar/AdvancedSearchBar";
 
 interface AdvancedSearchBarDisplayProps {
-  handleFormChange: (index: keyof SearchParamProps, event: RegExp) => void; // index is the column type of our main data, such as Authors, and event is output from clicking on checkboxes or typing values in search bar, expressed as regex, used for filtering
+  handleFormChange: (index: keyof DataSetFilters, event: RegExp) => void; // index is the column type of our main data, such as Authors, and event is output from clicking on checkboxes or typing values in search bar, expressed as regex, used for filtering
 }
 
 const AdvancedSearchBarDisplay: React.FC<AdvancedSearchBarDisplayProps> = ({
@@ -12,125 +17,6 @@ const AdvancedSearchBarDisplay: React.FC<AdvancedSearchBarDisplayProps> = ({
 }) => {
   //each search parameter as collected from the excel sheet,
   //either takes in user text input or is a checkbox or should not be displayed
-
-  enum SearchType {
-    DisplayNone,
-    Checkbox,
-    TextSearch,
-  }
-
-  const searchTitles: Record<keyof SearchParamProps, SearchType> = {
-    Index: SearchType.DisplayNone,
-    "Citation Key": SearchType.DisplayNone,
-    Authors: SearchType.TextSearch,
-    Year: SearchType.TextSearch,
-    Journal: SearchType.TextSearch,
-    "Journal ISO Abbreviation": SearchType.TextSearch,
-    Title: SearchType.TextSearch,
-    Abstract: SearchType.TextSearch,
-    DOI: SearchType.TextSearch,
-    ISSN: SearchType.DisplayNone,
-    url: SearchType.DisplayNone,
-    "Open Access": SearchType.DisplayNone,
-    "Reviewer 1": SearchType.DisplayNone,
-    "Reviewer 2": SearchType.DisplayNone,
-    Scope: SearchType.Checkbox,
-    "Eco-Evo Focus": SearchType.Checkbox,
-    Metric: SearchType.DisplayNone,
-    "Life history": SearchType.Checkbox,
-    "Ecological Loci/Traits": SearchType.Checkbox,
-    "Additional Loci/Traits": SearchType.DisplayNone,
-    "Mating system": SearchType.Checkbox,
-    Ploidy: SearchType.Checkbox,
-    Selection: SearchType.Checkbox,
-    "Spatial Structure": SearchType.Checkbox,
-    "Population Size": SearchType.Checkbox,
-    "Ecological Model": SearchType.Checkbox,
-    "Recurrent Mutation": SearchType.Checkbox,
-    IBS: SearchType.Checkbox,
-  };
-
-  //for checkbox search types, record their options
-  const searchCheckBoxOptions: Record<string, string[]> = {
-    Scope: [
-      "Single Model",
-      "Multi Model",
-      "Not a MS Model",
-      "Review",
-      "Meta-analysis",
-      "Data Analysis",
-      "PDF Not Available",
-      "Other",
-    ],
-    "Eco-Evo Focus": [
-      "Variation (Divergence)",
-      "Pop. Persistance and Conservation",
-      "Coevolution",
-      "Range Dynamic",
-      "Evol. Processes",
-      "Repeatability",
-      "Other",
-      "Unknown",
-      "NA",
-    ],
-    "Life history": ["Discrete", "Continous", "Unknown"],
-    "Ecological Loci/Traits": [
-      "1 Locus/2 allele",
-      "2 Loci",
-      "Multi_locus(>2 loci)",
-      "Multi-allelic",
-      "1 trait",
-      "Multi-traits",
-      "NA",
-      "Other",
-      "Unknown",
-    ],
-    "Mating system": [
-      "Asex",
-      "Hermaphrodite",
-      "Diecious",
-      "Dimorphic",
-      "Self-fertilization",
-      "Unknown",
-      "NA",
-    ],
-    Ploidy: ["Haploid", "Diploid", "Haplodiploid", "Other", "Unknown", "NA"],
-    Selection: [
-      "Gaussian/Quad Stab",
-      "GFG",
-      "MAM",
-      "Pheno Diff/Pheno Match",
-      "Other",
-      "Unknown",
-    ],
-    "Spatial Structure": [
-      "2-patch",
-      "Metapopulation (Finite or Infinite)",
-      "Island Mainland",
-      "Stepping Stone(1D,2D)",
-      "Continous Space (1D or 2D)",
-      "Other",
-      "Unknown",
-    ],
-    "Population Size": ["Finite", "Infinite", "Both", "Other"],
-    "Ecological Model": [
-      "Constant",
-      "Stochastic",
-      "Intraspecific Competition",
-      "Interspecific Competition",
-      "Epidemiological",
-      "Other",
-      "Unknown",
-    ],
-    "Recurrent Mutation": [
-      "Yes",
-      "No",
-      "Other",
-      "Adaptive Dynamics",
-      "Unknown",
-    ],
-    IBS: ["IBS", "Analytical Model", "Both", "Unknown"],
-  };
 
   //store state for checkbox
   const [checkboxSelections, setCheckboxSelections] = useState<
@@ -176,7 +62,7 @@ const AdvancedSearchBarDisplay: React.FC<AdvancedSearchBarDisplayProps> = ({
       newRegex = /.*/;
     }
 
-    handleFormChange(key as keyof SearchParamProps, newRegex);
+    handleFormChange(key as keyof DataSetFilters, newRegex);
   };
 
   //function to reset checkboxes
@@ -200,7 +86,7 @@ const AdvancedSearchBarDisplay: React.FC<AdvancedSearchBarDisplayProps> = ({
       ...prevSelections,
       [checkBoxGroupName]: newSelections,
     }));
-    handleFormChange(checkBoxGroupName as keyof SearchParamProps, /.*/);
+    handleFormChange(checkBoxGroupName as keyof DataSetFilters, /.*/);
   };
 
   return (
@@ -217,7 +103,7 @@ const AdvancedSearchBarDisplay: React.FC<AdvancedSearchBarDisplayProps> = ({
                 type="text"
                 onChange={(event) =>
                   handleFormChange(
-                    key as keyof SearchParamProps,
+                    key as keyof DataSetFilters,
                     new RegExp(
                       event.target.value.replace(
                         /[-[\]{}()*+?.,\\^$|]/g, // Escape regex special characters

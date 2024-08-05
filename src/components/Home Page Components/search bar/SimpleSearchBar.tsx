@@ -1,15 +1,15 @@
-import { SearchParamProps } from "../../types/SearchParamProps";
 //import AdvancedSearchBar from "./AdvancedSearchBar.tsx";
 //import SimpleSearchBar from "./SimpleSearchBar.tsx";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Popover } from "bootstrap";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { DataSetFilters } from "../../../types/Datasets/DatasetTypes";
 
 interface SearchBarProps {
   advancedSearchButtonOnClick: (isAdvancedMode: boolean) => void;
   isAdvancedSearchMode: boolean;
-  handleFormChange: (index: keyof SearchParamProps, event: RegExp) => void;
+  handleFormChange: (index: keyof DataSetFilters, event: RegExp) => void;
 }
 
 const SimpleSearchBar: React.FC<SearchBarProps> = ({
@@ -57,7 +57,7 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
             type="text"
             onChange={(event) =>
               handleFormChange(
-                "Citation Key" as keyof SearchParamProps,
+                "Citation Key" as keyof DataSetFilters,
                 new RegExp(
                   event.target.value.replace(
                     /[-[\]{}()*+?.,\\^$|]/gi, // Escape regex special characters

@@ -1,8 +1,8 @@
-import { SearchParamProps } from "../../types/SearchParamProps";
-import AdvancedSearchBarDisplay from "../Common Components/AdvancedSearchBarDisplay";
+import { DataSetFilters } from "../../../types/Datasets/DatasetTypes";
+import AdvancedSearchBarDisplay from "../../Common Components/AdvancedSearchBarDisplay";
 
 interface AdvancedSearchBarProps {
-  handleFormChange: (index: keyof SearchParamProps, event: RegExp) => void;
+  handleFormChange: (index: keyof DataSetFilters, event: RegExp) => void;
 }
 
 const AdvancedSearchBar: React.FC<AdvancedSearchBarProps> = ({

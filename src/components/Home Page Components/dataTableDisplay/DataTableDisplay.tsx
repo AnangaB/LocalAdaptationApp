@@ -3,9 +3,11 @@
 //import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 //import "ag-grid-community/styles/ag-theme-quartz.css"; // Optional Theme applied to the grid
 
+import { DataRow, Dataset } from "../../../types/Datasets/DatasetTypes";
+
 interface DataTableDisplayProps {
-  dataDisplayList: Record<string, string>[];
-  pageTitleOnclick: (row: Record<string, string>) => void;
+  dataDisplayList: Dataset;
+  pageTitleOnclick: (row: DataRow) => void;
 }
 
 const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
@@ -29,8 +31,8 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
         </div>
       </div>
       {dataDisplayList &&
-        dataDisplayList.map((row: Record<string, string>) => (
-          <div className="row" key={row["Citation Key"] + " " + row["Index"]}>
+        dataDisplayList.map((row: DataRow) => (
+          <div className="row" key={row["Title"] + " " + row["Index"]}>
             <div className="col-3">
               <p>{row["Citation Key"]}</p>
             </div>

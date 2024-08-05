@@ -1,5 +1,5 @@
 import { useState } from "react";
-import KeysSideBar from "../../Common Components/KeysSideBar";
+import KeysSideBar from "./../../Common Components/KeysSideBar";
 import PieChart from "./PieChart";
 
 type PieChartContainerProps = {
