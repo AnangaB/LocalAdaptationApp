@@ -44,7 +44,7 @@ const HistogramContainer: React.FC<HistogramContainerProps> = ({
 
   //function to call whenever, user makes changes to search menu
   const handleFormChange = (index: keyof DataSetFilters, value: RegExp) => {
-    if (String(value) === String("/(?:)/gi")) {
+    if (String(value) === String("/(?:)/i")) {
       value = /.*/;
     }
     const newData = {

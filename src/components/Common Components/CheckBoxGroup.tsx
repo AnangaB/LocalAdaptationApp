@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { CheckBoxHeader } from "../../types/Search Bar/AdvancedSearchBarTypes";
 
 interface CheckBoxGroupProps {
-  groupName: string;
+  groupName: CheckBoxHeader;
   CheckBoxOptions: string[];
   handleCheckboxOnClick: (key: string, option: string) => void;
   resetCheckBoxSelections: (key: string) => void;

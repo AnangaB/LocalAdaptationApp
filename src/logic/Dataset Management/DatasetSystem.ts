@@ -122,18 +122,17 @@ export class DatasetSystem{
     }
 
     // Method to get the dataset, ensuring it is filled before returning
-    public getDatasetAfterFiltering():Dataset {
-      let filteredDatset:Dataset = [];
-
-      if(this.isDataSetLoaded){
-        filteredDatset = this.dataset.filter((row) => this.isRowValid(row));
-        console.log("filtered df ", filteredDatset)
-        return filteredDatset
+    public getDatasetAfterFiltering(): Dataset {
+      let filteredDataset: Dataset = [];
+      console.log(this.datasetFilters);
+    
+      if (this.isDataSetLoaded) {
+        filteredDataset = this.dataset.filter((row) => this.isRowValid(row));
+      } else {
+        console.log("Dataset has not loaded yet");
       }
-      else{
-        console.log("Data set has not loaded yet")
-      }
-      return filteredDatset;
+      
+      return filteredDataset;
     }
 
     //returns a boolean of whether a given row matches datasetFilters
@@ -145,15 +144,23 @@ export class DatasetSystem{
         for (const key of Object.keys(this.datasetFilters)) {
           
           const searchValue: RegExp =
-          this.datasetFilters[key as keyof DataSetFilters] || /.*/gi;
+          this.datasetFilters[key as keyof DataSetFilters] || /.*/i;
 
           if(!this.datasetFilters[key as keyof DataSetFilters] ){
             console.log("invalid regex: ", this.datasetFilters[key as keyof DataSetFilters] )
           }
-          const rowValue = row[key as keyof DataRow];
-          const matches = searchValue.test(rowValue);
+          const rowValue = String(row[key as keyof DataRow]);
           
-          if (matches == false){
+    
+          const matches = searchValue.test((rowValue));
+          if(row["Citation Key"] == "McAvoy & Allen 2021"){
+            if (matches == false) {
+              console.log("checking ",key,": ", rowValue, "with regex", searchValue, " and result is ", matches)
+
+            }
+          }
+
+          if (!matches) {
             isMatch = false;
           }
         }
@@ -186,7 +193,7 @@ export class DatasetSystem{
           let similarScore = 0;  
           for (const key of Object.keys(row)) {
             const searchValue: RegExp =
-              this.datasetFilters[key as keyof DataSetFilters] || /.*/gi;
+              this.datasetFilters[key as keyof DataSetFilters] || /.*/i;
             
             if (!this.datasetFilters[key as keyof DataSetFilters]) {
               console.log("invalid regex: ", this.datasetFilters[key as keyof DataSetFilters]);

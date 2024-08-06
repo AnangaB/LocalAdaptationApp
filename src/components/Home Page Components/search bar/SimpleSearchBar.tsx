@@ -5,6 +5,7 @@ import { Popover } from "bootstrap";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { DataSetFilters } from "../../../types/Datasets/DatasetTypes";
+import { convertStringToRegex } from "../../../logic/Search Bar/ConvertStringsToRegex";
 
 interface SearchBarProps {
   advancedSearchButtonOnClick: (isAdvancedMode: boolean) => void;
@@ -17,6 +18,7 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
   isAdvancedSearchMode,
   handleFormChange,
 }) => {
+  //Handles popover side search bar, explaining citation key
   useEffect(() => {
     // Ensure Bootstrap is available and popovers are initialized
     const popoverTriggerList = Array.from(
@@ -26,6 +28,7 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
       new Popover(popoverTriggerEl);
     });
   }, []);
+
   const navigate = useNavigate();
 
   const refreshPage = () => {
@@ -40,7 +43,7 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
             onClick={refreshPage}
             style={{ textDecoration: "none", color: "inherit" }}
           >
-            Local Adaptation Model Search
+            Database of Theoretical Models of Local Adaptation
           </Link>
         </span>
         <Link
@@ -58,13 +61,7 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
             onChange={(event) =>
               handleFormChange(
                 "Citation Key" as keyof DataSetFilters,
-                new RegExp(
-                  event.target.value.replace(
-                    /[-[\]{}()*+?.,\\^$|]/gi, // Escape regex special characters
-                    "\\$&"
-                  ),
-                  "gi"
-                )
+                convertStringToRegex(event.target.value)
               )
             }
             placeholder="Enter Citation Key"

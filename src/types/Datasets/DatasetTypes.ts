@@ -57,7 +57,7 @@ return headers.reduce((row, header) => {
 // Get empty filters
 export function getEmptyDataFilter(): DataSetFilters {
 return headers.reduce((filters, header) => {
-    filters[header] = /.*/;
+    filters[header] = /.*/i;
     return filters;
 }, {} as DataSetFilters);
 }

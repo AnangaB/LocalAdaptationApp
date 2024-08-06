@@ -67,24 +67,25 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
       display: false,
       currentRow: {},
     });
-
+  /**Deals with clicking on page titles
+   *
+   * @param row
+   */
   const pageTitleOnclick = (row: DataRow) => {
-    if (dataSetObject) {
-      if (row) {
-        setIndividualPageDisplayMode({
-          display: true,
-          currentRow: row,
-        });
-        //for similar papers display
-        dataSetObject.setDataSetFilterToMatchRow(row);
+    if (row) {
+      setIndividualPageDisplayMode({
+        display: true,
+        currentRow: row,
+      });
+      //for similar papers display
+      dataSetObject.setDataSetFilterToMatchRow(row);
 
-        const scores: RowSimilarityScores =
-          dataSetObject.getDatasetSimilarityScore();
-        setIndividualPageSimilarityScores(scores);
-        containerRef.current?.scrollIntoView({
-          behavior: "smooth",
-        });
-      }
+      const scores: RowSimilarityScores =
+        dataSetObject.getDatasetSimilarityScore();
+      setIndividualPageSimilarityScores(scores);
+      containerRef.current?.scrollIntoView({
+        behavior: "smooth",
+      });
     }
   };
 

@@ -1,11 +1,11 @@
 import { DataHeaders } from "../Datasets/DatasetTypes";
-
+//describes whether a header in DataHeaders should not be displayed in the advanced menu, or should be a checkbox or should be text search
 export enum SearchType {
     DisplayNone,
     Checkbox,
     TextSearch,
   }
-
+//assigns a search type to each header in the advanced search bar menu
   export const searchTitles: Record<DataHeaders, SearchType> = {
     Index: SearchType.DisplayNone,
     "Citation Key": SearchType.DisplayNone,
@@ -38,8 +38,15 @@ export enum SearchType {
     IBS: SearchType.Checkbox,
   };
 
+  // List of headers that appear as checkboxes
+  const checkboxKeys = Object.keys(searchTitles).filter(key => searchTitles[key as DataHeaders] === SearchType.Checkbox);
+  //type for checkboxKeys values
+  export type CheckBoxHeader = typeof checkboxKeys[number];
+  
+  //type to decribe a record of Checkbox headers and thier corresponding options
+  export type CheckBoxItems = Record<CheckBoxHeader, string[]>
   //for checkbox search types, record their options
-  export const searchCheckBoxOptions: Record<string, string[]> = {
+  export const searchCheckBoxOptions: CheckBoxItems= {
     Scope: [
       "Single Model",
       "Multi Model",
@@ -119,3 +126,17 @@ export enum SearchType {
     ],
     IBS: ["IBS", "Analytical Model", "Both", "Unknown"],
   };
+
+  //intialize an record setting all possible checkbox selections to be false
+  //type to decribe a record of Checkbox headers and thier corresponding options
+  export type CheckboxActivationTracker = Record<CheckBoxHeader, Record<string, boolean>>
+
+  export function getEmptyCheckboxActivationTracker(){
+    return Object.keys(searchCheckBoxOptions).reduce((acc, key) => {
+      acc[key as CheckBoxHeader] = searchCheckBoxOptions[key as CheckBoxHeader].reduce((innerAcc, option) => {
+        innerAcc[option as string] = false;
+        return innerAcc;
+      }, {} as Record<string, boolean>);
+      return acc;
+    }, {} as CheckboxActivationTracker)
+  }

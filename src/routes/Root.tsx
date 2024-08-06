@@ -1,8 +1,8 @@
-import SimpleSearchBar from "../components/Home Page Components/search bar/SimpleSearchBar";
-import DataTableDisplayContainer from "../components/Home Page Components/dataTableDisplay/DataTableDisplayContainer";
+import SimpleSearchBar from "../components/Home Page Components/Search Bar/SimpleSearchBar";
+import DataTableDisplayContainer from "../components/Home Page Components/Home Page Main Content Display/DataTableDisplayContainer";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AdvancedSearchBar from "../components/Home Page Components/search bar/AdvancedSearchBar";
+import AdvancedSearchBar from "../components/Home Page Components/Search Bar/AdvancedSearchBar";
 import {
   DataSetFilters,
   getEmptyDataFilter,
@@ -30,14 +30,14 @@ function Root() {
 
   //function to call whenever, user makes changes to search menu
   const handleFormChange = (index: keyof DataSetFilters, value: RegExp) => {
-    if (String(value) === String("/(?:)/")) {
-      value = /.*/;
+    let regex: RegExp = /.*/i;
+    if (String(value) !== String("/(?:)/")) {
+      regex = value;
     }
-    const newData = {
+    const newData: DataSetFilters = {
       ...selectedSearchParams,
-      [index]: value,
+      [index]: regex,
     };
-    console.log(newData);
     setSelectedSearchParams(newData);
   };
 

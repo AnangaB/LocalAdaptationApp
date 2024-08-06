@@ -3,10 +3,17 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import CheckBoxGroup from "./CheckBoxGroup";
 import { DataSetFilters } from "../../types/Datasets/DatasetTypes";
 import {
+  CheckboxActivationTracker,
+  CheckBoxHeader,
+  getEmptyCheckboxActivationTracker,
   searchCheckBoxOptions,
   searchTitles,
   SearchType,
-} from "../../types/Advanced Search Bar/AdvancedSearchBar";
+} from "../../types/Search Bar/AdvancedSearchBarTypes";
+import {
+  convertStringListToRegex,
+  convertStringToRegex,
+} from "../../logic/Search Bar/ConvertStringsToRegex";
 
 interface AdvancedSearchBarDisplayProps {
   handleFormChange: (index: keyof DataSetFilters, event: RegExp) => void; // index is the column type of our main data, such as Authors, and event is output from clicking on checkboxes or typing values in search bar, expressed as regex, used for filtering
@@ -19,23 +26,15 @@ const AdvancedSearchBarDisplay: React.FC<AdvancedSearchBarDisplayProps> = ({
   //either takes in user text input or is a checkbox or should not be displayed
 
   //store state for checkbox
-  const [checkboxSelections, setCheckboxSelections] = useState<
-    Record<string, Record<string, boolean>>
-  >(
-    Object.keys(searchCheckBoxOptions).reduce((acc, key) => {
-      acc[key] = searchCheckBoxOptions[key].reduce((innerAcc, option) => {
-        innerAcc[option] = false;
-        return innerAcc;
-      }, {} as Record<string, boolean>);
-      return acc;
-    }, {} as Record<string, Record<string, boolean>>)
-  );
+  const [checkboxSelections, setCheckboxSelections] =
+    useState<CheckboxActivationTracker>(getEmptyCheckboxActivationTracker());
 
-  const handleCheckboxOnClick: (key: string, option: string) => void = (
+  //handles when a check box is clicked, which then updates checkboxSelections
+  const handleCheckboxOnClick: (key: CheckBoxHeader, option: string) => void = (
     key,
     option
   ) => {
-    const newCheckBoxSelections: Record<string, Record<string, boolean>> = {
+    const newCheckBoxSelections: CheckboxActivationTracker = {
       ...checkboxSelections,
       [key]: {
         ...checkboxSelections[key],
@@ -43,34 +42,20 @@ const AdvancedSearchBarDisplay: React.FC<AdvancedSearchBarDisplayProps> = ({
       },
     };
     setCheckboxSelections(newCheckBoxSelections);
-    const regexString = Object.keys(newCheckBoxSelections[key])
-      .filter((val) => newCheckBoxSelections[key][val])
-      .map((t) =>
-        t.replace(
-          /[-[\]{}()*+?.,\\^$|]/g, // Escape regex special characters
-          "\\$&"
+    handleFormChange(
+      key as keyof DataSetFilters,
+      convertStringListToRegex(
+        Object.keys(newCheckBoxSelections[key]).filter(
+          (val) => newCheckBoxSelections[key][val]
         )
-      )
-      .join("|");
-    let newRegex: RegExp = new RegExp(regexString, "ig");
-    if (
-      !regexString ||
-      Object.values(newCheckBoxSelections[key]).every(
-        (value: boolean) => value === false
-      )
-    ) {
-      newRegex = /.*/;
-    }
-
-    handleFormChange(key as keyof DataSetFilters, newRegex);
+      ) // creates a regex that matche with
+    );
   };
 
   //function to reset checkboxes
-  const resetCheckBoxSelections: (checkBoxGroupName: string) => void = (
+  const resetCheckBoxSelections: (checkBoxGroupName: CheckBoxHeader) => void = (
     checkBoxGroupName
   ) => {
-    //console.log("reset called on key: ", checkBoxGroupName);
-
     const currentSelections = checkboxSelections[checkBoxGroupName];
 
     const newSelections = Object.keys(currentSelections).reduce(
@@ -80,13 +65,12 @@ const AdvancedSearchBarDisplay: React.FC<AdvancedSearchBarDisplayProps> = ({
       },
       {} as Record<string, boolean>
     );
-    //console.log("print newSelections: ", newSelections);
 
     setCheckboxSelections((prevSelections) => ({
       ...prevSelections,
       [checkBoxGroupName]: newSelections,
     }));
-    handleFormChange(checkBoxGroupName as keyof DataSetFilters, /.*/);
+    handleFormChange(checkBoxGroupName as keyof DataSetFilters, /.*/i);
   };
 
   return (
@@ -104,13 +88,7 @@ const AdvancedSearchBarDisplay: React.FC<AdvancedSearchBarDisplayProps> = ({
                 onChange={(event) =>
                   handleFormChange(
                     key as keyof DataSetFilters,
-                    new RegExp(
-                      event.target.value.replace(
-                        /[-[\]{}()*+?.,\\^$|]/g, // Escape regex special characters
-                        "\\$&"
-                      ),
-                      "gi"
-                    )
+                    convertStringToRegex(event.target.value)
                   )
                 }
                 placeholder={`${key} Input`}
