@@ -45,12 +45,14 @@ const IndividualPage: React.FC<IndividualPageProps> = ({
             </div>
             <div className="col-sm-6 col-md-3 pl-2">
               {[
+                "Index",
                 "Scope",
                 "Eco-Evo Focus",
                 "Metric",
                 "Life history",
                 "Ecological Loci/Traits",
                 "Additional Loci/Traits",
+                "Mating system",
                 "Ploidy",
                 "Selection",
                 "Spatial Structure",

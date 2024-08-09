@@ -34,6 +34,27 @@ export const headers = [
 // Type for headers
 export type DataHeaders = typeof headers[number];
 
+//define categorical vars
+export const categorivalVars:DataHeaders[] = [
+    "Open Access",
+    "Reviewer 1",
+    "Reviewer 2",
+    "Scope",
+    "Eco-Evo Focus",
+    "Metric",
+    "Life history",
+    "Ecological Loci/Traits",
+    "Additional Loci/Traits",
+    "Mating system",
+    "Ploidy",
+    "Selection",
+    "Spatial Structure",
+    "Population Size",
+    "Ecological Model",
+    "Recurrent Mutation",
+    "IBS"
+    ];
+
 // Type for a row in the dataset
 export type DataRow = Record<DataHeaders, string>;
 
@@ -66,3 +87,19 @@ return headers.reduce((filters, header) => {
 export function isDataRowKey(key: string): key is DataHeaders {
 return headers.includes(key as DataHeaders);
 }
+
+//weak keys
+export const weakKeysList= [
+    "Eco-Evo Focus",
+    "Life history",
+    "Ecological Loci/Traits",
+    "Mating system",
+    "Ploidy",
+    "Selection",
+    "Spatial Structure",
+    "Population Size",
+    "Ecological Model",
+    "Recurrent Mutation"
+  ];
+
+export type WeakKeysType = typeof weakKeysList[number];

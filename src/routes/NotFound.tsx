@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import GraphNavbar from "../components/GraphsComponents/GraphNavbar";
+import GraphNavbar from "../components/Graphs Page Components/GraphNavbar";
 import { Link } from "react-router-dom";
 
 function NotFound() {

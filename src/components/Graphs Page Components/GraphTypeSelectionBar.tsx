@@ -1,12 +1,8 @@
-enum PieChartDisplayType {
-  PieChart,
-  Histogram,
-  Tree,
-}
+import { DisplayGraphType } from "../../types/Graphs/GraphTypes";
 
 type GraphTypeSelectionBarProps = {
-  buttonOnClick: (type: PieChartDisplayType) => void;
-  currentGraphType: PieChartDisplayType;
+  buttonOnClick: (type: DisplayGraphType) => void;
+  currentGraphType: DisplayGraphType;
 };
 
 const GraphTypeSelectionBar: React.FC<GraphTypeSelectionBarProps> = ({
@@ -18,12 +14,12 @@ const GraphTypeSelectionBar: React.FC<GraphTypeSelectionBarProps> = ({
       <li className="nav-item">
         <button
           className={
-            currentGraphType == PieChartDisplayType.PieChart
+            currentGraphType == DisplayGraphType.PieChart
               ? "nav-link active"
               : "nav-link"
           }
           aria-current="page"
-          onClick={() => buttonOnClick(PieChartDisplayType.PieChart)}
+          onClick={() => buttonOnClick(DisplayGraphType.PieChart)}
         >
           Pie Chart
         </button>
@@ -31,11 +27,11 @@ const GraphTypeSelectionBar: React.FC<GraphTypeSelectionBarProps> = ({
       <li className="nav-item">
         <button
           className={
-            currentGraphType == PieChartDisplayType.Histogram
+            currentGraphType == DisplayGraphType.Histogram
               ? "nav-link active"
               : "nav-link"
           }
-          onClick={() => buttonOnClick(PieChartDisplayType.Histogram)}
+          onClick={() => buttonOnClick(DisplayGraphType.Histogram)}
         >
           Histogram
         </button>
@@ -43,11 +39,11 @@ const GraphTypeSelectionBar: React.FC<GraphTypeSelectionBarProps> = ({
       <li className="nav-item">
         <button
           className={
-            currentGraphType == PieChartDisplayType.Tree
+            currentGraphType == DisplayGraphType.Tree
               ? "nav-link active"
               : "nav-link"
           }
-          onClick={() => buttonOnClick(PieChartDisplayType.Tree)}
+          onClick={() => buttonOnClick(DisplayGraphType.Tree)}
         >
           Tree
         </button>

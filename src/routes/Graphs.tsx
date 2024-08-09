@@ -1,9 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import GraphNavbar from "../components/GraphsComponents/GraphNavbar";
-import GraphsMainContent from "../components/GraphsComponents/GraphsMainContent";
+import GraphNavbar from "../components/Graphs Page Components/GraphNavbar";
+import GraphsMainContent from "../components/Graphs Page Components/GraphsMainContent";
 
 function Graphs() {
-  return <>hello</>;
+  return (
+    <>
+      <GraphNavbar />
+      <GraphsMainContent />
+    </>
+  );
 }
 
 export default Graphs;

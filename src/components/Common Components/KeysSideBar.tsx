@@ -1,6 +1,3 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
-
 type KeysSideBarProps = {
   keys: string[];
   sideBarButtonOnClick: (text: string) => void;
@@ -12,6 +9,7 @@ const KeysSideBar: React.FC<KeysSideBarProps> = ({
   sideBarButtonOnClick,
   activeButtonName,
 }) => {
+  /*
   const [keysGroup, setKeysGroup] = useState<string[][]>([]);
 
   const [displayingKeysIndex, setDisplayingKeysIndex] = useState<number>(0);
@@ -28,7 +26,7 @@ const KeysSideBar: React.FC<KeysSideBarProps> = ({
       setDisplayingKeysIndex(0);
       console.log(groupedKeys);
     }
-  }, [keys]);
+  }, []);
 
   const goBackPage = () => {
     if (keysGroup && keysGroup.length > 0) {
@@ -46,43 +44,25 @@ const KeysSideBar: React.FC<KeysSideBarProps> = ({
     if (keysGroup && keysGroup.length > 0) {
       setDisplayingKeysIndex((displayingKeysIndex + 1) % keysGroup.length);
     }
-  };
+  };*/
 
   return (
-    <div>
-      {keysGroup && keysGroup.length > 1 && (
-        <ul className="pagination">
-          <li className="page-item">
-            <button className="page-link" onClick={goBackPage}>
-              Previous
-            </button>
-          </li>
-          <li className="page-item">
-            <button className="page-link" onClick={goForwardPage}>
-              Next
-            </button>
-          </li>
-        </ul>
-      )}
-
-      <nav className="nav flex-column">
-        {keysGroup &&
-          keysGroup[displayingKeysIndex] &&
-          keysGroup[displayingKeysIndex].map((key, index) => (
-            <button
-              key={`${key}${index}`}
-              className={
-                activeButtonName == key
-                  ? "btn btn-danger nav-item mt-1"
-                  : "btn btn-primary nav-item mt-1"
-              }
-              onClick={() => sideBarButtonOnClick(key)}
-            >
-              {key}
-            </button>
-          ))}
-      </nav>
-    </div>
+    <nav className="nav flex-column">
+      {keys &&
+        keys.map((key, index) => (
+          <button
+            key={`${key}${index}`}
+            className={
+              activeButtonName == key
+                ? "btn btn-danger nav-item mt-1"
+                : "btn btn-primary nav-item mt-1"
+            }
+            onClick={() => sideBarButtonOnClick(key)}
+          >
+            {key}
+          </button>
+        ))}
+    </nav>
   );
 };
 

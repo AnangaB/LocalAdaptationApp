@@ -1,5 +1,5 @@
 import ExcelJS from "exceljs";
-import { DataRow, Dataset, DataSetFilters, getEmptyDataFilter, getEmptyDataRow, isDataRowKey, RowSimilarityScores } from "../../types/Datasets/DatasetTypes";
+import { categorivalVars, DataRow, Dataset, DataSetFilters, getEmptyDataFilter, getEmptyDataRow, isDataRowKey, RowSimilarityScores, weakKeysList } from "../../types/Datasets/DatasetTypes";
 
 /**
  * reads a dataset of xlsx format and contains methods to return theat dataset or return a filtered verison of the dataset 
@@ -124,7 +124,6 @@ export class DatasetSystem{
     // Method to get the dataset, ensuring it is filled before returning
     public getDatasetAfterFiltering(): Dataset {
       let filteredDataset: Dataset = [];
-      console.log(this.datasetFilters);
     
       if (this.isDataSetLoaded) {
         filteredDataset = this.dataset.filter((row) => this.isRowValid(row));
@@ -153,12 +152,7 @@ export class DatasetSystem{
           
     
           const matches = searchValue.test((rowValue));
-          if(row["Citation Key"] == "McAvoy & Allen 2021"){
-            if (matches == false) {
-              console.log("checking ",key,": ", rowValue, "with regex", searchValue, " and result is ", matches)
 
-            }
-          }
 
           if (!matches) {
             isMatch = false;
@@ -176,19 +170,6 @@ export class DatasetSystem{
       let scores:RowSimilarityScores= new Map();
     
       if (this.isDataSetLoaded) {
-        const weakSearchKeys = [
-          "Eco-Evo Focus",
-          "Life history",
-          "Ecological Loci/Traits",
-          "Mating system",
-          "Ploidy",
-          "Selection",
-          "Spatial Structure",
-          "Population Size",
-          "Ecological Model",
-          "Recurrent Mutation"
-        ];
-    
         for (const row of this.dataset) {
           let similarScore = 0;  
           for (const key of Object.keys(row)) {
@@ -201,7 +182,7 @@ export class DatasetSystem{
     
             const rowValue: string = row[key as keyof DataRow];
  
-            if (weakSearchKeys.includes(key) && searchValue.test(rowValue)) {
+            if (weakKeysList.includes(key as keyof DataRow) && searchValue.test(rowValue)) {
               similarScore += 1;
             }
           }
@@ -210,7 +191,6 @@ export class DatasetSystem{
       } else {
         console.log("Data set has not loaded yet");
       }
-    
       return scores;
     }
     /**converts a given row values to regex values
@@ -225,11 +205,17 @@ export class DatasetSystem{
           Object.keys(row).forEach((k) => {
               if (k in output) {
                   let value = String(row[k as keyof DataRow])
-                  .replace("))", ")")
-                  .replace("(", "\(")
-                  .replace(")", "\)");
+                  .replace(/\)\)/g, ")")
+                  .replace(/\(/g, "\\(")
+                  .replace(/\)/g, "\\)");
+                
+ 
+                  //want to match rows that contain categorical variables, with a regex that matches from the start of string
+                  if(categorivalVars.includes(k as keyof DataRow)){
+                    value = "^" + value
+                  }
                   if (String(value) && String(value).length > 0) {
-                      output[k as keyof DataSetFilters] = new RegExp(value, "ig");
+                      output[k as keyof DataSetFilters] = new RegExp(value, "i");
                       //console.log(new RegExp(value, "ig"), value,String(row[k  as keyof DataRow]))
                   }
               }
