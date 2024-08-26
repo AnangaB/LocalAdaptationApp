@@ -196,6 +196,8 @@ def main():
     # Generate Citation Keys
     data["Citation Key"] = pd.Series(data.apply(lambda row: getPaperName(row["Authors"],str(row["Year"])), axis=1 )).astype(str).replace(r'\.0', '', regex=True)
 
+    #replace blanks or nas with "Unknown"
+    data = data.fillna("Unknown")
     """"
     #Link to the bibtex file
     f = open('ZoteroFile.json')
