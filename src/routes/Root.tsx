@@ -1,8 +1,8 @@
 import SimpleSearchBar from "../components/Home Page Components/Search Bar/SimpleSearchBar";
+import AdvancedSearchBar from "../components/Home Page Components/Search Bar/AdvancedSearchBar";
 import DataTableDisplayContainer from "../components/Home Page Components/Home Page Main Content Display/DataTableDisplayContainer";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AdvancedSearchBar from "../components/Home Page Components/Search Bar/AdvancedSearchBar";
 import {
   DataSetFilters,
   getEmptyDataFilter,
