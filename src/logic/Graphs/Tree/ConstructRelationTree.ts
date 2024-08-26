@@ -72,7 +72,7 @@ export const makeTree = (row:DataRow, allRowsList:Dataset, scoresRecord: RowSimi
     
         //get all other similar papers
         maxScore = Math.max(...Array.from(scores.values()).map(Number));
-        minScore = Math.max(1,maxScore-3)
+        minScore = Math.max(1,maxScore-2)
         //console.log("makeTree: maxScore: ",maxScore," minScore: ",minScore)
 
 
