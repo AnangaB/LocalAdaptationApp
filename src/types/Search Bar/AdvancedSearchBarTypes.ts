@@ -22,7 +22,7 @@ export enum SearchType {
     "Open Access": SearchType.DisplayNone,
     "Reviewer 1": SearchType.DisplayNone,
     "Reviewer 2": SearchType.DisplayNone,
-    Scope: SearchType.Checkbox,
+    Scope: SearchType.DisplayNone,
     "Eco-Evo Focus": SearchType.Checkbox,
     Metric: SearchType.DisplayNone,
     "Life history": SearchType.Checkbox,
@@ -47,16 +47,6 @@ export enum SearchType {
   export type CheckBoxItems = Record<CheckBoxHeader, string[]>
   //for checkbox search types, record their options
   export const searchCheckBoxOptions: CheckBoxItems= {
-    Scope: [
-      "Single Model",
-      "Multi Model",
-      "Not a MS Model",
-      "Review",
-      "Meta-analysis",
-      "Data Analysis",
-      "PDF Not Available",
-      "Other",
-    ],
     "Eco-Evo Focus": [
       "Variation (Divergence)",
       "Pop. Persistance and Conservation",

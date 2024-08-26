@@ -198,6 +198,14 @@ def main():
 
     #replace blanks or nas with "Unknown"
     data = data.fillna("Unknown")
+
+    print(data["Scope"].value_counts())
+    # Convert "Mullti Model" to "Multi Model" in the 'Scope' column
+    data['Scope'] = data['scope'].replace('Mullti Model', 'Multi Model')
+
+    #only keep rows with scope of Singlemodel and multimodel and remove scope column
+    scope_to_keep = ["Single Model","Multi Model"]
+    data = data[data["Scope"].isin(scope_to_keep)]
     """"
     #Link to the bibtex file
     f = open('ZoteroFile.json')
