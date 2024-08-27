@@ -1,9 +1,7 @@
-import { DataHeaders } from "../../types/Datasets/DatasetTypes";
-
 type KeysSideBarProps = {
-  keys: DataHeaders[];
-  sideBarButtonOnClick: (text: DataHeaders) => void;
-  activeButtonName: DataHeaders;
+  keys: string[];
+  sideBarButtonOnClick: (text: string) => void;
+  activeButtonName: string;
 };
 
 const KeysSideBar: React.FC<KeysSideBarProps> = ({

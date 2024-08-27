@@ -1,7 +1,7 @@
 import { useState } from "react";
 import KeysSideBar from "../../Common Components/KeysSideBar";
 import PieChart from "./PieChart";
-import { DataHeaders, Dataset } from "../../../types/Datasets/DatasetTypes";
+import { Dataset } from "../../../types/Datasets/DatasetTypes";
 import {
   PieChartkeysList,
   PieChartkeysType,
@@ -17,8 +17,8 @@ const PieChartContainer: React.FC<PieChartContainerProps> = ({
     useState<PieChartkeysType>("Eco-Evo Focus");
 
   //calls the setter for currentPieChart, when one of the side button is clicked
-  const sideBarButtonOnClick = (name: DataHeaders) => {
-    setCurrentPieChart(name);
+  const sideBarButtonOnClick = (name: string) => {
+    setCurrentPieChart(name as PieChartkeysType);
   };
 
   return (
