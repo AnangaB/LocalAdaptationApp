@@ -196,12 +196,17 @@ def main():
     # Generate Citation Keys
     data["Citation Key"] = pd.Series(data.apply(lambda row: getPaperName(row["Authors"],str(row["Year"])), axis=1 )).astype(str).replace(r'\.0', '', regex=True)
 
+    # label duplicate citation keys by appending _1, _2,.. to it
+    data['cite_key_duplicate_count'] = data.groupby('Citation Key').cumcount() + 1
+    #(data['Citation Key'] == row['Citation Key']).sum() > 1 checks if row['Citation Key'] value appears more than once in column
+    data['Citation Key'] = data.apply(lambda row: f"{row['Citation Key']}_{row['cite_key_duplicate_count']}" if row['cite_key_duplicate_count'] > 1 or (data['Citation Key'] == row['Citation Key']).sum() > 1 else row['Citation Key'], axis=1)
+    data = data.drop(columns=['cite_key_duplicate_count'])
+
     #replace blanks or nas with "Unknown"
     data = data.fillna("Unknown")
 
-    print(data["Scope"].value_counts())
     # Convert "Mullti Model" to "Multi Model" in the 'Scope' column
-    data['Scope'] = data['scope'].replace('Mullti Model', 'Multi Model')
+    data['Scope'] = data['Scope'].replace('Mullti Model', 'Multi Model')
 
     #only keep rows with scope of Singlemodel and multimodel and remove scope column
     scope_to_keep = ["Single Model","Multi Model"]
