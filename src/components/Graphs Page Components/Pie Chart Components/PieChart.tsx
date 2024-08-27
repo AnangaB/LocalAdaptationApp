@@ -1,67 +1,59 @@
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Pie } from "react-chartjs-2";
-ChartJS.register(ArcElement, Tooltip, Legend);
+import React, { useEffect, useRef } from "react";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  ChartConfiguration,
+  Colors,
+} from "chart.js";
+import { DataHeaders, Dataset } from "../../../types/Datasets/DatasetTypes";
+import { getChartConfig } from "../../../logic/Graphs/Pie Chart/CreatePieChartConfig";
+
+ChartJS.register(ArcElement, Tooltip, Legend, Colors);
 
 type PieChartDisplayProps = {
-  allRows: Record<string, any>[];
-  displayingName: string;
+  dataset: Dataset;
+  displayingName: DataHeaders;
 };
 
 const PieChart: React.FC<PieChartDisplayProps> = ({
-  allRows,
+  dataset,
   displayingName,
 }) => {
+  const chartRef = useRef<HTMLCanvasElement>(null);
+  const chartInstanceRef = useRef<ChartJS | null>(null);
 
-  // Extract unique labels from the allRows data based on displayingName
-  const labels = Array.from(new Set(allRows.map((row) => row[displayingName])));
+  //updates chart everytime, dataset and displaying name changes
+  useEffect(() => {
+    if (chartInstanceRef.current) {
+      chartInstanceRef.current.destroy();
+    }
+    //get unique values that column displayingName can take
+    const labels = Array.from(
+      new Set(dataset.map((row) => row[displayingName]))
+    );
 
-  // Aggregate data for each label
-  const data = labels.map(
-    (label) => allRows.filter((row) => row[displayingName] === label).length
-  );
+    //get counts of each of the unique values that column displayingName can take
+    const data = labels.map(
+      (label) => dataset.filter((row) => row[displayingName] === label).length
+    );
 
-  const backgroundColors = [
-    "#e6194b",
-    "#3cb44b",
-    "#ffe119",
-    "#4363d8",
-    "#f58231",
-    "#911eb4",
-    "#46f0f0",
-    "#f032e6",
-    "#bcf60c",
-    "#fabebe",
-    "#008080",
-    "#e6beff",
-    "#9a6324",
-    "#fffac8",
-    "#800000",
-    "#aaffc3",
-    "#808000",
-    "#ffd8b1",
-    "#000075",
-    "#808080",
-    "#ffffff",
-    "#000000",
-  ];
+    const ctx = chartRef.current?.getContext("2d");
+
+    if (ctx) {
+      const config: ChartConfiguration = getChartConfig(
+        labels,
+        data,
+        displayingName
+      );
+      chartInstanceRef.current = new ChartJS(ctx, config);
+    }
+  }, [dataset, displayingName]);
+
   return (
-    <div>
-      <Pie
-        data={{
-          labels: labels,
-          datasets: [
-            {
-              label: displayingName,
-              data: data,
-              backgroundColor: backgroundColors,
-            },
-          ],
-        }}
-        style={{ width: "100%", maxHeight: "70vh" }}
-        options={{
-          maintainAspectRatio: false,
-        }}
-      />
+    <div style={{ maxHeight: "80vh", width: "100%" }}>
+      <canvas ref={chartRef}></canvas>
     </div>
   );
 };
