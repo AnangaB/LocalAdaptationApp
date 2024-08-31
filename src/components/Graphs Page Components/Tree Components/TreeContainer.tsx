@@ -50,7 +50,7 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
       setRow(intialRow);
       setCurrentTreeName(datasetRows[0]["Citation Key"]);
     }
-  }, []);
+  }, [datasetRows, datasetSystem]);
   //generate data for new tree, when rows state changes
   useEffect(() => {
     if (datasetRows && row) {
@@ -60,7 +60,7 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
       const tree = makeTree(row, datasetRows, similarityScoreList);
       setTreeData(tree);
     }
-  }, [row]);
+  }, [datasetRows, datasetSystem, row]);
 
   return (
     <div className="container-fluid">

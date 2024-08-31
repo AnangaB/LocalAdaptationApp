@@ -18,7 +18,7 @@ export const getChartConfig = (labels:string[],data:number[],displayingName:Data
           type: "pie",
           data: {
             labels: labels,
-            datasets: [
+            datasets: [ 
               {
                 label: displayingName,
                 data: data,
@@ -35,6 +35,13 @@ export const getChartConfig = (labels:string[],data:number[],displayingName:Data
             plugins: {
               legend: {
                 position: "top",
+              }
+            },
+            transitions: {
+              resize: {
+                animation: {
+                  duration: 400 // there is a bug with chart js, where the pie chart will not animate at the start unless this duration is set to something other than 0
+                }
               }
             }
           },
