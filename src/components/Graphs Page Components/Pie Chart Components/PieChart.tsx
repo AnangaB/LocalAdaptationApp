@@ -5,12 +5,13 @@ import {
   Tooltip,
   Legend,
   ChartConfiguration,
+  PieController,
 } from "chart.js";
 import { DataHeaders, Dataset } from "../../../types/Datasets/DatasetTypes";
 import { getChartConfig } from "../../../logic/Graphs/Pie Chart/CreatePieChartConfig";
 import useWindowSize from "../../../hooks/ResizeWindow";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, PieController);
 
 type PieChartDisplayProps = {
   dataset: Dataset;
@@ -39,22 +40,20 @@ const PieChart: React.FC<PieChartDisplayProps> = ({
     const data = labels.map(
       (label) => dataset.filter((row) => row[displayingName] === label).length
     );
-    if (chartRef.current) {
-      const ctx = chartRef.current.getContext("2d");
+    const ctx = chartRef.current?.getContext("2d");
 
-      if (ctx) {
-        const config: ChartConfiguration = getChartConfig(
-          labels,
-          data,
-          displayingName
-        );
-        chartInstanceRef.current = new ChartJS(ctx, config);
-      }
+    if (ctx) {
+      const config: ChartConfiguration = getChartConfig(
+        labels,
+        data,
+        displayingName
+      );
+      chartInstanceRef.current = new ChartJS(ctx, config);
     }
   }, [dataset, displayingName, width, height]);
 
   return (
-    <div>
+    <div style={{ maxHeight: "80vh", width: "100%" }}>
       <canvas ref={chartRef}></canvas>
     </div>
   );
