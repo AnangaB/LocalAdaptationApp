@@ -15,9 +15,13 @@ const HistogramContainer: React.FC<HistogramContainerProps> = ({
       <div className="col-12 col-md-4 col-lg-2">
         <AdvancedSearchBarDisplay handleFormChange={handleFormChange} />
       </div>
-      {displayingDatasetRows.length > 0 && (
+      {displayingDatasetRows.length > 0 ? (
         <div className="col-12 col-md-8 col-lg-10">
           <Histogram dataset={displayingDatasetRows} />
+        </div>
+      ) : (
+        <div className="col-12 col-md-8 col-lg-10">
+          <h2>No Paper matches the selected filters</h2>
         </div>
       )}
     </div>
