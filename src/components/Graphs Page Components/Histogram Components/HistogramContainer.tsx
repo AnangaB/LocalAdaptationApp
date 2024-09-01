@@ -17,7 +17,7 @@ const HistogramContainer: React.FC<HistogramContainerProps> = ({
       </div>
       {displayingDatasetRows.length > 0 && (
         <div className="col-12 col-md-8 col-lg-10">
-          <Histogram allRows={displayingDatasetRows} />
+          <Histogram dataset={displayingDatasetRows} />
         </div>
       )}
     </div>

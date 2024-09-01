@@ -1,4 +1,3 @@
-import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   BarElement,
@@ -6,52 +5,58 @@ import {
   Legend,
   LinearScale,
   CategoryScale,
+  ChartConfiguration,
+  BarController,
 } from "chart.js";
-import { useEffect, useState } from "react";
-ChartJS.register(BarElement, Tooltip, Legend, LinearScale, CategoryScale);
+import { useEffect, useRef, useState } from "react";
+import { createHistogramDisplayData } from "../../../logic/Graphs/Histogram/CreateHistogramDisplayData";
+import { Dataset } from "../../../types/Datasets/DatasetTypes";
+import { getHistrogramConfigData } from "../../../logic/Graphs/Histogram/CreataHistogramConfig";
+
+ChartJS.register(
+  BarElement,
+  Tooltip,
+  Legend,
+  LinearScale,
+  CategoryScale,
+  BarController
+);
 type HistogramProps = {
-  allRows: Record<string, string>[];
+  dataset: Dataset;
 };
 
-const Histogram: React.FC<HistogramProps> = ({ allRows }) => {
-  const [yearData, setYearData] = useState<Record<string, number>>({});
+const Histogram: React.FC<HistogramProps> = ({ dataset }) => {
+  const barChartRef = useRef<HTMLCanvasElement>(null);
+  const barChartInstanceRef = useRef<ChartJS | null>(null);
 
+  const [yearData, setYearData] = useState<Record<number, number>>({});
+
+  //construct year data
   useEffect(() => {
-    const allRowsCopy = [...allRows];
-    const newYearData = allRowsCopy.reduce((acc, row) => {
-      const year = row["Year"];
-      if (year) {
-        acc[year] = (acc[year] || 0) + 1;
-      }
-      return acc;
-    }, {} as Record<string, number>);
-    setYearData(newYearData);
-  }, [allRows]);
+    if (dataset) {
+      const newYearData = createHistogramDisplayData([...dataset]);
+      setYearData(newYearData);
+    }
+  }, [dataset]);
+
+  //updates chart everytime yearData changes
+  useEffect(() => {
+    if (barChartInstanceRef.current) {
+      barChartInstanceRef.current.destroy();
+    }
+
+    const ctx = barChartRef.current?.getContext("2d");
+
+    if (ctx) {
+      const config: ChartConfiguration = getHistrogramConfigData(yearData);
+      barChartInstanceRef.current = new ChartJS(ctx, config);
+    }
+  }, [yearData]);
 
   return (
     <div>
       <h1>Histogram</h1>
-      <Bar
-        data={{
-          labels: Object.keys(yearData),
-          datasets: [
-            {
-              label: "Number of Records per Year",
-              data: Object.values(yearData),
-              backgroundColor: "rgba(75, 192, 192, 0.6)",
-              borderColor: "rgba(75, 192, 192, 1)",
-              borderWidth: 1,
-            },
-          ],
-        }}
-        options={{
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        }}
-      />
+      <canvas ref={barChartRef}></canvas>
     </div>
   );
 };
