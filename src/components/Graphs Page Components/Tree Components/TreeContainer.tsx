@@ -10,6 +10,7 @@ import {
   getEmptyDataRow,
 } from "../../../types/Datasets/DatasetTypes";
 import { DatasetSystem } from "../../../logic/Dataset Management/DatasetSystem";
+import TreeControlsBar from "./TreeControlsBar";
 
 type TreeContainerProps = {
   datasetSystem: DatasetSystem;
@@ -56,6 +57,7 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
       setCurrentTreeName(datasetRows[0]["Citation Key"]);
     }
   }, [datasetRows, datasetSystem]);
+
   //generate data for new tree, when rows state changes
   useEffect(() => {
     if (datasetRows && row) {
@@ -66,6 +68,13 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
       setTreeData(tree);
     }
   }, [datasetRows, datasetSystem, row]);
+
+  const showOriginalPaperInfoOnClick = () => {
+    setAdditionalPageRow(row);
+  };
+  const viewDisplayedPaperTreeOnClick = () => {
+    setRow(additionalPageRow);
+  };
 
   return (
     <div className="container-fluid">
@@ -92,13 +101,25 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
               />
             )}
           </div>
-          <div>{row && <IndividualPage row={additionalPageRow} />}</div>
+          <div>
+            {row && (
+              <>
+                <TreeControlsBar
+                  paperNameBeingShownInTree={row["Citation Key"]}
+                  paperNameBeingShownInAdditionalInfo={
+                    additionalPageRow["Citation Key"]
+                  }
+                  showOriginalPaperInfoOnClick={showOriginalPaperInfoOnClick}
+                  viewDisplayedPaperTreeOnClick={viewDisplayedPaperTreeOnClick}
+                />
+                <IndividualPage row={additionalPageRow} showHeader={false} />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
-
-  return <>hello</>;
 };
 
 export default TreeContainer;

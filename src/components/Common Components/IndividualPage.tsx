@@ -1,28 +1,33 @@
 interface IndividualPageProps {
   row: Record<string, string>;
+  showHeader?: boolean;
   backButtonOnClick?: (() => void) | null;
 }
 
 const IndividualPage: React.FC<IndividualPageProps> = ({
   row,
+  showHeader = true,
   backButtonOnClick = null,
 }) => {
   return (
     <div>
       {row && (
         <div className="container-fluid" key="IndividualPageContainerDiv">
-          <div className="row py-4">
-            <div className="col-sm-9 col-md-10 col-12">
-              <div className="h4">{row["Title"]}</div>
-            </div>
-            {backButtonOnClick != null && (
-              <div className="col-sm-3 col-md-2 col-12">
-                <p className="btn btn-primary" onClick={backButtonOnClick}>
-                  Go Back
-                </p>
+          {showHeader && (
+            <div className="row py-4">
+              <div className="col-sm-9 col-md-10 col-12">
+                <div className="h4">{row["Title"]}</div>
               </div>
-            )}
-          </div>
+
+              {backButtonOnClick != null && (
+                <div className="col-sm-3 col-md-2 col-12">
+                  <p className="btn btn-primary" onClick={backButtonOnClick}>
+                    Go Back
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="row">
             <div className="col-sm-12 col-md-9 border border-dark">
