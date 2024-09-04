@@ -22,6 +22,9 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
   //name of the current paper whose tree is being displayed
   const [currentTreeName, setCurrentTreeName] = useState<string>("");
   const [row, setRow] = useState<DataRow>(getEmptyDataRow());
+  const [additionalPageRow, setAdditionalPageRow] = useState<DataRow>(
+    getEmptyDataRow()
+  );
 
   //contains data for drawing the tree
   const [treeData, setTreeData] = useState<RawNodeDatum | null>(null);
@@ -33,6 +36,7 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
       const selectedRow = datasetRows.find((r) => r["Citation Key"] === name);
       if (selectedRow) {
         setRow(selectedRow);
+        setAdditionalPageRow(selectedRow);
       }
     }
   };
@@ -48,6 +52,7 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
 
       setTreeData(treeData);
       setRow(intialRow);
+      setAdditionalPageRow(intialRow);
       setCurrentTreeName(datasetRows[0]["Citation Key"]);
     }
   }, [datasetRows, datasetSystem]);
@@ -76,9 +81,18 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
         </div>
         <div className="col-6 col-md-9 col-lg-10 border">
           <div style={{ width: "100%", height: "70vh" }}>
-            {treeData != null && <TreeDisplay data={treeData} />}
+            {treeData != null && (
+              <TreeDisplay
+                data={treeData}
+                paperNameOnClick={(s: string) =>
+                  setAdditionalPageRow(
+                    datasetSystem.getRowBasedOnCitationKey(s) || row
+                  )
+                }
+              />
+            )}
           </div>
-          <div>{row && <IndividualPage row={row} />}</div>
+          <div>{row && <IndividualPage row={additionalPageRow} />}</div>
         </div>
       </div>
     </div>

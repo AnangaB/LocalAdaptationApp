@@ -11,7 +11,7 @@ import {
 } from "../../types/Datasets/DatasetTypes";
 import { DisplayGraphType } from "../../types/Graphs/GraphTypes";
 
-const GraphsMainContent: React.FC<{}> = () => {
+const GraphsMainContent: React.FC = () => {
   const [dataSetObject, setDataSetObject] = useState<DatasetSystem>(
     new DatasetSystem()
   );
@@ -43,7 +43,7 @@ const GraphsMainContent: React.FC<{}> = () => {
     dataSetObject.setDataSetFilter(selectedSearchParams);
     const data = dataSetObject.getDatasetAfterFiltering();
     setFullyMatchingRowsList(data);
-  }, [selectedSearchParams]);
+  }, [selectedSearchParams, dataSetObject]);
 
   //handles what happens when things in the advanced side bar is
   const handleFormChange = (index: keyof DataSetFilters, value: RegExp) => {

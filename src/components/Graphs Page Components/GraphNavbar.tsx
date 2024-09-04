@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const GraphNavbar: React.FC<{}> = () => {
+const GraphNavbar: React.FC = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div className="navbar-nav">

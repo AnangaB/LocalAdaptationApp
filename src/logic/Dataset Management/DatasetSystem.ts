@@ -90,7 +90,7 @@ export class DatasetSystem{
                 //const newColDefs = header.map((field) => ({ field }));
                 //setDataTableHeaders(newColDefs);
               } else {
-                let newEntry:DataRow = getEmptyDataRow();
+                const newEntry:DataRow = getEmptyDataRow();
                 newEntry["Index"] = String(index);
                 index++;
                 for (let i = 1; i < header.length; i++) {
@@ -112,7 +112,7 @@ export class DatasetSystem{
 
           //console.log(this.dataset)
 
-      };
+      }
 
     // Method to get the dataset, ensuring it is filled before returning
     public async getDataset():Promise<Dataset> {
@@ -167,7 +167,7 @@ export class DatasetSystem{
 
     //returns a RowSimilarityScores type, which records the score of how similar each row of data set is to the datafilters
     public getDatasetSimilarityScore():RowSimilarityScores{
-      let scores:RowSimilarityScores= new Map();
+      const scores:RowSimilarityScores= new Map();
     
       if (this.isDataSetLoaded) {
         for (const row of this.dataset) {
@@ -199,7 +199,7 @@ export class DatasetSystem{
      * @returns a regex that matches with values contained in the row
      */
     private covertRowItemsToRegex(row:DataRow) {
-      let output: DataSetFilters = getEmptyDataFilter();
+      const output: DataSetFilters = getEmptyDataFilter();
   
       if (row) {
           Object.keys(row).forEach((k) => {
@@ -246,11 +246,11 @@ export class DatasetSystem{
           let weakMatchLevels = maxScore - minScore;
           weakMatchLevels = Math.min(weakMatchLevels, 5);
 
-          let newWeakMatchesDisplayList: Dataset[] = [];
+          const newWeakMatchesDisplayList: Dataset[] = [];
 
           for (let i = 1; i <= weakMatchLevels; i++) {
             const levelScore = maxScore - i;
-            let matchesAtLevel: Dataset = [];
+            const matchesAtLevel: Dataset = [];
             for (const row of this.dataset) {
               if (similaritiesScores.get(row["Index"]) == levelScore) {
                 matchesAtLevel.push(row);
@@ -267,5 +267,19 @@ export class DatasetSystem{
 
       
     }
+    /**Returns a row that has the matching citationKey or otherwise returns null
+     * 
+     * @param citationKey 
+     * @returns 
+     */
+    public getRowBasedOnCitationKey(citationKey:string){
+      for(const d of this.dataset){
+        if(d["Citation Key"] == citationKey){
+          return d;
+        }
+      }
+      return null;
+    }
+
     
 }

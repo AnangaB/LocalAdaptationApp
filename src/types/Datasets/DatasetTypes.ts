@@ -65,7 +65,7 @@ export type Dataset = DataRow[];
 export type DataSetFilters = Record<DataHeaders, RegExp>;
 
 // Type for storing similarity scores between each row in a dataset and a dataset filter
-export type RowSimilarityScores = Map<string, Number>;
+export type RowSimilarityScores = Map<string, number>;
 
 // Returns an empty data row with all values initialized as ""
 export function getEmptyDataRow(): DataRow {

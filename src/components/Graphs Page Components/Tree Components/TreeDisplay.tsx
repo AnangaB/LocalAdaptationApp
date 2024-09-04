@@ -1,46 +1,64 @@
 import Tree, { RawNodeDatum, RenderCustomNodeElementFn } from "react-d3-tree";
+import { measureTextWidth } from "../../../logic/Graphs/Tree/RenderNodes";
+import "./style/TreeStyle.css";
+
 // Define interfaces for node and link data
 
 interface TreeDisplayProps {
   data: RawNodeDatum;
+  paperNameOnClick: (citationKey: string) => void;
 }
 
-const TreeDisplay: React.FC<TreeDisplayProps> = ({ data }) => {
-  const measureTextWidth = (n: string) => {
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-    if (context) {
-      context.font = "14px sans-serif";
-      return context.measureText(n).width;
-    }
-    return 0;
-  };
+const TreeDisplay: React.FC<TreeDisplayProps> = ({
+  data,
+  paperNameOnClick,
+}) => {
+  /**Function to render a node in the tree
+   *
+   * @param param0
+   * @returns
+   */
 
   const renderRectSvgNode: RenderCustomNodeElementFn = ({ nodeDatum }) => {
     const nameList: string[] = nodeDatum.name.split(", ");
     const textWidth = Math.max(...nameList.map((n) => measureTextWidth(n)), 20);
     const textHeight = 20 * nameList.length;
+
     return (
       <g>
         <rect
+          className="nodeRect"
           width={textWidth + 10}
-          height={textHeight + 5}
-          fill="white"
+          height={textHeight + 10}
           x="0"
         />
-        {nameList.map((n, index) => (
-          <text
-            key={index}
-            fontSize="14px"
-            fontFamily="sans-serif"
-            fill="black"
-            x="5"
-            strokeWidth="1"
-            y={20 * (index + 1)}
-          >
-            {n}
-          </text>
-        ))}
+        {nameList.map((n, index) => {
+          if (n.includes("Differing:")) {
+            const displayText = n.substring(10);
+            return (
+              <text
+                className="differingNodeHeaderText"
+                key={index}
+                x="5"
+                y={20 * (index + 1)}
+              >
+                {displayText}
+              </text>
+            );
+          } else {
+            return (
+              <text
+                key={index}
+                className="paperNameText"
+                x="5"
+                y={20 * (index + 1)}
+                onClick={() => paperNameOnClick(n)}
+              >
+                {n}
+              </text>
+            );
+          }
+        })}
       </g>
     );
   };
@@ -48,8 +66,11 @@ const TreeDisplay: React.FC<TreeDisplayProps> = ({ data }) => {
     <div className="container-fluid h-100 border border-dark">
       <Tree
         data={data}
+        rootNodeClassName="node__root"
+        branchNodeClassName="node__branch"
+        leafNodeClassName="node__leaf"
         renderCustomNodeElement={renderRectSvgNode}
-        nodeSize={{ x: 260, y: 50 }}
+        nodeSize={{ x: 300, y: 100 }}
       />
     </div>
   );

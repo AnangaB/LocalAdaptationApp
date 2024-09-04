@@ -1,0 +1,27 @@
+.paperNameText {
+  fill: black;
+  stroke-width: 0;
+}
+.paperNameText:hover {
+  fill: red;
+  stroke-width: 0;
+}
+
+.differingNodeHeaderText {
+  font-size: 20px;
+  font-family: sans-serif;
+  fill: blue;
+  stroke-width: 0;
+}
+.nodeRect {
+  fill: green;
+}
+
+.node__branch {
+  color: yellow;
+}
+
+.node__leaf {
+  fill: green;
+
+}

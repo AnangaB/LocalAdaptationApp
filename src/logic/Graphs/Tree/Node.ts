@@ -6,7 +6,7 @@ import { WeakKeysRecordType } from "../../../types/Graphs/TreeGraphTypes";
  */
 export class TreeNode {
     public children: TreeNode[];
-    public paperIds:Set<Number>;
+    public paperIds:Set<number>;
     public parent: TreeNode | null;
     public similarValues:WeakKeysRecordType;
 
@@ -26,10 +26,10 @@ export class TreeNode {
     }
     getDifferingValueFromParent() {
         if (this.parent && this.similarValues && this.parent.similarValues) {
-            let differingVal = Object.keys(this.parent.similarValues).filter((val: any) => !Object.keys(this.similarValues).includes(val))[0];
+            const differingVal = Object.keys(this.parent.similarValues).filter((val: string) => !Object.keys(this.similarValues).includes(val))[0];
             return differingVal;
         }
-        return null;
+        return "";
     }
     deleteNode(): void {
         if (this.parent) {
@@ -47,11 +47,11 @@ export class TreeNode {
         }
         
     }
-    addToPaperIds(rowIndex:Number){
+    addToPaperIds(rowIndex:number){
         this.paperIds.add(rowIndex)
     }
-    setPaperIds(rowIndices:Number[]){
-        this.paperIds = new Set<Number>(rowIndices)
+    setPaperIds(rowIndices:number[]){
+        this.paperIds = new Set<number>(rowIndices)
     }
 
 }

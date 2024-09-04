@@ -1,37 +1,37 @@
 import { Combination}  from "js-combinatorics";
-import { RawNodeDatum } from "react-d3-tree";
+import {TreeNodeDatum } from "react-d3-tree";
 import { DataHeaders, DataRow, Dataset, RowSimilarityScores, weakKeysList } from "../../../types/Datasets/DatasetTypes";
 import { TreeNode } from "./Node";
 import { WeakKeysRecordType } from "../../../types/Graphs/TreeGraphTypes";
 
-
-
-const treeToString = (node: TreeNode, level = 0) => {
-    const indent = ' '.repeat(level * 2); // Use spaces for indentation
-    //let result = `${indent}TreeNode: { similarValues: ${JSON.stringify(node.similarValues)}, paperIds: [${Array.from(node.paperIds).join(', ')}] }\n`;
-     let result = `${indent}paperIds: [${Array.from(node.paperIds).join(', ')}] } ${Object.keys(node.similarValues).length}\n`;
-    node.children.forEach((child: any) => {
-        result += treeToString(child, level + 1);
-    });
-    return result;
-};
-
-const getTreeGraphData = (node: TreeNode,): Record<string, any> => {
+/**Returns the tree rooted at the param node, as type of RawNodeDatum, so it can be displayed 
+ * 
+ * @param node 
+ * @returns 
+ */
+const getTreeGraphData = (node: TreeNode,depth: number = 0): TreeNodeDatum  => {
     let differingPart = "";
-    if(node.getDifferingValueFromParent() != null){
+    if(node.getDifferingValueFromParent() != ""){
         differingPart = "Differing: " + node.getDifferingValueFromParent() + ", ";
-    }
-    let result:RawNodeDatum = {name:`${differingPart}${Array.from(node.paperIds).map((index) => allRows[Number(index)]["Citation Key"]).join(', ')}`};
+    }    
+
     
+    const result:TreeNodeDatum  = {
+        name: `${differingPart}${Array.from(node.paperIds).map((index) => allRows[Number(index)]["Citation Key"]).join(', ')}`,
+        __rd3t: {
+            id: "",
+            depth: depth,
+            collapsed: false
+        }
+    };
+
     result.attributes ={
-        "Papers": `[${Object.keys(node.similarValues).join(', ')}]`,
-      };
-    
+        "Papers": `[${Object.keys(node.similarValues).join(', ')}]`      };
     if (node.children.length > 0) {
-        result.children  = node.children.map((child: TreeNode) => getTreeGraphData(child)) as RawNodeDatum[];
+        result.children  = node.children.map((child: TreeNode) => getTreeGraphData(child, depth + 1)) as TreeNodeDatum [];
     }
     
-    return result as RawNodeDatum ;
+    return result as TreeNodeDatum  ;
 };
 
 
@@ -58,7 +58,7 @@ export const makeTree = (row:DataRow, allRowsList:Dataset, scoresRecord: RowSimi
         //console.log("makeTree params : ",row,allRowsList,scoresRecord)
 
         //will store teh 
-        let similarWeakKeys: WeakKeysRecordType = {};
+        const similarWeakKeys: WeakKeysRecordType = {};
 
         // Map through keys in row and filter to only include keys from WeakKeysType
         Object.keys(row).forEach((key) => {
@@ -68,7 +68,7 @@ export const makeTree = (row:DataRow, allRowsList:Dataset, scoresRecord: RowSimi
         });
         //console.log("makeTree: similarWeakKeys: ",similarWeakKeys)
 
-        let root = new TreeNode(Number(row["Index"]), similarWeakKeys);
+        const root = new TreeNode(Number(row["Index"]), similarWeakKeys);
     
         //get all other similar papers
         maxScore = Math.max(...Array.from(scores.values()).map(Number));
@@ -76,22 +76,20 @@ export const makeTree = (row:DataRow, allRowsList:Dataset, scoresRecord: RowSimi
         //console.log("makeTree: maxScore: ",maxScore," minScore: ",minScore)
 
 
-        let sameScoreIndices: number[] = Array.from(scores.entries()).filter(([_, value]) => value === maxScore).map(([key]) => Number(key));
+        const sameScoreIndices: number[] = Array.from(scores.entries()).filter(([, value]) => value === maxScore).map(([key]) => Number(key));
     
         root.setPaperIds(sameScoreIndices);
         
         //record visited indices
         visitedIndices =  new Set([...sameScoreIndices.map(String)]);
         
-
-        //console.log(similarWeakKeys)
     
         //need to go lower levels
         if(similarWeakKeys && Object.keys(similarWeakKeys).length > 0){
-             let combinations = Combination.of(Object.keys(similarWeakKeys), Object.keys(similarWeakKeys).length - 1);
-            for(let c of combinations){
+             const combinations = Combination.of(Object.keys(similarWeakKeys), Object.keys(similarWeakKeys).length - 1);
+            for(const c of combinations){
                 //console.log("makeTree: looking for children with combination: ",c)
-                let childSimilarWeakKeys:WeakKeysRecordType = {};
+                const childSimilarWeakKeys:WeakKeysRecordType = {};
                 c.forEach((key: string | number) => {
                     if (weakKeysList.includes(String(key) as keyof DataRow)) {
                         childSimilarWeakKeys[key as keyof DataRow] = row[key as keyof DataRow];
@@ -99,7 +97,7 @@ export const makeTree = (row:DataRow, allRowsList:Dataset, scoresRecord: RowSimi
                 });
                 //console.log("maxScore",maxScore)
                 //console.log("lengthh",Object.keys(similarWeakKeys).length)
-                let childnode = getChildNode(childSimilarWeakKeys,maxScore-1)
+                const childnode = getChildNode(childSimilarWeakKeys,maxScore-1)
                 root.addChild(childnode)
             }
         }
@@ -107,7 +105,7 @@ export const makeTree = (row:DataRow, allRowsList:Dataset, scoresRecord: RowSimi
         removeEmptyRoots(root)
         //console.log(getTreeGraphData(root))
         //console.log("make tree: remaining allRows ", allRows)
-        return getTreeGraphData(root) as RawNodeDatum;
+        return getTreeGraphData(root) as TreeNodeDatum;
     }
   return null;
 }
@@ -119,13 +117,13 @@ const getChildNode= (similarWeakKeys:WeakKeysRecordType, scoreLevel:number) => {
     }
 
     //WeakKeysRecordType
-    let node = new TreeNode(null, similarWeakKeys);
+    const node = new TreeNode(null, similarWeakKeys);
 
     //get all other similar papers
 
     //console.log(similarWeakKeys)
 
-    let sameScoreIndices: number[] = [];
+    const sameScoreIndices: number[] = [];
     const rowsWithScoreLevelAndNotVisited = allRows
     .filter((row) => {
         // Get all rows with scoreLevel similarity score and also not visited
@@ -169,15 +167,15 @@ const getChildNode= (similarWeakKeys:WeakKeysRecordType, scoreLevel:number) => {
     //console.log("visited so far:",visitedIndices)
 
     if(Object.keys(similarWeakKeys).length > 0){
-            let combinations = Combination.of(Object.keys(similarWeakKeys), Object.keys(similarWeakKeys).length - 1);
-        for(let c of combinations){
-            let childSimilarWeakKeys:WeakKeysRecordType = {};
+            const combinations = Combination.of(Object.keys(similarWeakKeys), Object.keys(similarWeakKeys).length - 1);
+        for(const c of combinations){
+            const childSimilarWeakKeys:WeakKeysRecordType = {};
             c.forEach((key: string | number) => {
                 if (weakKeysList.includes(String(key)  as keyof DataRow)) {
                     childSimilarWeakKeys[key as keyof DataRow] = similarWeakKeys[key  as keyof DataRow];
                 }
             });
-            let childnode = getChildNode(childSimilarWeakKeys,scoreLevel-1)
+            const childnode = getChildNode(childSimilarWeakKeys,scoreLevel-1)
             node.addChild(childnode)
         }
     }
