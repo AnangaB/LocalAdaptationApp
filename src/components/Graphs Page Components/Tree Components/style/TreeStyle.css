@@ -3,25 +3,24 @@
   stroke-width: 0;
 }
 .paperNameText:hover {
-  fill: red;
+  color:red;
   stroke-width: 0;
 }
-
+.NodeTexts {
+  padding: 10px;
+}
 .differingNodeHeaderText {
-  font-size: 20px;
+  font-size: 15px;
   font-family: sans-serif;
-  fill: blue;
+  color: navy;
+  stroke-width: 0;
+}
+.paperNameText{
+  font-size: 15px;
+  font-family: sans-serif;
+  color: black;
   stroke-width: 0;
 }
 .nodeRect {
-  fill: green;
-}
-
-.node__branch {
-  color: yellow;
-}
-
-.node__leaf {
-  fill: green;
-
+  fill: skyblue;
 }

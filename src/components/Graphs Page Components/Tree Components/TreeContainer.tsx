@@ -74,6 +74,7 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
   };
   const viewDisplayedPaperTreeOnClick = () => {
     setRow(additionalPageRow);
+    setCurrentTreeName(additionalPageRow["Citation Key"]);
   };
 
   return (
