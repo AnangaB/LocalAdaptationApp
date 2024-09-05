@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 type KeysSideBarProps = {
   keys: string[];
   sideBarButtonOnClick: (text: string) => void;
@@ -9,24 +11,27 @@ const KeysSideBar: React.FC<KeysSideBarProps> = ({
   sideBarButtonOnClick,
   activeButtonName,
 }) => {
-  /*
   const [keysGroup, setKeysGroup] = useState<string[][]>([]);
 
   const [displayingKeysIndex, setDisplayingKeysIndex] = useState<number>(0);
 
   useEffect(() => {
     if (keys) {
-      let keysCopy = keys;
+      const keysCopy = keys;
       const groupedKeys = [];
 
-      while (keysCopy.length > 0) {
-        groupedKeys.push(keysCopy.splice(0, 20));
+      if (keysCopy.length < 20) {
+        groupedKeys.push(keysCopy);
+      } else {
+        while (keysCopy.length > 0) {
+          groupedKeys.push(keysCopy.splice(0, 20));
+        }
       }
-      setKeysGroup(groupedKeys);
-      setDisplayingKeysIndex(0);
       console.log(groupedKeys);
+
+      setKeysGroup(groupedKeys);
     }
-  }, []);
+  }, [keys]);
 
   const goBackPage = () => {
     if (keysGroup && keysGroup.length > 0) {
@@ -44,24 +49,36 @@ const KeysSideBar: React.FC<KeysSideBarProps> = ({
     if (keysGroup && keysGroup.length > 0) {
       setDisplayingKeysIndex((displayingKeysIndex + 1) % keysGroup.length);
     }
-  };*/
+  };
 
   return (
-    <nav className="nav flex-column">
-      {keys &&
-        keys.map((key, index) => (
+    <nav className="container-fluid">
+      {keysGroup &&
+        keysGroup[displayingKeysIndex] &&
+        keysGroup[displayingKeysIndex].map((key, index) => (
           <button
             key={`${key}${index}`}
             className={
               activeButtonName == key
-                ? "btn btn-danger nav-item mt-1"
-                : "btn btn-primary nav-item mt-1"
+                ? "btn btn-danger w-100 mt-1"
+                : "btn btn-dark w-100 mt-1"
             }
             onClick={() => sideBarButtonOnClick(key)}
           >
             {key}
           </button>
         ))}
+
+      {keysGroup && keysGroup.length > 1 && (
+        <div className="d-flex justify-content-between p-1">
+          <button className="btn btn-dark" onClick={goBackPage}>
+            <i className="bi bi-arrow-left-square"></i>
+          </button>
+          <button className="btn btn-dark" onClick={goForwardPage}>
+            <i className="bi bi-arrow-right-square"></i>
+          </button>
+        </div>
+      )}
     </nav>
   );
 };

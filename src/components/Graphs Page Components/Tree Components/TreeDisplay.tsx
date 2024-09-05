@@ -70,7 +70,7 @@ const TreeDisplay: React.FC<TreeDisplayProps> = ({
       </g>
     );
   };
-  const node_size = { x: 250, y: 90 };
+  const node_size = { x: 300, y: 90 };
   return (
     <div className="container-fluid h-100 border border-dark">
       <Tree
