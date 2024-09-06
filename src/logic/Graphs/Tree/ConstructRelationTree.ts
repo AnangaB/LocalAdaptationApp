@@ -48,6 +48,7 @@ let visitedIndices = new Set<string>();
  * @param scoresRecord 
  * @returns 
  */
+//order of the nodes, to handle symmetry: "Recurrent Mutation",  "Ecological Model", "Population Size",  "Spatial Structure", "Selection",  "Ploidy", "Mating system", "Ecological Loci/Traits",  "Life history", "Eco-Evo Focus"  
 export const makeTree = (row:DataRow, allRowsList:Dataset, scoresRecord: RowSimilarityScores) => {
 
     if(scoresRecord && row && allRowsList && allRowsList.length > 0 && scoresRecord.size > 0){
@@ -55,9 +56,6 @@ export const makeTree = (row:DataRow, allRowsList:Dataset, scoresRecord: RowSimi
         allRows = allRowsList;
         scores = scoresRecord;
 
-        //console.log("makeTree params : ",row,allRowsList,scoresRecord)
-
-        //will store teh 
         const similarWeakKeys: WeakKeysRecordType = {};
 
         // Map through keys in row and filter to only include keys from WeakKeysType
@@ -66,7 +64,6 @@ export const makeTree = (row:DataRow, allRowsList:Dataset, scoresRecord: RowSimi
                 similarWeakKeys[key as keyof DataRow] = row[key as keyof DataRow];
             }
         });
-        //console.log("makeTree: similarWeakKeys: ",similarWeakKeys)
 
         const root = new TreeNode(Number(row["Index"]), similarWeakKeys);
     
@@ -86,25 +83,22 @@ export const makeTree = (row:DataRow, allRowsList:Dataset, scoresRecord: RowSimi
     
         //need to go lower levels
         if(similarWeakKeys && Object.keys(similarWeakKeys).length > 0){
+            console.log(Object.keys(similarWeakKeys))
              const combinations = Combination.of(Object.keys(similarWeakKeys), Object.keys(similarWeakKeys).length - 1);
             for(const c of combinations){
-                //console.log("makeTree: looking for children with combination: ",c)
+                console.log("makeTree: looking for children with combination: ",c)
                 const childSimilarWeakKeys:WeakKeysRecordType = {};
                 c.forEach((key: string | number) => {
                     if (weakKeysList.includes(String(key) as keyof DataRow)) {
                         childSimilarWeakKeys[key as keyof DataRow] = row[key as keyof DataRow];
                     }
                 });
-                //console.log("maxScore",maxScore)
-                //console.log("lengthh",Object.keys(similarWeakKeys).length)
                 const childnode = getChildNode(childSimilarWeakKeys,maxScore-1)
                 root.addChild(childnode)
             }
         }
         //console.log("done computing the tree")
         removeEmptyRoots(root)
-        //console.log(getTreeGraphData(root))
-        //console.log("make tree: remaining allRows ", allRows)
         return getTreeGraphData(root) as TreeNodeDatum;
     }
   return null;
@@ -120,8 +114,6 @@ const getChildNode= (similarWeakKeys:WeakKeysRecordType, scoreLevel:number) => {
     const node = new TreeNode(null, similarWeakKeys);
 
     //get all other similar papers
-
-    //console.log(similarWeakKeys)
 
     const sameScoreIndices: number[] = [];
     const rowsWithScoreLevelAndNotVisited = allRows
@@ -146,9 +138,6 @@ const getChildNode= (similarWeakKeys:WeakKeysRecordType, scoreLevel:number) => {
             for (const key of Object.keys(similarWeakKeys)) {
                 if (String(similarWeakKeys[key]) !== "" && String(similarWeakKeys[key]) !== String(row[key as DataHeaders])) {
                     isRowValid = false;
-                    /*if(rowIndex == "166"  && scoreLevel == 9 ){
-                        console.log("Mismatch Values for index 166 at scorelevel 9 for key", key ,' Root: "',String(similarWeakKeys[key]),'"',' Index 20: "', String(row[key as DataHeaders]),'"')
-                    }*/
                 }
             }
             
@@ -160,11 +149,6 @@ const getChildNode= (similarWeakKeys:WeakKeysRecordType, scoreLevel:number) => {
     }
 
     node.setPaperIds(sameScoreIndices);
-    //if(sameScoreIndices.length > 0){
-      //  console.log("setting Ids: ", sameScoreIndices)
-
-    //}
-    //console.log("visited so far:",visitedIndices)
 
     if(Object.keys(similarWeakKeys).length > 0){
             const combinations = Combination.of(Object.keys(similarWeakKeys), Object.keys(similarWeakKeys).length - 1);

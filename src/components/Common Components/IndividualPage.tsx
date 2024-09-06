@@ -22,7 +22,7 @@ const IndividualPage: React.FC<IndividualPageProps> = ({
               {backButtonOnClick != null && (
                 <div className="col-sm-3 col-md-2 col-12">
                   <p className="btn btn-primary" onClick={backButtonOnClick}>
-                    Go Back
+                    Go Back To Home
                   </p>
                 </div>
               )}

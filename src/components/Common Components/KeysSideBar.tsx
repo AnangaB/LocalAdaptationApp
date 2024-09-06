@@ -29,8 +29,6 @@ const KeysSideBar: React.FC<KeysSideBarProps> = ({
           groupedKeys.push(keysCopy.splice(0, 10));
         }
       }
-      console.log(groupedKeys);
-
       setKeysGroup(groupedKeys);
     }
   }, [keys]);
@@ -40,10 +38,8 @@ const KeysSideBar: React.FC<KeysSideBarProps> = ({
     if (keysGroup && keysGroup.length > 1) {
       for (let i = 0; i < keysGroup.length; i++) {
         for (const k in keysGroup[i]) {
-          console.log(keysGroup[i][k], activeButtonName);
           if (keysGroup[i][k] == activeButtonName) {
             setDisplayingKeysIndex(i);
-            console.log("found it  at", i);
           }
         }
       }
@@ -52,10 +48,6 @@ const KeysSideBar: React.FC<KeysSideBarProps> = ({
 
   const goBackPage = () => {
     if (keysGroup && keysGroup.length > 0) {
-      console.log(
-        (displayingKeysIndex - 1) % keysGroup.length,
-        keysGroup.length
-      );
       setDisplayingKeysIndex(
         (displayingKeysIndex - 1 + keysGroup.length) % keysGroup.length
       );
