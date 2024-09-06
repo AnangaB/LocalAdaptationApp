@@ -5,7 +5,9 @@ type KeysSideBarProps = {
   sideBarButtonOnClick: (text: string) => void;
   activeButtonName: string;
 };
-
+/* Displays a list of strings, into a side bar of buttons. If there are too many buttons, only subset of the buttons show up at a time, with arrow buttons to navigate through subgroup of these buttons. The first button that contain the param string activeButtonName, will get colored red.
+ *
+ */
 const KeysSideBar: React.FC<KeysSideBarProps> = ({
   keys,
   sideBarButtonOnClick,
@@ -20,11 +22,11 @@ const KeysSideBar: React.FC<KeysSideBarProps> = ({
       const keysCopy = keys;
       const groupedKeys = [];
 
-      if (keysCopy.length < 20) {
+      if (keysCopy.length < 13) {
         groupedKeys.push(keysCopy);
       } else {
         while (keysCopy.length > 0) {
-          groupedKeys.push(keysCopy.splice(0, 20));
+          groupedKeys.push(keysCopy.splice(0, 10));
         }
       }
       console.log(groupedKeys);
@@ -32,6 +34,21 @@ const KeysSideBar: React.FC<KeysSideBarProps> = ({
       setKeysGroup(groupedKeys);
     }
   }, [keys]);
+
+  //when activeButtonName changes display the keysGroup keys that contain the activeButtonName
+  useEffect(() => {
+    if (keysGroup && keysGroup.length > 1) {
+      for (let i = 0; i < keysGroup.length; i++) {
+        for (const k in keysGroup[i]) {
+          console.log(keysGroup[i][k], activeButtonName);
+          if (keysGroup[i][k] == activeButtonName) {
+            setDisplayingKeysIndex(i);
+            console.log("found it  at", i);
+          }
+        }
+      }
+    }
+  }, [activeButtonName, keysGroup]);
 
   const goBackPage = () => {
     if (keysGroup && keysGroup.length > 0) {
