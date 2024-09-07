@@ -7,6 +7,7 @@ import {
   DataSetFilters,
   getEmptyDataFilter,
 } from "../types/Datasets/DatasetTypes";
+import MainMenuBar from "../components/Common Components/MainMenuBar";
 /**
  *
  * @returns Main Display container for the home page. Displays the top search bar, data table display items, and advacnced side bar that can be toggled on and off.
@@ -19,6 +20,7 @@ function Root() {
   //state for when to show all advanced search menu
   const [isAdvancedSearchMode, setIsAdvancedSearchMode] =
     useState<boolean>(false);
+
   //toggles advanced search modes between true and false
   const advancedSearchButtonOnClick = (isAdvancedMode: boolean) => {
     if (isAdvancedMode) {
@@ -42,15 +44,11 @@ function Root() {
   };
 
   return (
-    <>
-      <SimpleSearchBar
-        advancedSearchButtonOnClick={advancedSearchButtonOnClick}
-        isAdvancedSearchMode={isAdvancedSearchMode}
-        handleFormChange={handleFormChange}
-      />
+    <div className="bg-info">
+      <MainMenuBar isHomePageActive={true} />
 
-      <div className="container-fluid bg-info">
-        <div className="row" style={{ paddingTop: "100px" }}>
+      <div className="container-fluid  mt-1">
+        <div className="row">
           <div
             className={
               isAdvancedSearchMode ? "col-12 col-md-4 col-lg-3" : "d-none"
@@ -64,11 +62,16 @@ function Root() {
               isAdvancedSearchMode ? "col-12 col-md-8 col-lg-9" : "col-12"
             }
           >
+            <SimpleSearchBar
+              advancedSearchButtonOnClick={advancedSearchButtonOnClick}
+              isAdvancedSearchMode={isAdvancedSearchMode}
+              handleFormChange={handleFormChange}
+            />
             <DataTableDisplayContainer SearchParams={selectedSearchParams} />
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

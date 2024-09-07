@@ -43,11 +43,7 @@ const PieChart: React.FC<PieChartDisplayProps> = ({
     const ctx = chartRef.current?.getContext("2d");
 
     if (ctx) {
-      const config: ChartConfiguration = getChartConfig(
-        labels,
-        data,
-        displayingName
-      );
+      const config: ChartConfiguration = getChartConfig(labels, data);
       chartInstanceRef.current = new ChartJS(ctx, config);
     }
   }, [dataset, displayingName, width, height]);

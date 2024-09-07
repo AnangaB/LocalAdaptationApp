@@ -63,7 +63,7 @@ const GraphsMainContent: React.FC = () => {
   );
 
   return (
-    <div className="container-fluid" style={{ paddingTop: "100px" }}>
+    <div className="container-fluid  mt-1">
       <GraphTypeSelectionBar
         buttonOnClick={(type: DisplayGraphType) => setCurrentChartType(type)}
         currentGraphType={currentChartType}

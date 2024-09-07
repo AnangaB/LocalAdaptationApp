@@ -1,11 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import GraphNavbar from "../components/Graphs Page Components/GraphNavbar";
 import { Link } from "react-router-dom";
 
 function NotFound() {
   return (
     <>
-      <GraphNavbar />
       <div className="container-fluid pt-5 mt-5 text-center">
         <h1 className="display-4">404 - Not Found</h1>
         <p className="lead">The page you are looking for does not exist.</p>

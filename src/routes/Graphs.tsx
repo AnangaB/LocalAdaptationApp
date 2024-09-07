@@ -1,13 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import GraphNavbar from "../components/Graphs Page Components/GraphNavbar";
 import GraphsMainContent from "../components/Graphs Page Components/GraphsMainContent";
+import MainMenuBar from "../components/Common Components/MainMenuBar";
 
 function Graphs() {
   return (
-    <>
-      <GraphNavbar />
+    <div>
+      <MainMenuBar isHomePageActive={false} />
+
       <GraphsMainContent />
-    </>
+    </div>
   );
 }
 
