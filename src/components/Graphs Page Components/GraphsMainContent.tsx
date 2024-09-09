@@ -77,7 +77,10 @@ const GraphsMainContent: React.FC = () => {
       )}
 
       {currentChartType == DisplayGraphType.PieChart && (
-        <PieChartContainer displayingDatasetRows={fullyMatchingRowsList} />
+        <PieChartContainer
+          displayingDatasetRows={fullyMatchingRowsList}
+          handleFormChange={handleFormChange}
+        />
       )}
 
       {currentChartType == DisplayGraphType.Tree && (

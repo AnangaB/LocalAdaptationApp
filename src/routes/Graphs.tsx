@@ -1,4 +1,4 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+import("bootstrap");
 import GraphsMainContent from "../components/Graphs Page Components/GraphsMainContent";
 import MainMenuBar from "../components/Common Components/MainMenuBar";
 
