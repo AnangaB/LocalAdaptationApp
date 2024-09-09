@@ -14,23 +14,23 @@ const TreeControlsBar: React.FC<TreeControlsBarProps> = ({
   return (
     <div className="container-fluid">
       <div className="row p-1">
-        <div className="col-8">
+        <div className="col-12 col-lg-6">
           <h1>{paperNameBeingShownInAdditionalInfo}</h1>
         </div>
-        <div className="col-2">
+        <div className="col-12 col-sm-6 col-lg-3">
           {paperNameBeingShownInTree != paperNameBeingShownInAdditionalInfo && (
             <button
-              className="btn btn-primary"
+              className="btn btn-primary w-100 h-100"
               onClick={showOriginalPaperInfoOnClick}
             >
-              Show info for {paperNameBeingShownInTree}
+              Show info below for {paperNameBeingShownInTree}
             </button>
           )}
         </div>
-        <div className="col-2">
+        <div className="col-12 col-sm-6 col-lg-3">
           {paperNameBeingShownInTree != paperNameBeingShownInAdditionalInfo && (
             <button
-              className="btn btn-info"
+              className="btn btn-info w-100 h-100"
               onClick={viewDisplayedPaperTreeOnClick}
             >
               Generate Tree for {paperNameBeingShownInAdditionalInfo}

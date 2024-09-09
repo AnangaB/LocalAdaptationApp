@@ -80,7 +80,7 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-6  h-100 overflow-auto col-md-3 col-lg-2">
+        <div className="col-12 col-sm-4 col-lg-2">
           {datasetRows && (
             <KeysSideBar
               keys={datasetRows.map((r) => r["Citation Key"])}
@@ -89,7 +89,7 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
             />
           )}
         </div>
-        <div className="col-6 col-md-9 col-lg-10 border">
+        <div className="col-12 col-sm-8 col-lg-10">
           <div style={{ width: "100%", height: "70vh" }}>
             {treeData != null && (
               <TreeDisplay
@@ -102,7 +102,7 @@ const TreeContainer: React.FC<TreeContainerProps> = ({
               />
             )}
           </div>
-          <div>
+          <div className="col-12">
             {row && (
               <>
                 <TreeControlsBar
