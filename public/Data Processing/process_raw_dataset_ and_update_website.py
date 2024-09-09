@@ -152,6 +152,10 @@ def getPaperName(authors, year):
         return nameList[0].split(",")[0] + " et al. " + (year)
     return ""
 
+def fix_typos_in_col(df, col_name, typo, new_string):
+    df[col_name] = df[col_name].str.replace(typo, new_string, regex=False)
+    return df
+
 
 def main():
     # Check if the user provided a command-line argument
@@ -205,9 +209,30 @@ def main():
     #replace blanks or nas with "Unknown"
     data = data.fillna("Unknown")
 
-    # Convert "Mullti Model" to "Multi Model" in the 'Scope' column
-    data['Scope'] = data['Scope'].replace('Mullti Model', 'Multi Model')
+    columns_to_replace = [
+        "Eco-Evo Focus",
+        "Life history",
+        "Ecological Loci/Traits",
+        "Mating system",
+        "Ploidy",
+        "Selection",
+        "Spatial Structure ",
+        "Population Size",
+        "Ecological Model",
+        "Recurrent Mutation"
+    ]
 
+    # Replace NA and 'na' with 'Unknown' in the specified columns
+    data[columns_to_replace] = data[columns_to_replace].replace(['na', 'NA', None, pd.NA], 'Unknown', regex=False)
+
+    # fix typos in columns
+    data = fix_typos_in_col(data, 'Scope', 'Mullti Model', 'Multi Model')
+    data = fix_typos_in_col(data, 'Recurrent Mutation', 'adpative dynamics', 'Adaptive Dynamics')
+    data = fix_typos_in_col(data, "Spatial Structure " , "Metapopulation (Finite or Infinite))", "Metapopulation (Finite or Infinite)")
+    data = fix_typos_in_col(data, "Spatial Structure " ,  'Stepping Stone (1D, 2D)',"Stepping Stone (1D or 2D)")
+    data = fix_typos_in_col(data, "Spatial Structure " , "Continuous Space (1D or 2D))", "Continuous Space (1D or 2D)")
+
+   
     #only keep rows with scope of Singlemodel and multimodel and remove scope column
     scope_to_keep = ["Single Model","Multi Model"]
     data = data[data["Scope"].isin(scope_to_keep)]

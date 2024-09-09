@@ -160,6 +160,9 @@ export class DatasetSystem{
         }
         return isMatch;
       }
+      else{
+        console.log("Row is not a valid row.")
+      }
       return false
 
 
