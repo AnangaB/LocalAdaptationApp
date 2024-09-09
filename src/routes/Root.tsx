@@ -1,5 +1,4 @@
 import SimpleSearchBar from "../components/Home Page Components/Search Bar/SimpleSearchBar";
-import AdvancedSearchBar from "../components/Home Page Components/Search Bar/AdvancedSearchBar";
 import DataTableDisplayContainer from "../components/Home Page Components/Home Page Main Content Display/DataTableDisplayContainer";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -8,6 +7,7 @@ import {
   getEmptyDataFilter,
 } from "../types/Datasets/DatasetTypes";
 import MainMenuBar from "../components/Common Components/MainMenuBar";
+import AdvancedSearchBarDisplay from "../components/Common Components/AdvancedSearchBarDisplay";
 /**
  *
  * @returns Main Display container for the home page. Displays the top search bar, data table display items, and advacnced side bar that can be toggled on and off.
@@ -44,29 +44,36 @@ function Root() {
   };
 
   return (
-    <div className="bg-info">
+    <div className="bg-light">
       <MainMenuBar isHomePageActive={true} />
 
-      <div className="container-fluid  mt-1">
-        <div className="row">
-          <div
-            className={
-              isAdvancedSearchMode ? "col-12 col-md-4 col-lg-3" : "d-none"
-            }
-          >
-            <AdvancedSearchBar handleFormChange={handleFormChange} />
-          </div>
-
-          <div
-            className={
-              isAdvancedSearchMode ? "col-12 col-md-8 col-lg-9" : "col-12"
-            }
-          >
+      <div className="container-fluid  mt-1 p-0">
+        <div className="row w-100 m-0">
+          <div className="col-12 m-0 p-0">
             <SimpleSearchBar
               advancedSearchButtonOnClick={advancedSearchButtonOnClick}
               isAdvancedSearchMode={isAdvancedSearchMode}
               handleFormChange={handleFormChange}
             />
+          </div>
+
+          <div
+            className={
+              isAdvancedSearchMode
+                ? "col-12 col-md-4 col-lg-3 m-0 p-0"
+                : "d-none"
+            }
+          >
+            <AdvancedSearchBarDisplay handleFormChange={handleFormChange} />
+          </div>
+
+          <div
+            className={
+              isAdvancedSearchMode
+                ? "col-12 col-md-8 col-lg-9 m-0 p-0"
+                : "col-12 m-0 p-0"
+            }
+          >
             <DataTableDisplayContainer SearchParams={selectedSearchParams} />
           </div>
         </div>

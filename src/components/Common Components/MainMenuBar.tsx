@@ -12,7 +12,7 @@ const MainMenuBar: React.FC<MainMenuBarProps> = ({ isHomePageActive }) => {
     <nav className="navbar navbar-expand-md navbar-dark bg-dark">
       <div className="container-fluid">
         <div className="row p-1 w-100">
-          <div className="col-10">
+          <div className="col-10 col-md-6">
             <Link
               className="navbar-brand px-1 text-wrap"
               to="/LocalAdaptationApp"
@@ -37,7 +37,7 @@ const MainMenuBar: React.FC<MainMenuBarProps> = ({ isHomePageActive }) => {
           </div>
 
           <div
-            className="col-lg-2 collapse navbar-collapse justify-content-left"
+            className="col-md-3 col-lg-2 collapse navbar-collapse"
             id="navbarNav"
           >
             <ul className="navbar-nav">

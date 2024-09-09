@@ -27,9 +27,9 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
   }, []);
 
   return (
-    <div className="container-fluid p-2 bg-light border-bottom">
-      <div className="row justify-content-between">
-        <div className="col-lg-3 col-md-4 col-9">
+    <div className="p-1 container-fluid search-bar">
+      <div className="row">
+        <div className="col-lg-10 col-8">
           <form className="form-inline d-flex">
             <input
               className="form-control"
@@ -58,7 +58,7 @@ const SimpleSearchBar: React.FC<SearchBarProps> = ({
             </button>
           </form>
         </div>
-        <div className="col-lg-3 col-md-4 col-3">
+        <div className="col-lg-2 col-4">
           <button
             type="button"
             className="btn btn-sm btn-danger"

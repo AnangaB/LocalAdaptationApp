@@ -74,25 +74,33 @@ const AdvancedSearchBarDisplay: React.FC<AdvancedSearchBarDisplayProps> = ({
   };
 
   return (
-    <div className="bg-light row p-2">
+    <div className="row m-0 pr-1 search-bar">
       {Object.entries(searchTitles).map(([key, value]) => {
         if (value == SearchType.TextSearch) {
           return (
-            <div key={`${key}InputDiv`} className="p-2 col-12 align-self-top">
-              <label htmlFor={`${key}Input`}>{`${key}: `}</label>
+            <div key={`${key}InputDiv`} className="p-0 w-100">
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-6 col-sm-4 col-md-12 p-1">
+                    <label htmlFor={`${key}Input`}>{`${key}: `}</label>
+                  </div>
 
-              <input
-                className="m-1 form-control"
-                id={`${key}Input`}
-                type="text"
-                onChange={(event) =>
-                  handleFormChange(
-                    key as keyof DataSetFilters,
-                    convertStringToRegex(event.target.value)
-                  )
-                }
-                placeholder={`${key} Input`}
-              ></input>
+                  <div className="col-6 col-sm-8 col-md-12 m-0">
+                    <input
+                      className="m-1 form-control"
+                      id={`${key}Input`}
+                      type="text"
+                      onChange={(event) =>
+                        handleFormChange(
+                          key as keyof DataSetFilters,
+                          convertStringToRegex(event.target.value)
+                        )
+                      }
+                      placeholder={`${key}`}
+                    ></input>
+                  </div>
+                </div>
+              </div>
             </div>
           );
         } else if (value == SearchType.Checkbox) {
