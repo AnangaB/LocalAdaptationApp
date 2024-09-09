@@ -1,4 +1,4 @@
-@charset "UTF-8";/*!
+@charset "UTF-8";#root{width:100%;overflow-x:hidden}@media (max-width:768px){body{overflow-x:hidden!important}}.navbar-nav>.active>a{font-weight:700;color:#fff}.search-bar{background-color:#fbfcf8}/*!
 * Bootstrap Icons v1.11.3 (https://icons.getbootstrap.com/)
 * Copyright 2019-2024 The Bootstrap Authors
 * Licensed under MIT (https://github.com/twbs/icons/blob/main/LICENSE)
