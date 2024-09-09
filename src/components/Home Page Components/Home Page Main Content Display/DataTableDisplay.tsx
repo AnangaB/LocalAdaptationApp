@@ -15,7 +15,7 @@ const DataTableDisplay: React.FC<DataTableDisplayProps> = ({
   pageTitleOnclick,
 }) => {
   return (
-    <div className="Container-fluid py-3 border-bottom border-dark">
+    <div className="Container-fluid py-3 p-1 border-bottom border-dark overflow-scroll">
       <p className="h6">
         {dataDisplayList.length > 0 ? dataDisplayList.length : 0} entries found
       </p>
