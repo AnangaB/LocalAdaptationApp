@@ -38,7 +38,7 @@ const WeakMatchesDisplay: React.FC<WeakMatchesDisplayProps> = ({
     } else {
       setShouldDisplayWeakMatches(true);
     }
-  }, [similaritiesScores]);
+  }, [datasetSystem, similaritiesScores]);
 
   return (
     <div>

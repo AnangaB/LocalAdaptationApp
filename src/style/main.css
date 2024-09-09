@@ -1,0 +1,11 @@
+
+
+#root {
+  width: 100%;
+  overflow-x:hidden
+}
+@media (max-width:768px) {
+    body {
+      overflow-x:hidden !important;
+    }
+  }

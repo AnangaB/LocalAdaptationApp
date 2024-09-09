@@ -59,7 +59,7 @@ const DataTableDisplayContainer: React.FC<DataTableDisplayContainerProps> = ({
         dataSetObject.getDatasetSimilarityScore();
       setRowSimilarityScore(scores);
     }
-  }, [SearchParams]);
+  }, [SearchParams, dataSetObject]);
 
   //state to describe whether to display details about an individual paper and which paper (currentRow con)
   const [individualPageDisplayMode, setIndividualPageDisplayMode] =
