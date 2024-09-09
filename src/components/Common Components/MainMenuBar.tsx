@@ -40,28 +40,28 @@ const MainMenuBar: React.FC<MainMenuBarProps> = ({ isHomePageActive }) => {
             className="col-lg-2 collapse navbar-collapse justify-content-left"
             id="navbarNav"
           >
-            <Link
-              className={
-                isHomePageActive
-                  ? "text-light px-2 nav-item nav-link active"
-                  : "text-light px-2 nav-item nav-link"
-              }
-              to="/LocalAdaptationApp"
-              style={{ textDecoration: "none" }}
-            >
-              Home
-            </Link>
-            <Link
-              to={`/LocalAdaptationApp/graphs`}
-              className={
-                !isHomePageActive
-                  ? "text-light px-2 nav-item nav-link active"
-                  : "text-light px-2 nav-item nav-link"
-              }
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              Graphs
-            </Link>
+            <ul className="navbar-nav">
+              <li className={isHomePageActive ? "nav-item active" : "nav-item"}>
+                <Link
+                  className="px-2 nav-link"
+                  to="/LocalAdaptationApp"
+                  style={{ textDecoration: "none" }}
+                >
+                  Home
+                </Link>
+              </li>
+              <li
+                className={!isHomePageActive ? "nav-item active" : "nav-item"}
+              >
+                <Link
+                  className="px-2 nav-link"
+                  to="/LocalAdaptationApp/graphs"
+                  style={{ textDecoration: "none" }}
+                >
+                  Graphs
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

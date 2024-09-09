@@ -9,3 +9,8 @@
       overflow-x:hidden !important;
     }
   }
+
+.navbar-nav > .active > a{
+    font-weight: bold;
+    color:white
+}
