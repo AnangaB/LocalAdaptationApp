@@ -1,30 +1,29 @@
-# React + TypeScript + Vite
+# Database of Theoretical Models of Local Adaptation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A comprehensive online resource designed to catalog and analyze theoretical models of local adaptation. This project is associated with **Simon Fraser University** and is currently **in progress**. Certain data in the website could be incorrect at this point.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Website Overview
+- **Comprehensive Database**: Catalogs a wide range of publications containing Local Adaptation theoretical models, complete with detailed metadata for advanced filtering and analysis.
+- **Search Functionality**: Enables users to do advanced search and return all papers containing a specific model or matching certain attribute keywords.
+- **Weak Match Identification**: Highlights papers with models that differ by 1, 2, or more attributes from the user-selected filters.
 
-## Expanding the ESLint configuration
+### Interactive Data Visualization
+- **Dynamic Visualizations**: Provides tools like histograms, pie charts, and a custom tree graph to help map relationships between publications.
+- **Tree Graph**: Displays the model space, illustrating connections between papers that use similar models as edges and grouping papers with the same model in the same node.
+- **Filter Integration**: Visualizations can dynamically update based on user-selected filters.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Try It Out
+You can explore the project live here: [Database of Theoretical Models of Local Adaptation](https://anangab.github.io/LocalAdaptationApp/)
 
-- Configure the top-level `parserOptions` property like this:
+## Technologies Used
+- **Frontend**: 
+  - HTML5, CSS3, JavaScript
+  - Framework: React.js
+  - Visualization: D3.js
+- **Backend**:
+  - Node.js
+- **Data Visualization**:
+  - D3.js, Chart.js
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
