@@ -21,7 +21,6 @@ You can explore the project live here: [Database of Theoretical Models of Local 
 - **Frontend**: 
   - HTML5, CSS3, JavaScript
   - Framework: React.js
-  - Visualization: D3.js
 - **Backend**:
   - Node.js
 - **Data Visualization**:
